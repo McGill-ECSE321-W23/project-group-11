@@ -1,12 +1,24 @@
 class ParkingManagementSystem {
    // TODO this class should be composed of all other classes
+/*
+  1 <@>- 0..1 Manager manager;
+  1 <@>- * Employee employees;
+  1 <@>- * Customer customers;
+  1 <@>- * User users;
+  1 <@>- * Car cars;
+  1 <@>- * MonthlySpot monthlySpots; // add number of monthly spots
+  1 <@>- * MonthlySpot monthlySpots; // add number of monthly spots
+  1 <@>- * ServiceType serviceTypes;
+  1 <@>- * SpecificService services;
+  */
+  
 }
 
 
 class User {
   email;
   password;
-  1 -- * UserRole;
+  1 -> * UserRole;
 }
 class UserRole {
   abstract;
@@ -29,33 +41,45 @@ class Car
   enum Size{Regular, Large};
   Size size;
   0..1 -- 1 Customer;
-  0..1 -- 0..1 ParkingSpot;
+  0..1 -- 0..1 ReservedSpot;
+  0..1 -- 0..1 TempSpots;
 }
 
 
-class ParkingSpot  {
-  abstract;
+class ReservedSpot {
+  int id;
+  float monthlyCost;
 }
-class MonthlySpot {
-  isA ParkingSpot;
-  float feePerMonth;
-}
-class TemporarySpot {
-  isA ParkingSpot;
-  float feePer15Min;
-  enum Size{Regular, Large};
-  Size size;
-}
-
-
 class ServiceType {
   name;
   cost;
-  1 -- * SpecificService;
+  duration;
+1 -- * SpecificService;
 }
 class SpecificService {
   Date dateAndTime;
+  employee;
 }
 
 
+
+class TempSpots
+{
+  abstract;
+  startTime;
+  dura
+  
+}
+
+class LargeTempSpot
+{
+  isA TempSpots;
+  float price;
+}
+
+class SmallTempSpot
+{
+  isA TempSpots;
+  float price;
+}
 
