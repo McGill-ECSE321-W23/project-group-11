@@ -1,24 +1,31 @@
+
+
 class ParkingManagementSystem {
+  
+  openTime; // opening time in form (hhmm)
+  closeTime; // closing time in form (hhmm)
+  
+  
    // TODO this class should be composed of all other classes
 /*
   1 <@>- 0..1 Manager manager;
   1 <@>- * Employee employees;
   1 <@>- * Customer customers;
-  1 <@>- * User users;
+  1 <@>- 1..* User users;
   1 <@>- * Car cars;
-  1 <@>- * MonthlySpot monthlySpots; // add number of monthly spots
-  1 <@>- * MonthlySpot monthlySpots; // add number of monthly spots
+  1 <@>- 200 MonthlySpot monthlySpots; //100 per floor, floors 3, 4
+  1 <@>- 250 RegTempSpot regSpots; 
+  1 <@>- 20 LargeTempSpot largeSpots;
   1 <@>- * ServiceType serviceTypes;
   1 <@>- * SpecificService services;
   */
-  
 }
 
 
 class User {
-  email;
+  unique email;
   password;
-  1 -> * UserRole;
+  1 <- * UserRole roles;
 }
 class UserRole {
   abstract;
@@ -31,30 +38,26 @@ class Manager {
 }
 class Customer {
   isA UserRole;
-  1 -- * SpecificService;
+  1 <- * SpecificService services;
 }
 
 
 class Car
 {
-  licensePlate;
+  unique licensePlate;
   enum Size{Regular, Large};
   Size size;
-  0..1 -- 1 Customer;
-  0..1 -- 0..1 ReservedSpot;
-  0..1 -- 0..1 TempSpots;
+  0..1  car -> 1 Customer;
+  0..1 <- 0..1 ReservedSpot resSpot;
+  0..1 <- 0..1 TempSpots tempSpot;
 }
 
 
-class ReservedSpot {
-  int id;
-  float monthlyCost;
-}
 class ServiceType {
-  name;
+  unique name;
   cost;
   duration;
-1 -- * SpecificService;
+  1 serviceType -> * SpecificService;
 }
 class SpecificService {
   Date dateAndTime;
@@ -62,24 +65,23 @@ class SpecificService {
 }
 
 
+class ReservedSpot {
+  unique int id; // spot number
+  float monthlyCost;
+}
 
-class TempSpots
-{
+
+class TempSpots {
   abstract;
-  startTime;
-  dura
-  
+  Date startTime; // assuming dates include time
+  int duration; // number of 15 minute intervals
 }
-
-class LargeTempSpot
-{
+class LargeTempSpot {
   isA TempSpots;
-  float price;
+  float pricePer15; // price per 15 minute interval
 }
-
-class SmallTempSpot
-{
+class RegTempSpot {
   isA TempSpots;
-  float price;
+  float pricePer15; // price per 15 minute interval
 }
 
