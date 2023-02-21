@@ -9,3 +9,5 @@
 
 rootProject.name = 'ParkingManagementSystem'
 include('app')
+include ':ParkingManagementSystem'
+
