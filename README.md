@@ -22,7 +22,7 @@ For additional information, please consult the [wiki](../../wiki).
 | Brian Morava  | Morava83        |                |                     |                     |                     |
 |Jacques Zaarour| jacqueszaarour  |                |                     |                     |                     |
 | James Willems | ...             |                |                     |                     |                     |
-| Massimo Rosati| ...             |                |                     |                     |                     |
+| Massimo Rosati| Mrosati22       |                |                     |                     |                     |
 | Ralph Choucha | RalphChoucha    |                |                     |                     |                     |
 
 
