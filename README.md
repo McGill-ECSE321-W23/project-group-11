@@ -21,7 +21,7 @@ For additional information, please consult the [wiki](../../wiki).
 | Lukas Bebee   | LukeBebee       |                |                     |                     |                     |
 | Brian Morava  | Morava83        |                |                     |                     |                     |
 |Jacques Zaarour| jacqueszaarour  |                |                     |                     |                     |
-| James Willems | ...             |                |                     |                     |                     |
+| James Willems | JamesWillems             |                |                     |                     |                     |
 | Massimo Rosati| Mrosati22       |                |                     |                     |                     |
 | Ralph Choucha | RalphChoucha    |                |                     |                     |                     |
 
