@@ -1,24 +1,16 @@
-
-
-class ParkingManagementSystem {
-  
-  openTime; // opening time in form (hhmm)
-  closeTime; // closing time in form (hhmm)
-  
-  
-   // TODO this class should be composed of all other classes
-/*
+class ParkingManagementSystem { 
+  // TODO this class should be composed of all other 
   1 <@>- 0..1 Manager manager;
   1 <@>- * Employee employees;
   1 <@>- * Customer customers;
   1 <@>- 1..* User users;
   1 <@>- * Car cars;
-  1 <@>- 200 MonthlySpot monthlySpots; //100 per floor, floors 3, 4
   1 <@>- 250 RegTempSpot regSpots; 
   1 <@>- 20 LargeTempSpot largeSpots;
   1 <@>- * ServiceType serviceTypes;
   1 <@>- * SpecificService services;
-  */
+  1 <@>- * SystemInfo systemInfo;
+  1 <@>- 200 ReservedSpot monthlySpot;
 }
 
 
@@ -31,14 +23,15 @@ class UserRole {
   abstract;
 }
 class Employee {
+  schedule;
   isA UserRole;
 }
 class Manager {
-  isA Employee;
+  isA UserRole;
+  1 <- 1 SystemInfo;
 }
 class Customer {
   isA UserRole;
-  1 <- * SpecificService services;
 }
 
 
@@ -47,9 +40,11 @@ class Car
   unique licensePlate;
   enum Size{Regular, Large};
   Size size;
-  0..1  car -> 1 Customer;
   0..1 <- 0..1 ReservedSpot resSpot;
-  0..1 <- 0..1 TempSpots tempSpot;
+  0..1 <- 0..1 RegTempSpot tempSpot;
+  0..1 <- 0..1 LargeTempSpot tempSpot;
+  1..* <- 0..1 SpecificService;
+  * <- 1 User;
 }
 
 
@@ -57,12 +52,12 @@ class ServiceType {
   unique name;
   cost;
   duration;
-  1 serviceType -> * SpecificService;
+  1 serviceType <- * SpecificService;
 }
 class SpecificService {
   Date dateAndTime;
   employee;
-}
+  }
 
 
 class ReservedSpot {
@@ -84,4 +79,9 @@ class RegTempSpot {
   isA TempSpots;
   float pricePer15; // price per 15 minute interval
 }
-
+class SystemInfo
+{
+  openTime;
+  closeTime;
+ 
+}
