@@ -19,7 +19,7 @@ For additional information, please consult the [wiki](../../wiki).
 | Name          | GitHub username | Team Role      | Deliverable 1 Hours | Deliverable 2 Hours | Deliverable 3 Hours |
 | ------------- | --------------- | -------------- | ------------------- | ------------------- | ------------------- |
 | Lukas Bebee   | LukeBebee       |                |                     |                     |                     |
-| Brian Morava  | Morava83        |                |                     |                     |                     |
+| Brian Morava  | Morava8        |                |                     |                     |                     |
 |Jacques Zaarour| jacqueszaarour  |                |                     |                     |                     |
 | James Willems | JamesWillems    |                |                     |                     |                     |
 | Massimo Rosati| Mrosati22       |                |                     |                     |                     |
