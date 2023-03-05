@@ -8,7 +8,7 @@
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
+    id 'parkingmanagementsystem'
 
     apply plugin: 'java'
     // This plugin has a predefined 'run' task that we can reuse to use Gradle to execute our application
@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     // Use JUnit test framework.
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'junit:junit:4.12'
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.0.1-jre'
@@ -30,7 +30,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'parkingmanagementsystem.App'
+    mainClass = 'application.parkingmanagementsystemApp'
 }
 
 task compile(type: JavaCompile) {
