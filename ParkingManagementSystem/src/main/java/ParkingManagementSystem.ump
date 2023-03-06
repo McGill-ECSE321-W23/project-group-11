@@ -29,6 +29,7 @@ class Employee {
 class Manager {
   isA UserRole;
   1 <- 1 SystemInfo;
+  1 <- * ServiceType;
 }
 class Customer {
   isA UserRole;
@@ -61,7 +62,7 @@ class SpecificService {
 
 
 class ReservedSpot {
-  unique int id; // spot number
+  unique Integer id; // spot number
   float monthlyCost;
 }
 
