@@ -7,6 +7,7 @@ import java.util.*;
 
 // line 53 "model.ump"
 // line 200 "model.ump"
+@Entity
 public class ServiceType
 {
 
@@ -90,7 +91,7 @@ public class ServiceType
     wasSet = true;
     return wasSet;
   }
-
+  @Id
   public String getName()
   {
     return name;
