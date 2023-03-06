@@ -6,6 +6,7 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 // line 84 "model.ump"
 // line 241 "model.ump"
+@Entity
 public class SystemInfo
 {
 
@@ -75,6 +76,7 @@ public class SystemInfo
     return parkingManagementSystem;
   }
   /* Code from template association_GetOne */
+  @OneToOne
   public Manager getManager()
   {
     return manager;
