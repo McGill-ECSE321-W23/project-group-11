@@ -863,9 +863,9 @@ public class ParkingManagementSystem
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public ServiceType addServiceType(String aName, String aCost, String aDuration)
+  public ServiceType addServiceType(String aName, String aCost, String aDuration, Manager aManager)
   {
-    return new ServiceType(aName, aCost, aDuration, this);
+    return new ServiceType(aName, aCost, aDuration, this, aManager);
   }
 
   public boolean addServiceType(ServiceType aServiceType)

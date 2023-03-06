@@ -5,7 +5,7 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 import java.util.*;
 
-// line 52 "model.ump"
+// line 53 "model.ump"
 // line 200 "model.ump"
 public class ServiceType
 {
@@ -27,12 +27,13 @@ public class ServiceType
 
   //ServiceType Associations
   private ParkingManagementSystem parkingManagementSystem;
+  private Manager manager;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public ServiceType(String aName, String aCost, String aDuration, ParkingManagementSystem aParkingManagementSystem)
+  public ServiceType(String aName, String aCost, String aDuration, ParkingManagementSystem aParkingManagementSystem, Manager aManager)
   {
     cost = aCost;
     duration = aDuration;
@@ -44,6 +45,10 @@ public class ServiceType
     if (!didAddParkingManagementSystem)
     {
       throw new RuntimeException("Unable to create serviceType due to parkingManagementSystem. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    if (!setManager(aManager))
+    {
+      throw new RuntimeException("Unable to create ServiceType due to aManager. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -115,6 +120,11 @@ public class ServiceType
   {
     return parkingManagementSystem;
   }
+  /* Code from template association_GetOne */
+  public Manager getManager()
+  {
+    return manager;
+  }
   /* Code from template association_SetOneToMany */
   public boolean setParkingManagementSystem(ParkingManagementSystem aParkingManagementSystem)
   {
@@ -134,6 +144,17 @@ public class ServiceType
     wasSet = true;
     return wasSet;
   }
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setManager(Manager aNewManager)
+  {
+    boolean wasSet = false;
+    if (aNewManager != null)
+    {
+      manager = aNewManager;
+      wasSet = true;
+    }
+    return wasSet;
+  }
 
   public void delete()
   {
@@ -144,6 +165,7 @@ public class ServiceType
     {
       placeholderParkingManagementSystem.removeServiceType(this);
     }
+    manager = null;
   }
 
 
@@ -153,6 +175,7 @@ public class ServiceType
             "name" + ":" + getName()+ "," +
             "cost" + ":" + getCost()+ "," +
             "duration" + ":" + getDuration()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "parkingManagementSystem = "+(getParkingManagementSystem()!=null?Integer.toHexString(System.identityHashCode(getParkingManagementSystem())):"null");
+            "  " + "parkingManagementSystem = "+(getParkingManagementSystem()!=null?Integer.toHexString(System.identityHashCode(getParkingManagementSystem())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "manager = "+(getManager()!=null?Integer.toHexString(System.identityHashCode(getManager())):"null");
   }
 }

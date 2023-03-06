@@ -1,12 +1,12 @@
-package ca.mcgill.ecse321.ParkingManagement.model;/*PLEASE DO NOT EDIT THIS CODE*/
-
+package ca.mcgill.ecse321.ParkingManagement.model;
+/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
 
 import java.sql.Date;
 import java.util.*;
 
-// line 58 "model.ump"
+// line 59 "model.ump"
 // line 226 "model.ump"
 public class SpecificService
 {

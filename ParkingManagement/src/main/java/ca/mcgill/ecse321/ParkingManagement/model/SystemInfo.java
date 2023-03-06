@@ -4,7 +4,7 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 
 
-// line 83 "model.ump"
+// line 84 "model.ump"
 // line 241 "model.ump"
 public class SystemInfo
 {

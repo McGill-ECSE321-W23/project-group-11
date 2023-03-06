@@ -5,7 +5,7 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 import java.sql.Date;
 
-// line 75 "model.ump"
+// line 76 "model.ump"
 // line 211 "model.ump"
 public class LargeTempSpot extends TempSpots
 {

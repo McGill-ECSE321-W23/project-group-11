@@ -5,7 +5,7 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 import java.util.*;
 
-// line 39 "model.ump"
+// line 40 "model.ump"
 // line 154 "model.ump"
 public class Car
 {

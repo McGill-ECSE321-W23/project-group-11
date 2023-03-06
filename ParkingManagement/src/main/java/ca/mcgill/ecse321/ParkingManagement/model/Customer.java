@@ -4,7 +4,7 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 
 
-// line 34 "model.ump"
+// line 35 "model.ump"
 // line 102 "model.ump"
 public class Customer extends UserRole
 {
