@@ -122,6 +122,7 @@ public class ServiceType
     return parkingManagementSystem;
   }
   /* Code from template association_GetOne */
+  @ManyToOne
   public Manager getManager()
   {
     return manager;
