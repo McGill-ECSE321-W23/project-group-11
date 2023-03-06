@@ -6,6 +6,7 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 import java.util.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 // line 40 "model.ump"
 // line 154 "model.ump"
@@ -101,6 +102,7 @@ public class Car
     return getWithLicensePlate(aLicensePlate) != null;
   }
 
+  @ManyToOne
   public Size getSize()
   {
     return size;
