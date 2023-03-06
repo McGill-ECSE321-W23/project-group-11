@@ -4,6 +4,9 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 
 import java.util.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 // line 53 "model.ump"
 // line 200 "model.ump"
