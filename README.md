@@ -18,12 +18,12 @@ For additional information, please consult the [wiki](../../wiki).
 ## Team Members
 | Name          | GitHub username | Team Role      | Deliverable 1 Hours | Deliverable 2 Hours | Deliverable 3 Hours |
 | ------------- | --------------- | -------------- | ------------------- | ------------------- | ------------------- |
-| Lukas Bebee   | LukeBebee       |                |                     |                     |                     |
-| Brian Morava  | Morava83        |                |                     |                     |                     |
-|Jacques Zaarour| jacqueszaarour  |                |                     |                     |                     |
-| James Willems | JamesWillems             |                |                     |                     |                     |
-| Massimo Rosati| Mrosati22       |                |                     |                     |                     |
-| Ralph Choucha | RalphChoucha    |                |                     |                     |                     |
+| Lukas Bebee   | LukeBebee       | Lead Programmer               |                     |                     |                     |
+| Brian Morava  | Morava83        | Quality Assurance               |                     |                     |                     |
+|Jacques Zaarour| jacqueszaarour  | Database Manager               |                     |                     |                     |
+| James Willems | JamesWillems    | Project Architect               |                     |                     |                     |
+| Massimo Rosati| Mrosati22       | Project Manager               |                     |                     |                     |
+| Ralph Choucha | RalphChoucha    | Programming Assistant               |                     |                     |                     |
 
 
 
