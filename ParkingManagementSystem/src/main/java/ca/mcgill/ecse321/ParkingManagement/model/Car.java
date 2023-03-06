@@ -7,6 +7,7 @@ import java.util.*;
 
 // line 39 "model.ump"
 // line 154 "model.ump"
+@Entity
 public class Car
 {
 
