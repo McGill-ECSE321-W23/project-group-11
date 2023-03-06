@@ -1,33 +1,17 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
+
 
 
 import java.util.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-// line 40 "model.ump"
-// line 154 "model.ump"
+
 @Entity
 public class Car
 {
 
-  //------------------------
-  // ENUMERATIONS
-  //------------------------
 
   public enum Size { Regular, Large }
-
-  //------------------------
-  // STATIC VARIABLES
-  //------------------------
-
-  private static Map<String, Car> carsByLicensePlate = new HashMap<String, Car>();
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
 
   //Car Attributes
   private String licensePlate;
@@ -36,76 +20,28 @@ public class Car
   //Car Associations
   private ParkingManagementSystem parkingManagementSystem;
 
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
 
-  public Car(String aLicensePlate, Size aSize, ParkingManagementSystem aParkingManagementSystem)
+  public void setLicensePlate(String aLicensePlate)
   {
-    size = aSize;
-    if (!setLicensePlate(aLicensePlate))
-    {
-      throw new RuntimeException("Cannot create due to duplicate licensePlate. See http://manual.umple.org?RE003ViolationofUniqueness.html");
-    }
-    boolean didAddParkingManagementSystem = setParkingManagementSystem(aParkingManagementSystem);
-    if (!didAddParkingManagementSystem)
-    {
-      throw new RuntimeException("Unable to create car due to parkingManagementSystem. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
+    this.licensePlate = aLicensePlate;
   }
 
-  //------------------------
-  // INTERFACE
-  //------------------------
-
-  public boolean setLicensePlate(String aLicensePlate)
+  public void setSize(Size aSize)
   {
-    boolean wasSet = false;
-    String anOldLicensePlate = getLicensePlate();
-    if (anOldLicensePlate != null && anOldLicensePlate.equals(aLicensePlate)) {
-      return true;
-    }
-    if (hasWithLicensePlate(aLicensePlate)) {
-      return wasSet;
-    }
-    licensePlate = aLicensePlate;
-    wasSet = true;
-    if (anOldLicensePlate != null) {
-      carsByLicensePlate.remove(anOldLicensePlate);
-    }
-    carsByLicensePlate.put(aLicensePlate, this);
-    return wasSet;
-  }
-
-  public boolean setSize(Size aSize)
-  {
-    boolean wasSet = false;
-    size = aSize;
-    wasSet = true;
-    return wasSet;
+    this.size = aSize;
   }
 
   @Id
   public String getLicensePlate()
   {
-    return licensePlate;
+    return this.licensePlate;
   }
-  /* Code from template attribute_GetUnique */
-  public static Car getWithLicensePlate(String aLicensePlate)
-  {
-    return carsByLicensePlate.get(aLicensePlate);
-  }
-  /* Code from template attribute_HasUnique */
-  public static boolean hasWithLicensePlate(String aLicensePlate)
-  {
-    return getWithLicensePlate(aLicensePlate) != null;
-  }
-
+  
   public Size getSize()
   {
-    return size;
+    return this.size;
   }
-  /* Code from template association_GetOne */
+  @ManyToOne
   public ParkingManagementSystem getParkingManagementSystem()
   {
     return parkingManagementSystem;
