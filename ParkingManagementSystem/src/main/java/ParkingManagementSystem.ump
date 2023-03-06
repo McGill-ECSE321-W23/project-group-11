@@ -67,7 +67,7 @@ class ReservedSpot {
 }
 
 
-class TempSpots {
+class TempSpot {
   abstract;
   Date startTime; // assuming dates include time
   int duration; // number of 15 minute intervals
