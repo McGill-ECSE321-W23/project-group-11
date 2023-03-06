@@ -14,7 +14,7 @@ public class ReservedSpot
   // STATIC VARIABLES
   //------------------------
 
-  private static Map<int, ReservedSpot> reservedspotsById = new HashMap<int, ReservedSpot>();
+  private static Map<Integer, ReservedSpot> reservedspotsById = new HashMap<Integer, ReservedSpot>();
 
   //------------------------
   // MEMBER VARIABLES
@@ -53,7 +53,7 @@ public class ReservedSpot
   public boolean setId(int aId)
   {
     boolean wasSet = false;
-    int anOldId = getId();
+    Integer anOldId = getId();
     if (anOldId != null && anOldId.equals(aId)) {
       return true;
     }
