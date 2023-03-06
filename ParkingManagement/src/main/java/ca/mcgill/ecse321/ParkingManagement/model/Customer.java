@@ -2,10 +2,11 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
-
+import jakarta.persistence.Entity;
 
 // line 35 "model.ump"
 // line 102 "model.ump"
+@Entity
 public class Customer extends UserRole
 {
 
