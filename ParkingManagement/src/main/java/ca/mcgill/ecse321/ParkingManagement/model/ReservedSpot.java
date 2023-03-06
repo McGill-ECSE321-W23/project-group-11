@@ -4,9 +4,13 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 
 import java.util.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 // line 65 "model.ump"
 // line 231 "model.ump"
+@Entity
 public class ReservedSpot
 {
 
@@ -80,6 +84,7 @@ public class ReservedSpot
   /**
    * spot number
    */
+  @Id
   public int getId()
   {
     return id;
@@ -105,6 +110,7 @@ public class ReservedSpot
     return parkingManagementSystem;
   }
   /* Code from template association_GetOne */
+  @OneToOne
   public Car getCar()
   {
     return car;

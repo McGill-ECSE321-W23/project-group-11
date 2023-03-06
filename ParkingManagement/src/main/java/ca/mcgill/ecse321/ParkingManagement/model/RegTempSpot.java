@@ -4,9 +4,12 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 
 import java.sql.Date;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 
 // line 80 "model.ump"
 // line 219 "model.ump"
+@Entity
 public class RegTempSpot extends TempSpots
 {
 
@@ -61,6 +64,7 @@ public class RegTempSpot extends TempSpots
     return parkingManagementSystem;
   }
   /* Code from template association_GetOne */
+  @OneToOne
   public Car getCar()
   {
     return car;

@@ -4,9 +4,13 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 
 import java.util.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 // line 18 "model.ump"
 // line 142 "model.ump"
+@Entity
 public class User
 {
 
@@ -78,6 +82,7 @@ public class User
     return wasSet;
   }
 
+  @Id
   public String getEmail()
   {
     return email;
@@ -103,6 +108,7 @@ public class User
     return parkingManagementSystem;
   }
   /* Code from template association_GetMany */
+  @OneToMany
   public Car getCar(int index)
   {
     Car aCar = cars.get(index);

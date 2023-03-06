@@ -1,13 +1,15 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
-
+//TODO do we need jtags for this?
 
 import java.util.*;
+import jakarta.persistence.Entity;
 import java.sql.Date;
 
 // line 2 "model.ump"
 // line 182 "model.ump"
+@Entity
 public class ParkingManagementSystem
 {
 

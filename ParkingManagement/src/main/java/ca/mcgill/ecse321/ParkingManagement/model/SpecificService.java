@@ -5,9 +5,12 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 import java.sql.Date;
 import java.util.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 
 // line 59 "model.ump"
 // line 226 "model.ump"
+@Entity
 public class SpecificService
 {
 
@@ -74,6 +77,7 @@ public class SpecificService
     return dateAndTime;
   }
 
+  @ManyToOne
   public String getEmployee()
   {
     return employee;
@@ -84,6 +88,7 @@ public class SpecificService
     return parkingManagementSystem;
   }
   /* Code from template association_GetMany */
+  @ManyToOne
   public Car getCar(int index)
   {
     Car aCar = cars.get(index);

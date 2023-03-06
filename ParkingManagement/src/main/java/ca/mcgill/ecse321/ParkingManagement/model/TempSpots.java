@@ -7,6 +7,7 @@ import java.sql.Date;
 
 // line 71 "model.ump"
 // line 236 "model.ump"
+// No tags, abstract
 public abstract class TempSpots
 {
 
