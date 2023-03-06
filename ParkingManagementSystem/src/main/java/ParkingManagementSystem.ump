@@ -1,4 +1,4 @@
-class ParkingManagementSystem { 
+class ParkingManagementSystem {
   // TODO this class should be composed of all other 
   1 <@>- 0..1 Manager manager;
   1 <@>- * Employee employees;
