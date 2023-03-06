@@ -4,9 +4,12 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 
 import java.util.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 // line 40 "model.ump"
 // line 154 "model.ump"
+@Entity
 public class Car
 {
 
@@ -82,6 +85,7 @@ public class Car
     return wasSet;
   }
 
+  @Id
   public String getLicensePlate()
   {
     return licensePlate;
