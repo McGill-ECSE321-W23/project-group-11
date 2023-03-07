@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
+
 import jakarta.persistence.Entity;
 import java.sql.Date;
 import jakarta.persistence.Id;
@@ -6,64 +7,69 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class SpecificService{
+public class SpecificService {
    private Date dateAndTime;
 
-public void setDateAndTime(Date value) {
-    this.dateAndTime = value;
-}
-@Id
-public Date getDateAndTime() {
-    return this.dateAndTime;
-}
-private String employee;
+   public void setDateAndTime(Date value) {
+      this.dateAndTime = value;
+   }
 
-public void setEmployee(String value) {
-    this.employee = value;
-}
-public String getEmployee() {
-    return this.employee;
-}
-private ServiceType serviceType;
+   @Id
+   public Date getDateAndTime() {
+      return this.dateAndTime;
+   }
 
-@ManyToOne(optional=false)
-public ServiceType getServiceType() {
-   return this.serviceType;
-}
+   private String employee;
 
-public void setServiceType(ServiceType serviceType) {
-   this.serviceType = serviceType;
-}
+   public void setEmployee(String value) {
+      this.employee = value;
+   }
 
-private Car car;
+   public String getEmployee() {
+      return this.employee;
+   }
 
-@OneToOne(mappedBy="specificService" , optional=false)
-public Car getCar() {
-   return this.car;
-}
+   private ServiceType serviceType;
 
-public void setCar(Car car) {
-   this.car = car;
-}
+   @ManyToOne(optional = false)
+   public ServiceType getServiceType() {
+      return this.serviceType;
+   }
 
-private ParkingManagementSystem parkingManagementSystem;
+   public void setServiceType(ServiceType serviceType) {
+      this.serviceType = serviceType;
+   }
 
-@ManyToOne(optional=false)
-public ParkingManagementSystem getParkingManagementSystem() {
-   return this.parkingManagementSystem;
-}
+   private Car car;
 
-public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
-   this.parkingManagementSystem = parkingManagementSystem;
-}
+   @OneToOne(mappedBy = "specificService", optional = false)
+   public Car getCar() {
+      return this.car;
+   }
 
-private int id;
+   public void setCar(Car car) {
+      this.car = car;
+   }
 
-public void setId(int value) {
-    this.id = value;
-}
-@Id
-public int getId() {
-    return this.id;
-}
+   private ParkingManagementSystem parkingManagementSystem;
+
+   @ManyToOne(optional = false)
+   public ParkingManagementSystem getParkingManagementSystem() {
+      return this.parkingManagementSystem;
+   }
+
+   public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
+      this.parkingManagementSystem = parkingManagementSystem;
+   }
+
+   private int id;
+
+   public void setId(int value) {
+      this.id = value;
+   }
+
+   @Id
+   public int getId() {
+      return this.id;
+   }
 }
