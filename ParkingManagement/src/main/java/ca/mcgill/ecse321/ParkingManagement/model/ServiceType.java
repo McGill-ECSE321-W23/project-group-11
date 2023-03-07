@@ -3,184 +3,71 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
 
-import java.util.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import java.util.Set;
+import javax.persistence.OneToMany;
+import ca.mcgill.ecse321.parkingmanagement.model.ParkingManagement;
 
-// line 53 "model.ump"
-// line 200 "model.ump"
 @Entity
-public class ServiceType
-{
+public class ServiceType{
+   private String name;
 
-  //------------------------
-  // STATIC VARIABLES
-  //------------------------
-
-  private static Map<String, ServiceType> servicetypesByName = new HashMap<String, ServiceType>();
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //ServiceType Attributes
-  private String name;
-  private String cost;
-  private String duration;
-
-  //ServiceType Associations
-  private ParkingManagementSystem parkingManagementSystem;
-  private Manager manager;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-  public ServiceType(String aName, String aCost, String aDuration, ParkingManagementSystem aParkingManagementSystem, Manager aManager)
-  {
-    cost = aCost;
-    duration = aDuration;
-    if (!setName(aName))
-    {
-      throw new RuntimeException("Cannot create due to duplicate name. See http://manual.umple.org?RE003ViolationofUniqueness.html");
-    }
-    boolean didAddParkingManagementSystem = setParkingManagementSystem(aParkingManagementSystem);
-    if (!didAddParkingManagementSystem)
-    {
-      throw new RuntimeException("Unable to create serviceType due to parkingManagementSystem. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    if (!setManager(aManager))
-    {
-      throw new RuntimeException("Unable to create ServiceType due to aManager. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-  }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
-
-  public boolean setName(String aName)
-  {
-    boolean wasSet = false;
-    String anOldName = getName();
-    if (anOldName != null && anOldName.equals(aName)) {
-      return true;
-    }
-    if (hasWithName(aName)) {
-      return wasSet;
-    }
-    name = aName;
-    wasSet = true;
-    if (anOldName != null) {
-      servicetypesByName.remove(anOldName);
-    }
-    servicetypesByName.put(aName, this);
-    return wasSet;
-  }
-
-  public boolean setCost(String aCost)
-  {
-    boolean wasSet = false;
-    cost = aCost;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean setDuration(String aDuration)
-  {
-    boolean wasSet = false;
-    duration = aDuration;
-    wasSet = true;
-    return wasSet;
-  }
-  @Id
-  public String getName()
-  {
-    return name;
-  }
-  /* Code from template attribute_GetUnique */
-  public static ServiceType getWithName(String aName)
-  {
-    return servicetypesByName.get(aName);
-  }
-  /* Code from template attribute_HasUnique */
-  public static boolean hasWithName(String aName)
-  {
-    return getWithName(aName) != null;
-  }
-
-  public String getCost()
-  {
-    return cost;
-  }
-
-  public String getDuration()
-  {
-    return duration;
-  }
-  /* Code from template association_GetOne */
-  public ParkingManagementSystem getParkingManagementSystem()
-  {
-    return parkingManagementSystem;
-  }
-  /* Code from template association_GetOne */
-  @ManyToOne
-  public Manager getManager()
-  {
-    return manager;
-  }
-  /* Code from template association_SetOneToMany */
-  public boolean setParkingManagementSystem(ParkingManagementSystem aParkingManagementSystem)
-  {
-    boolean wasSet = false;
-    if (aParkingManagementSystem == null)
-    {
-      return wasSet;
-    }
-
-    ParkingManagementSystem existingParkingManagementSystem = parkingManagementSystem;
-    parkingManagementSystem = aParkingManagementSystem;
-    if (existingParkingManagementSystem != null && !existingParkingManagementSystem.equals(aParkingManagementSystem))
-    {
-      existingParkingManagementSystem.removeServiceType(this);
-    }
-    parkingManagementSystem.addServiceType(this);
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetUnidirectionalOne */
-  public boolean setManager(Manager aNewManager)
-  {
-    boolean wasSet = false;
-    if (aNewManager != null)
-    {
-      manager = aNewManager;
-      wasSet = true;
-    }
-    return wasSet;
-  }
-
-  public void delete()
-  {
-    servicetypesByName.remove(getName());
-    ParkingManagementSystem placeholderParkingManagementSystem = parkingManagementSystem;
-    this.parkingManagementSystem = null;
-    if(placeholderParkingManagementSystem != null)
-    {
-      placeholderParkingManagementSystem.removeServiceType(this);
-    }
-    manager = null;
-  }
-
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "name" + ":" + getName()+ "," +
-            "cost" + ":" + getCost()+ "," +
-            "duration" + ":" + getDuration()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "parkingManagementSystem = "+(getParkingManagementSystem()!=null?Integer.toHexString(System.identityHashCode(getParkingManagementSystem())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "manager = "+(getManager()!=null?Integer.toHexString(System.identityHashCode(getManager())):"null");
-  }
+public void setName(String value) {
+    this.name = value;
 }
+@Id
+public String getName() {
+    return this.name;
+}
+private String cost;
+
+public void setCost(String value) {
+    this.cost = value;
+}
+public String getCost() {
+    return this.cost;
+}
+private String duration;
+
+public void setDuration(String value) {
+    this.duration = value;
+}
+public String getDuration() {
+    return this.duration;
+}
+   private Manager manager;
+   
+   @ManyToOne(optional=false)
+   public Manager getManager() {
+      return this.manager;
+   }
+   
+   public void setManager(Manager manager) {
+      this.manager = manager;
+   }
+   
+   private Set<SpecificService> specificService;
+   
+   @OneToMany(mappedBy="serviceType" )
+   public Set<SpecificService> getSpecificService() {
+      return this.specificService;
+   }
+   
+   public void setSpecificService(Set<SpecificService> specificServices) {
+      this.specificService = specificServices;
+   }
+   
+   private ParkingManagement parkingManagementSystem;
+   
+   @ManyToOne(optional=false)
+   public ParkingManagement getParkingManagementSystem() {
+      return this.parkingManagementSystem;
+   }
+   
+   public void setParkingManagementSystem(ParkingManagement parkingManagementSystem) {
+      this.parkingManagementSystem = parkingManagementSystem;
+   }
+   
+   }

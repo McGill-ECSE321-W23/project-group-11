@@ -1,56 +1,28 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Id;
 
+@Entity
+public abstract class UserRole{
+   private Account account;
+   
+   @ManyToOne(optional=false)
+   public Account getAccount() {
+      return this.account;
+   }
+   
+   public void setAccount(Account account) {
+      this.account = account;
+   }
+   
+   private int id;
 
-
-// line 23 "model.ump"
-// line 149 "model.ump"
-public abstract class UserRole
-{
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //UserRole Associations
-  private User user;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-  public UserRole(User aUser)
-  {
-    if (!setUser(aUser))
-    {
-      throw new RuntimeException("Unable to create UserRole due to aUser. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-  }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
-  /* Code from template association_GetOne */
-  public User getUser()
-  {
-    return user;
-  }
-  /* Code from template association_SetUnidirectionalOne */
-  public boolean setUser(User aNewUser)
-  {
-    boolean wasSet = false;
-    if (aNewUser != null)
-    {
-      user = aNewUser;
-      wasSet = true;
-    }
-    return wasSet;
-  }
-
-  public void delete()
-  {
-    user = null;
-  }
-
+public void setId(int value) {
+    this.id = value;
+}
+@Id
+public int getId() {
+    return this.id;
+}
 }
