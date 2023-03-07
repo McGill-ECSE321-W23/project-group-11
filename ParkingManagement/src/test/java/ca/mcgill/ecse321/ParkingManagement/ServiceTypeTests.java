@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ca.mcgill.ecse321.ParkingManagement.dao.ServiceTypeRepository;
+import ca.mcgill.ecse321.ParkingManagement.model.ServiceType;
 
 
 
@@ -14,17 +15,19 @@ import ca.mcgill.ecse321.ParkingManagement.dao.ServiceTypeRepository;
 class ServiceTypeTests {
 
 	@Autowired
-	private ServiceType ServiceType;
+	ServiceTypeRepository serviceTypeRepository;
+	
 
 	@AfterEach
 	public void clearDatabase() {
-		ServiceType.deleteAll();
+		serviceTypeRepository.deleteAll();
 	}
 
 
 	@Test
 	void ServiceTypeTest() {
-		ServiceType.deleteAll();
+
+		serviceTypeRepository.deleteAll();
 
 		// make ServiceType
 		String name = "oil change";
@@ -33,19 +36,19 @@ class ServiceTypeTests {
 
 		ServiceType oilchange = new ServiceType();
 		oilchange.setName(name);
-		oilchange.setcost(cost);
-		oilchange.setduration(duration);
+		oilchange.setCost(cost);
+		oilchange.setDuration(duration);
 
 
 		// save ServiceType to repository
-		oilchnage = ServiceTypeRepository.save(oilchange);
-		int id = oilchange.getId();
+		oilchange = serviceTypeRepository.save(oilchange);
+		String id = oilchange.getName();
 
 		// add objects ServiceType will be associated to
-		oilchange = ServiceTypeRepository.findServiceTypeById(id);
+		oilchange = serviceTypeRepository.findServiceTypeByName(id);
 
 		// check that everthing exists as it should
 		assertNotNull(oilchange);
-		assertEquals(name, oilchange.getname()); // excpected, actual
+		assertEquals(name, oilchange.getName()); // excpected, actual
 	}
 }

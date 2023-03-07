@@ -1,9 +1,9 @@
-class ParkingManagementSystem { 
+class ParkingManagementSystem {
   // TODO this class should be composed of all other 
   1 <@>- 0..1 Manager manager;
   1 <@>- * Employee employees;
   1 <@>- * Customer customers;
-  1 <@>- 1..* User users;
+  1 <@>- 1..* Account users;
   1 <@>- * Car cars;
   1 <@>- 250 RegTempSpot regSpots; 
   1 <@>- 20 LargeTempSpot largeSpots;
@@ -14,7 +14,7 @@ class ParkingManagementSystem {
 }
 
 
-class User {
+class Account {
   unique email;
   password;
   1 <- * UserRole roles;
@@ -28,7 +28,7 @@ class Employee {
 }
 class Manager {
   isA UserRole;
-  1 <- 0..1 SystemInfo;
+  1 <- 1 SystemInfo;
   1 <- * ServiceType;
 }
 class Customer {
@@ -44,8 +44,8 @@ class Car
   0..1 <- 0..1 ReservedSpot resSpot;
   0..1 <- 0..1 RegTempSpot tempSpot;
   0..1 <- 0..1 LargeTempSpot tempSpot;
-  1..* <- 0..1 SpecificService;
-  * <- 0..1 User;
+  1 <- 0..1 SpecificService;
+  * <- 1 Account;
 }
 
 
@@ -67,7 +67,7 @@ class ReservedSpot {
 }
 
 
-class TempSpots {
+class TempSpot {
   abstract;
   Date startTime; // assuming dates include time
   int duration; // number of 15 minute intervals
