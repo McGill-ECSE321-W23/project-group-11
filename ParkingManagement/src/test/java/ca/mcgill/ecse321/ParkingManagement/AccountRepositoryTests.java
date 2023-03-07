@@ -12,7 +12,7 @@ import ca.mcgill.ecse321.ParkingManagement.model.*;
 
 
 @SpringBootTest
-class CarRepositoryTests {
+class AccountRepositoryTests {
 
     @Autowired
     private ParkingManagementSystemRepository parkingManagementSystemRepository;

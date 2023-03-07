@@ -14,7 +14,7 @@ import ca.mcgill.ecse321.ParkingManagement.model.Car;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
 
 @SpringBootTest
-class CarRepositoryTests {
+public class CarRepositoryTests {
 
 	@Autowired
 	private CarRepository carRepository;
@@ -25,7 +25,7 @@ class CarRepositoryTests {
 	}
 
 	@Test
-	void carTest() {
+	public void carTest() {
 		carRepository.deleteAll();
 
 		// Make car
