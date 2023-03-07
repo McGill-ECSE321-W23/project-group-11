@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.ParkingManagement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ class CarRepositoryTests {
 		ParkingManagementSystem sys = new ParkingManagementSystem();
 		int id = 20;
 		sys.setId(id);
-		parkingManagementSystem.save(sys);
+		parkingManagementSystemRepository.save(sys);
 
 		// make Account
         String username = "anakin.skywalker@gmail.com";
