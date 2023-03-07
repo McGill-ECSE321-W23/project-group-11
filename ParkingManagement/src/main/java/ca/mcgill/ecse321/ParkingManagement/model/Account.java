@@ -1,10 +1,9 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import java.util.Set;
-import javax.persistence.OneToMany;
-import ca.mcgill.ecse321.parkingmanagement.model.ParkingManagement;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Account{
@@ -47,14 +46,14 @@ public String getPassword() {
       this.car = cars;
    }
    
-   private ParkingManagement parkingManagementSystem;
+   private ParkingManagementSystem parkingManagementSystem;
    
    @ManyToOne(optional=false)
-   public ParkingManagement getParkingManagementSystem() {
+   public ParkingManagementSystem getParkingManagementSystem() {
       return this.parkingManagementSystem;
    }
    
-   public void setParkingManagementSystem(ParkingManagement parkingManagementSystem) {
+   public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
       this.parkingManagementSystem = parkingManagementSystem;
    }
    

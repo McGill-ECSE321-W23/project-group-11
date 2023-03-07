@@ -1,8 +1,8 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import java.util.Set;
-import javax.persistence.OneToMany;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Manager extends UserRole{

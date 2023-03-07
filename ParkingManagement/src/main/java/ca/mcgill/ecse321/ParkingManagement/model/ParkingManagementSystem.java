@@ -3,23 +3,14 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 //TODO do we need jtags for this?
 
-import java.util.*;
 import jakarta.persistence.Entity;
-import java.sql.Date;
-import javax.persistence.Entity;
-import Account;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.OneToMany;
-import Car;
-import ReservedSpot;
-import RegularTempSpot;
-import LargeTempSpot;
-import SpecificService;
-import ServiceType;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
+
 
 @Entity
-public class ParkingManagement{
+public class ParkingManagementSystem{
    private int id;
 
 public void setId(int value) {

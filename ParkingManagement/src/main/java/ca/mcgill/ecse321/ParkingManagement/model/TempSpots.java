@@ -1,10 +1,10 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import java.sql.Date;
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 
 @Entity
-public abstract class TempSpot{
+public abstract class TempSpots{
    private Date startTime;
 
 public void setStartTime(Date value) {

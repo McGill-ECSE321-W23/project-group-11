@@ -1,12 +1,9 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
-import java.util.*;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import Size;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import ca.mcgill.ecse321.parkingmanagement.model.ParkingManagement;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Car{
@@ -82,14 +79,14 @@ public Size getSize() {
       this.largeTempSpot = largeTempSpot;
    }
    
-   private ParkingManagement parkingManagementSystem;
+   private ParkingManagementSystem parkingManagementSystem;
    
    @ManyToOne(optional=false)
-   public ParkingManagement getParkingManagementSystem() {
+   public ParkingManagementSystem getParkingManagementSystem() {
       return this.parkingManagementSystem;
    }
    
-   public void setParkingManagementSystem(ParkingManagement parkingManagementSystem) {
+   public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
       this.parkingManagementSystem = parkingManagementSystem;
    }
    

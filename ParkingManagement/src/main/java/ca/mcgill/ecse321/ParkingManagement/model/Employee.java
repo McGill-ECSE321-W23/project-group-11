@@ -1,5 +1,5 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 @Entity
 public class Employee extends UserRole{
