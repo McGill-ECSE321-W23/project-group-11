@@ -1,8 +1,8 @@
 package ca.mcgill.ecse321.ParkingManagement;
 
-import ca.mcgill.ecse321.petadoptionsystem.model.Account;
-import ca.mcgill.ecse321.petadoptionsystem.model.Employee;
-import ca.mcgill.ecse321.petadoptionsystem.model.ParkingManagementSystem;
+import ca.mcgill.ecse321.ParkingManagement.model.Account;
+import ca.mcgill.ecse321.ParkingManagement.model.Employee;
+import ca.mcgill.ecse321.ParkingManagement.model.ParkingManagementSystem;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
