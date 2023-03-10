@@ -1,9 +1,7 @@
 package ca.mcgill.ecse321.ParkingManagement;
 
 import ca.mcgill.ecse321.ParkingManagement.dao.AccountRepository;
-import ca.mcgill.ecse321.ParkingManagement.dao.CustomerRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.EmployeeRepository;
-import ca.mcgill.ecse321.ParkingManagement.dao.ManagerRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.ParkingManagementSystemRepository;
 import ca.mcgill.ecse321.ParkingManagement.model.Account;
 import ca.mcgill.ecse321.ParkingManagement.model.Employee;
