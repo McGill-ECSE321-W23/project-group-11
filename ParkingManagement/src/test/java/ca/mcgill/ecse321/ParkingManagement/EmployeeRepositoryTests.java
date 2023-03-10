@@ -1,5 +1,10 @@
 package ca.mcgill.ecse321.ParkingManagement;
 
+import ca.mcgill.ecse321.ParkingManagement.dao.AccountRepository;
+import ca.mcgill.ecse321.ParkingManagement.dao.CustomerRepository;
+import ca.mcgill.ecse321.ParkingManagement.dao.EmployeeRepository;
+import ca.mcgill.ecse321.ParkingManagement.dao.ManagerRepository;
+import ca.mcgill.ecse321.ParkingManagement.dao.ParkingManagementSystemRepository;
 import ca.mcgill.ecse321.ParkingManagement.model.Account;
 import ca.mcgill.ecse321.ParkingManagement.model.Employee;
 import ca.mcgill.ecse321.ParkingManagement.model.ParkingManagementSystem;
@@ -14,26 +19,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class EmployeeTest {
+public class EmployeeRepositoryTests {
     @Autowired
-    private ParkingManagementSystem parkingManagementSystemRepository;
+    private ParkingManagementSystemRepository parkingManagementSystemRepository;
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
-    @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private ManagerRepository managerRepository;
 
     @BeforeEach
     @AfterEach
     public void clearDataBase(){
         employeeRepository.deleteAll();
-        customerRepository.deleteAll();
         accountRepository.deleteAll();
         parkingManagementSystemRepository.deleteAll();
-        managerRepository.deleteAll();
     }
 
     /**
@@ -41,22 +40,47 @@ public class EmployeeTest {
      */
     @Test
     public void persistAndLoadEmployee(){
-        ParkingManagementSystem system = TestingUtility.initparkingManagementSystemRepository(123);
+        //create object
+        ParkingManagementSystem system = new ParkingManagementSystem();
+        
+        //save object
         parkingManagementSystemRepository.save(system);
 
-        Account account = TestingUtility.initAccount("johndoe1955@gmail.com", "password", system);
+        //create object
+        String email = "johndoe1955@gmail.com";
+        String password = "password";
+        Account account = new Account();
+        account.setEmail(email);
+        account.setEmail(password);
+
+        //save object
         accountRepository.save(account);
-        account = null;
-        account = accountRepository.findAccountByEmail("johndoe1955@gmail.com");
-        Employee employee = TestingUtility.initAdmin(account, system);
+        String targetEmail = account.getEmail();
 
+        //read object
+        account = accountRepository.findAccountByEmail(targetEmail);
+
+
+        //create object
+        Employee employee = new Employee();
+        employee.setAccount(account);
+        String schedule = "MTW";
+        employee.setSchedule(schedule);
+
+        //save object
         employeeRepository.save(employee);
-        employee = null;
+        int id = employee.getId();
+        
 
-        int emId = accountRepository.findAccountByEmail("johndoe1955@gmail.com").getUserRole().getId();
-        employee = employeeRepository.findAdminById(emId);
+       //read object
+       employee = employeeRepository.findEmployeeById(id);
+
+        //Check that object has correct attributes
         assertNotNull(employee);
-        assertEquals(emId, employee.getId());
+        assertEquals(id, employee.getId());
+        assertEquals(schedule, employee.getSchedule());
+        assertEquals(email, employee.getAccount().getEmail());
+        assertEquals(password, employee.getAccount().getPassword());
     }
 
 }
