@@ -13,7 +13,7 @@ import ca.mcgill.ecse321.ParkingManagement.model.*;
 
 
 @SpringBootTest
-class CarRepositoryTests {
+class AccountRepositoryTests {
 
     @Autowired
     private ParkingManagementSystemRepository parkingManagementSystemRepository;
@@ -37,7 +37,7 @@ class CarRepositoryTests {
 		ParkingManagementSystem sys = new ParkingManagementSystem();
 		int id = 20;
 		sys.setId(id);
-		parkingManagementSystem.save(sys);
+		parkingManagementSystemRepository.save(sys);
 
 		// make Account
         String username = "anakin.skywalker@gmail.com";
