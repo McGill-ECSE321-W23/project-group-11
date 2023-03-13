@@ -7,9 +7,6 @@ import ca.mcgill.ecse321.ParkingManagement.model.Account;
 
 @Repository
 public interface AccountRepository extends CrudRepository<Account, Integer> {
-
 	Account findAccountByEmail(String email);
 	boolean existsByEmail(String email);
-
-
 }

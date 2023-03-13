@@ -5,7 +5,7 @@ import java.sql.Date;
 import jakarta.persistence.Id;
 
 @Entity
-public abstract class TempSpots {
+public abstract class TempSpot {
     private Date startTime;
 
     public void setStartTime(Date value) {
