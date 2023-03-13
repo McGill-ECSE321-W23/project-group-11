@@ -73,11 +73,11 @@ class TempSpot {
   int duration; // number of 15 minute intervals
 }
 class LargeTempSpot {
-  isA TempSpots;
+  isA TempSpot;
   float pricePer15; // price per 15 minute interval
 }
 class RegTempSpot {
-  isA TempSpots;
+  isA TempSpot;
   float pricePer15; // price per 15 minute interval
 }
 class SystemInfo
