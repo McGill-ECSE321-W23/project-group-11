@@ -8,7 +8,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class RegularTempSpot extends TempSpots {
+public class RegularTempSpot extends TempSpot {
    private float pricePer15;
 
    public void setPricePer15(float value) {

@@ -7,11 +7,6 @@ import ca.mcgill.ecse321.ParkingManagement.model.LargeTempSpot;
 
 @Repository
 public interface LargeTempSpotRepository extends CrudRepository<LargeTempSpot, Integer> {
-
-	LargeTempSpot findLargeTempSpotsByUsername(String username);
-	LargeTempSpot findLargeTempSpotsByEmail(String email);
-	boolean existsByUsername(String username);
-	boolean existsByEmail(String email);
-
-
+	LargeTempSpot findLargeTempSpotById(int id);
+	boolean existsById(int id);
 }

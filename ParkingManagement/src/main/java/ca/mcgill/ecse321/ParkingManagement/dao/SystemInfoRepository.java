@@ -7,6 +7,6 @@ import ca.mcgill.ecse321.ParkingManagement.model.SystemInfo;
 
 @Repository
 public interface SystemInfoRepository extends CrudRepository<SystemInfo, Integer> {
-    SystemInfo findSystemInfoByOpenTime(String openTime);
-    SystemInfo findSystemInfoByCloseTime(String closeTime);
+    SystemInfo findSystemInfoById(int id);
+    boolean existsById(int id);
 }

@@ -7,5 +7,6 @@ import ca.mcgill.ecse321.ParkingManagement.model.ParkingManagementSystem;
 
 @Repository
 public interface ParkingManagementSystemRepository extends CrudRepository<ParkingManagementSystem, Integer> {
-
+    ParkingManagementSystem findParkingManagementSystemById(int id);
+    boolean existsById(int id);
 }

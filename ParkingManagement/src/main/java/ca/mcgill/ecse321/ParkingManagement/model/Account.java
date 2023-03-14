@@ -24,7 +24,7 @@ public class Account {
    public void setPassword(String value) {
       this.password = value;
    }
-
+   //probably should not have this
    public String getPassword() {
       return this.password;
    }

@@ -5,7 +5,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Id;
 
 @Entity
-public abstract class UserRole {
+public abstract class UserRole extends Account {
    private Account account;
 
    @ManyToOne(optional = false)

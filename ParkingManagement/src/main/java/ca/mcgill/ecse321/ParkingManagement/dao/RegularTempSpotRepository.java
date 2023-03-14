@@ -6,10 +6,10 @@ import org.springframework.stereotype.Repository;
 import ca.mcgill.ecse321.ParkingManagement.model.RegularTempSpot;
 
 @Repository
-public interface RegTempSpotRepository extends CrudRepository<RegularTempSpot, Integer> {
+public interface RegularTempSpotRepository extends CrudRepository<RegularTempSpot, Integer> {
 
-	RegularTempSpot findRegTempSpotByID(int ID);
-	boolean existsByID(int ID);
+	RegularTempSpot findRegTempSpotById(int id);
+	boolean existsById(int id);
 
 
 }

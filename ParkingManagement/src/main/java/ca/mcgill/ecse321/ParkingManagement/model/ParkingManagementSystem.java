@@ -5,6 +5,7 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
@@ -12,11 +13,11 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class ParkingManagementSystem {
    private int id;
-
+   
    public void setId(int value) {
       this.id = value;
    }
-
+   @Id
    public int getId() {
       return this.id;
    }
