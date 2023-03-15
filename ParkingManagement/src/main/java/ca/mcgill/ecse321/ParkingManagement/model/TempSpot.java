@@ -2,21 +2,45 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 import jakarta.persistence.Entity;
 import java.sql.Date;
+import java.sql.Time;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public abstract class TempSpot {
-    private Date startTime;
 
-    public void setStartTime(Date value) {
+    private Car car;
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    @OneToOne
+    public Car getCar() {
+        return this.car;
+    }
+
+    private Time startTime;
+
+    public void setStartTime(Time value) {
         this.startTime = value;
     }
 
-    public Date getStartTime() {
+    public Time getStartTime() {
         return this.startTime;
     }
 
-    private int duration;
+    private Date date;
+
+    public void setDate(Date value) {
+        this.date = value;
+    }
+
+    public Date getDate() {
+        return this.date;
+    }
+
+    private int duration; // number of 15 minute intervals
 
     public void setDuration(int value) {
         this.duration = value;
