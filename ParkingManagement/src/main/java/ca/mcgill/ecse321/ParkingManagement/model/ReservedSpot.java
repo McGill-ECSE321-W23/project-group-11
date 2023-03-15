@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 
 @Entity
@@ -22,7 +22,7 @@ public class ReservedSpot {
    
    private Car car;
 
-   @ManyToMany(mappedBy = "reservedSpot")
+   @ManyToOne
    public Car getCar() {
       return this.car;
    }

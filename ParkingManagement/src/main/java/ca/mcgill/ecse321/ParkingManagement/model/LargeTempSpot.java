@@ -6,6 +6,7 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 
 @Entity
@@ -22,9 +23,9 @@ public class LargeTempSpot extends TempSpot {
       return this.id;
    }
 
-      private Car car;
+   private Car car;
 
-   @ManyToMany(mappedBy = "largeTempSpot")
+   @ManyToOne
    public Car getCar() {
       return this.car;
    }

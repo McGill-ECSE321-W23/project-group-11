@@ -70,7 +70,7 @@ public class SystemInfo {
         return this.closeTime;
     }
 
-    @OneToOne(mappedBy = "systemInfo", optional = false)
+    @OneToOne(optional = false)
     public Manager getManager() {
         return this.manager;
     }

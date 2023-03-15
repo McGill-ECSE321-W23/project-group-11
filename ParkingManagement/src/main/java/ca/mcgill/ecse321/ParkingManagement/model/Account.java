@@ -31,7 +31,7 @@ public class Account {
 
    private Set<Car> car;
 
-   @OneToMany(mappedBy = "account")
+   @OneToMany
    public Set<Car> getCar() {
       return this.car;
    }
