@@ -3,25 +3,28 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class RegularTempSpot extends TempSpot {
-   private float pricePer15;
 
-   public void setPricePer15(float value) {
-      this.pricePer15 = value;
+   private int id;
+
+   public void setId(int value) {
+      this.id = value;
    }
 
-   public float getPricePer15() {
-      return this.pricePer15;
+   @Id
+   public int getId() {
+      return this.id;
    }
 
+   
    private Car car;
 
-   @OneToOne(mappedBy = "regularTempSpot")
+   @ManyToMany(mappedBy = "regularTempSpot")
    public Car getCar() {
       return this.car;
    }
@@ -29,16 +32,4 @@ public class RegularTempSpot extends TempSpot {
    public void setCar(Car car) {
       this.car = car;
    }
-
-   private ParkingManagementSystem parkingManagementSystem;
-
-   @ManyToOne(optional = false)
-   public ParkingManagementSystem getParkingManagementSystem() {
-      return this.parkingManagementSystem;
-   }
-
-   public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
-      this.parkingManagementSystem = parkingManagementSystem;
-   }
-
 }

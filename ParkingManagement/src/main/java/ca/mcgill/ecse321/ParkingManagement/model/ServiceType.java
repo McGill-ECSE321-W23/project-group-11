@@ -3,14 +3,14 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import java.util.Set;
-import jakarta.persistence.OneToMany;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 
 @Entity
 public class ServiceType {
+
    private String name;
 
    public void setName(String value) {
@@ -51,28 +51,6 @@ public class ServiceType {
 
    public void setManager(Manager manager) {
       this.manager = manager;
-   }
-
-   private Set<SpecificService> specificService;
-
-   @OneToMany(mappedBy = "serviceType")
-   public Set<SpecificService> getSpecificService() {
-      return this.specificService;
-   }
-
-   public void setSpecificService(Set<SpecificService> specificServices) {
-      this.specificService = specificServices;
-   }
-
-   private ParkingManagementSystem parkingManagementSystem;
-
-   @ManyToOne(optional = false)
-   public ParkingManagementSystem getParkingManagementSystem() {
-      return this.parkingManagementSystem;
-   }
-
-   public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
-      this.parkingManagementSystem = parkingManagementSystem;
    }
 
 }

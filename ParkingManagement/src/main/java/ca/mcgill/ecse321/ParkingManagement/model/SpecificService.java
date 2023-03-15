@@ -1,13 +1,14 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
-import jakarta.persistence.Entity;
+import javax.persistence.Entity;
 import java.sql.Date;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 
 @Entity
 public class SpecificService {
+
    private Date dateAndTime;
 
    public void setDateAndTime(Date value) {
@@ -42,23 +43,12 @@ public class SpecificService {
 
    private Car car;
 
-   @OneToOne(mappedBy = "specificService", optional = false)
+   @ManyToOne
    public Car getCar() {
       return this.car;
    }
 
    public void setCar(Car car) {
       this.car = car;
-   }
-
-   private ParkingManagementSystem parkingManagementSystem;
-
-   @ManyToOne(optional = false)
-   public ParkingManagementSystem getParkingManagementSystem() {
-      return this.parkingManagementSystem;
-   }
-
-   public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
-      this.parkingManagementSystem = parkingManagementSystem;
    }
 }

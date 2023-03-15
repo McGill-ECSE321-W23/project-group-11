@@ -1,10 +1,7 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
-import jakarta.persistence.Entity;
 import java.sql.Date;
-import jakarta.persistence.Id;
 
-@Entity
 public abstract class TempSpot {
     private Date startTime;
 
@@ -26,14 +23,4 @@ public abstract class TempSpot {
         return this.duration;
     }
 
-    private int id;
-
-    public void setId(int value) {
-        this.id = value;
-    }
-
-    @Id
-    public int getId() {
-        return this.id;
-    }
 }

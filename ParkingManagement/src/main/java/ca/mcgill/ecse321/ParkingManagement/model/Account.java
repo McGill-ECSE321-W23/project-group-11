@@ -1,13 +1,13 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Set;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Account {
+
    private String email;
 
    public void setEmail(String value) {
@@ -29,17 +29,6 @@ public class Account {
       return this.password;
    }
 
-   private Set<UserRole> userRole;
-
-   @OneToMany(mappedBy = "account")
-   public Set<UserRole> getUserRole() {
-      return this.userRole;
-   }
-
-   public void setUserRole(Set<UserRole> userRoles) {
-      this.userRole = userRoles;
-   }
-
    private Set<Car> car;
 
    @OneToMany(mappedBy = "account")
@@ -49,17 +38,6 @@ public class Account {
 
    public void setCar(Set<Car> cars) {
       this.car = cars;
-   }
-
-   private ParkingManagementSystem parkingManagementSystem;
-
-   @ManyToOne(optional = false)
-   public ParkingManagementSystem getParkingManagementSystem() {
-      return this.parkingManagementSystem;
-   }
-
-   public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
-      this.parkingManagementSystem = parkingManagementSystem;
    }
 
 }

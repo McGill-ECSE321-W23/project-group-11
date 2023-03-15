@@ -1,10 +1,7 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Id;
+import javax.persistence.ManyToOne;
 
-@Entity
 public abstract class UserRole extends Account {
    private Account account;
 
@@ -15,16 +12,5 @@ public abstract class UserRole extends Account {
 
    public void setAccount(Account account) {
       this.account = account;
-   }
-
-   private int id;
-
-   public void setId(int value) {
-      this.id = value;
-   }
-
-   @Id
-   public int getId() {
-      return this.id;
    }
 }
