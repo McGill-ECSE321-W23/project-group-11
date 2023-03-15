@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 import jakarta.persistence.Entity;
 import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalTime;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
@@ -20,13 +20,13 @@ public abstract class TempSpot {
         return this.car;
     }
 
-    private Time startTime;
+    private LocalTime startTime;
 
-    public void setStartTime(Time value) {
+    public void setStartTime(LocalTime value) {
         this.startTime = value;
     }
 
-    public Time getStartTime() {
+    public LocalTime getStartTime() {
         return this.startTime;
     }
 

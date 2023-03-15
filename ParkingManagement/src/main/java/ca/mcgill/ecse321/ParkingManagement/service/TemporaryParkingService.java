@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class TemporaryParkingService {
      * @throws Exception
      */
     @Transactional
-    public TempSpot createTempSpot(Size size, int duration, Car car, Date date, Time time) throws Exception {
+    public TempSpot createTempSpot(Size size, int duration, Car car, Date date, LocalTime time) throws Exception {
         TempSpot spot;
         // Null checks for objects
         if (car == null) { 
@@ -238,6 +238,6 @@ public class TemporaryParkingService {
 
 
 
-    
+
 
 }
