@@ -32,23 +32,23 @@ public class TemporaryParkingService {
      * @return
      */
     @Transactional
-    public TempSpot createTempSpot(Size size, int duration, Car car, Date date, Time time) {
+    public TempSpot createTempSpot(Size size, int duration, Car car, Date date, Time time) throws Exception {
         TempSpot spot;
         // Null checks for objects
         if (car == null) { 
-            // TODO throw exception
-            return null;
+            Exception e = new Exception("Inputted car was null.");
+            throw e;
         }
         // Obtain objects from database to initialize TempSpot
         if (carRepository.existsBylicensePlate(car.getLicensePlate())) { // Check that argument exists in database
-            // TODO throw exception
-            return null;
+            Exception e = new Exception("Inputted car does not have a license plate that exists in the database.");
+            throw e;
         }
 
         // Check input validity
         if (duration > 48  || duration < 1) {
-            // TODO throw exception
-            return null;
+            Exception e = new Exception("Inputted durration exceeds bounds of accepted values ([1, 48] intervals of 15 minutes).");
+            throw e;
         }
         
         // Set up spot based on inputs and return
@@ -57,8 +57,8 @@ public class TemporaryParkingService {
         } if  (size == Size.Large) {
             spot  = new LargeTempSpot();
         } else {
-            // TODO throw exception
-            return null;
+            Exception e = new Exception("Size not recognized.");
+            throw e;
         }
         
         spot.setCar(car);
@@ -72,11 +72,26 @@ public class TemporaryParkingService {
          * large spots have ids 1-20
          * regular spots have ids 21- 270
          */
-        int id = 0;
-        if (size == Size.Regular) {id = 20;}
-        while (true) {
-            if (!regularTempSpotRepository.existsById(id) && !largeTempSpotRepository.existsById(id)) {break;} 
-            id++;
+        int id = 1;
+        if (size == Size.Regular) {
+            id = 21;
+            while (true) {
+                if (!regularTempSpotRepository.existsById(id)) {break;} 
+                id++;
+                if (id > 270) {
+                    Exception e = new Exception("There are no more regular spots available.");
+                    throw e;
+                }
+            }
+        }
+        if (size == Size.Large) {
+            while (id <= 20)
+                if (!largeTempSpotRepository.existsById(id)) {break;} 
+                id++;
+                if (id > 20) {
+                    Exception e = new Exception("There are no more large spots available.");
+                    throw e;
+                }
         } 
         spot.setId(id);
 
