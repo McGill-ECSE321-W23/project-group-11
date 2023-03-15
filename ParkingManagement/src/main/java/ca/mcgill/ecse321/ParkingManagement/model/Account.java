@@ -29,9 +29,9 @@ public class Account {
       return this.password;
    }
 
+   @OneToMany
    private Set<Car> car;
 
-   @OneToMany
    public Set<Car> getCar() {
       return this.car;
    }

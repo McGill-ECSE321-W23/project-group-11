@@ -17,4 +17,5 @@ public class Manager extends UserRole {
    public int getId() {
       return this.id;
    }
+
 }

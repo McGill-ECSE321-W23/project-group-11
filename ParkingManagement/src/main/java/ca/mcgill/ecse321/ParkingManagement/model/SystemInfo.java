@@ -17,6 +17,8 @@ public class SystemInfo {
     private int largeTempSpotPrice;
     private int smallTempSpotPrice;
     private int reservedSpotPrice;
+    
+    @OneToOne(optional = false)
     private Manager manager;
 
     public void setId(int value) {
@@ -70,7 +72,6 @@ public class SystemInfo {
         return this.closeTime;
     }
 
-    @OneToOne(optional = false)
     public Manager getManager() {
         return this.manager;
     }

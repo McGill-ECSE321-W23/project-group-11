@@ -22,9 +22,9 @@ public class LargeTempSpot extends TempSpot {
       return this.id;
    }
 
+   @ManyToOne
    private Car car;
 
-   @ManyToOne
    public Car getCar() {
       return this.car;
    }

@@ -19,9 +19,9 @@ public class RegularTempSpot extends TempSpot {
    }
 
    
+   @ManyToOne
    private Car car;
 
-   @ManyToOne
    public Car getCar() {
       return this.car;
    }

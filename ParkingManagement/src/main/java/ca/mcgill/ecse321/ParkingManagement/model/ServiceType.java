@@ -39,9 +39,9 @@ public class ServiceType {
       return this.duration;
    }
 
+   @ManyToOne(optional = false)
    private Manager manager;
 
-   @ManyToOne(optional = false)
    public Manager getManager() {
       return this.manager;
    }

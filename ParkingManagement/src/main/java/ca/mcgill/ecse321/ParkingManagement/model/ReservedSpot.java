@@ -20,9 +20,9 @@ public class ReservedSpot {
    }
 
    
+   @ManyToOne
    private Car car;
 
-   @ManyToOne
    public Car getCar() {
       return this.car;
    }
