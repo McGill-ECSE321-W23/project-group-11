@@ -26,10 +26,14 @@ public class TemporaryParkingService {
     CarRepository carRepository;
 
     /**
-     * creates a temp spot
+     * Creates a temporary spot
      *
-     * @param 
-     * @return
+     * @param size size of parking spot (Regular or Large)
+     * @param duration number of 15 minute intervals requested
+     * @param date date of reservation
+     * @param time of reservation
+     * @return temporary spot created
+     * @throws Exception
      */
     @Transactional
     public TempSpot createTempSpot(Size size, int duration, Car car, Date date, Time time) throws Exception {
@@ -100,71 +104,120 @@ public class TemporaryParkingService {
 
 
     /**
-     * returns a temporary spot from an id
+     * Returns a temporary spot from an id
      *
      * @param id of desired spot
      * @return spot corresponding with id
+     * @throws Exception
      */
     @Transactional
-    public TempSpot getSpot(int id) {
-        RegularTempSpot spot = new RegularTempSpot();
-        //if (regularTempSpotRepository.existsById(id)) {spot = regularTempSpotRepository.findById(id);} //TODO type error here
-        
+    public TempSpot getSpot(int id) throws Exception{
+        TempSpot spot;
+        if (regularTempSpotRepository.existsById(id)) {spot = regularTempSpotRepository.findById(id).get();}
+        else if (largeTempSpotRepository.existsById(id)) {spot = largeTempSpotRepository.findById(id).get();}
+        else {
+            Exception e = new Exception("No temporary spot currently is reserved with that id.");
+            throw e;
+        }
         return spot;
     }
 
     /**
-     * edits a temporary spot
+     * Edits an existing temporary spot with a new number of 15 minute intervals
      *
-     * @param 
-     * @return 
+     * @param spot temporary spot to edit
+     * @param duration new number of 15 minute intervals
+     * @return temporary spot editted
+     * @throws Exception
      */
     @Transactional
-    public TempSpot editTempSpot (TempSpot spot) {
-        // Null checks
-
-        // Input checks
-
-        // Edit spot
+    public TempSpot editTempSpot (TempSpot spot, int duration) throws Exception{
+        if (spot == null) {
+            Exception e = new Exception("Inputted spot is null.");
+            throw e;
+        }
+        if (duration < 1 || duration > 48) {
+            Exception e = new Exception("Inputted duration is out of accepted bounds.");
+            throw e;
+        }
+        if (duration == spot.getDuration()) {
+            Exception e = new Exception("Inputted duration is not different than existing duration.");
+            throw e;
+        }
+        spot.setDuration(duration);
 
         return spot;
     }
 
 
     /**
-     * deletes an existing appointment
+     * Deletes an existing appointment
      *
-     * @param
+     * @param spot temporary spot to delete
+     * @return boolean indicating success of deletion
+     * @throws Exception
      */
     @Transactional
-    public void deleteSpot (TempSpot spot) {
-        // Null check
+    public boolean deleteSpot (TempSpot spot) throws Exception {
+        boolean deleted = false;
+        if (spot == null) {
+            Exception e = new Exception("Inputted spot is null.");
+            throw e;
+        }
 
-        // Delete associations
+        // Delete associations TODO check that these associations are all that needs to be deleted
+        spot.getCar().setLargeTempSpot(null);
+        spot.getCar().setRegularTempSpot(null);
 
         // Delete by id with DAO method
-
+        if (spot instanceof RegularTempSpot) {
+            regularTempSpotRepository.deleteById(spot.getId());
+            deleted = true;
+        } else if (spot instanceof LargeTempSpot) {
+            largeTempSpotRepository.deleteById(spot.getId());
+            deleted = true;
+        } else {
+            Exception e = new Exception("Inputted spot is has unrecognizable size and could not be deleted.");
+            throw e;
+        }
+        return deleted;
     }
 
     /**
-     * returns tempSpot for a car
+     * Returns temporary spot assigned to a car
      *
      * @param car car with spot reservation
      * @return tempSpot of car
+     * @throws Exception
      */
     @Transactional
-    public TempSpot getTempSpotReservedByCar(Car car) {
+    public TempSpot getTempSpotReservedByCar(Car car) throws Exception {
         // Null check
-        
+        if (car == null) {
+            Exception e = new Exception("Inputted car is null.");
+            throw e;
+        }
+        TempSpot spot;
         // Find with DAO method
-        TempSpot spot = new RegularTempSpot();
+        if (car.getSize() == Size.Regular) {
+            spot = car.getRegularTempSpot();
+        } else if (car.getSize() == Size.Large) {
+            spot = car.getLargeTempSpot();
+        } else {
+            Exception e = new Exception("Inputted car has unrecognizable size.");
+            throw e;
+        }
+        if (spot == null) {
+            Exception e = new Exception("Inputted car is not accociated with any temporary spots.");
+            throw e;
+        }
         return spot;
     }
 
 
 
     /**
-     * returns a list of all temp spots
+     * Returns a list of all temp spots
      *
      * @return list of TempSpots
      */
@@ -180,5 +233,11 @@ public class TemporaryParkingService {
 
         return allTempSpots;
     }
+
+
+
+
+
+    
 
 }
