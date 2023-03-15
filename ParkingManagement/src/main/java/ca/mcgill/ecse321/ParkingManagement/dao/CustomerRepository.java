@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import ca.mcgill.ecse321.ParkingManagement.model.Customer;
 
 @Repository
-public interface CustomerRepository extends CrudRepository<Customer, Integer> {
+public interface CustomerRepository extends CrudRepository<Customer, String> {
 	Customer findCustomerByEmail(String email);
 	boolean existsByEmail(String email);
 }

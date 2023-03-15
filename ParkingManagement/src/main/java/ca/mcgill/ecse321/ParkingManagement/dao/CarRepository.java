@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import ca.mcgill.ecse321.ParkingManagement.model.Car;
 
 @Repository
-public interface CarRepository extends CrudRepository<Car, Integer> {
+public interface CarRepository extends CrudRepository<Car, String> {
 
 	Car findCarBylicensePlate(String licensePlate);
 	boolean existsBylicensePlate(String licensePlate);

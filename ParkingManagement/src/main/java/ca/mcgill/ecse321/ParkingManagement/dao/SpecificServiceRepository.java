@@ -7,7 +7,7 @@ import java.sql.Date;
 import ca.mcgill.ecse321.ParkingManagement.model.SpecificService;
 
 @Repository
-public interface SpecificServiceRepository extends CrudRepository<SpecificService, Integer> {
+public interface SpecificServiceRepository extends CrudRepository<SpecificService, Date> {
 
 	SpecificService findSpecificServiceByDateAndTime(Date dateAndTime);
 	boolean existsByDateAndTime(Date dateAndTime);

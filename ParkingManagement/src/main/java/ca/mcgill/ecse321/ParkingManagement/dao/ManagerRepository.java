@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import ca.mcgill.ecse321.ParkingManagement.model.Manager;
 
 @Repository
-public interface ManagerRepository extends CrudRepository<Manager, Integer> {
+public interface ManagerRepository extends CrudRepository<Manager, String> {
 	Manager findManagerByEmail(String email);
 	boolean existsByEmail(String email);
 }

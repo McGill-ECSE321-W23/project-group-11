@@ -61,15 +61,4 @@ public class SpecificService {
    public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
       this.parkingManagementSystem = parkingManagementSystem;
    }
-
-   private int id;
-
-   public void setId(int value) {
-      this.id = value;
-   }
-
-   @Id
-   public int getId() {
-      return this.id;
-   }
 }
