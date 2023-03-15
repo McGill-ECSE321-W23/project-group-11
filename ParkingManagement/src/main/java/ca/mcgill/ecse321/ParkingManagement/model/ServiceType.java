@@ -1,7 +1,4 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
-/*PLEASE DO NOT EDIT THIS CODE*/
-
-/*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,13 +8,13 @@ import javax.persistence.ManyToOne;
 @Entity
 public class ServiceType {
 
+   @Id
    private String name;
 
    public void setName(String value) {
       this.name = value;
    }
 
-   @Id
    public String getName() {
       return this.name;
    }

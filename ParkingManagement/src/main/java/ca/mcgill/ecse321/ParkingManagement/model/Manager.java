@@ -7,13 +7,13 @@ import javax.persistence.Id;
 @Entity
 public class Manager extends UserRole {
 
+   @Id
    private int id;
 
    public void setId(int value) {
       this.id = value;
    }
 
-   @Id
    public int getId() {
       return this.id;
    }

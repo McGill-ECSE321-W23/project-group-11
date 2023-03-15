@@ -8,13 +8,13 @@ import javax.persistence.OneToMany;
 @Entity
 public class Account {
 
+   @Id
    private String email;
 
    public void setEmail(String value) {
       this.email = value;
    }
 
-   @Id
    public String getEmail() {
       return this.email;
    }

@@ -8,13 +8,13 @@ import javax.persistence.ManyToOne;
 @Entity
 public class ReservedSpot {
 
+   @Id
    private Integer id;
 
    public void setId(Integer value) {
       this.id = value;
    }
 
-   @Id
    public Integer getId() {
       return this.id;
    }

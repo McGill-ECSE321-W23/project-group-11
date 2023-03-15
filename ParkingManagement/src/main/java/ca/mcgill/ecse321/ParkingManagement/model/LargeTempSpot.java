@@ -5,20 +5,19 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 
 @Entity
 public class LargeTempSpot extends TempSpot {
 
+   @Id
    private int id;
 
    public void setId(int value) {
       this.id = value;
    }
 
-   @Id
    public int getId() {
       return this.id;
    }

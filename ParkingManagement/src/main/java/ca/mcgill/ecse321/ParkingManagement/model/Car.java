@@ -9,13 +9,13 @@ import javax.persistence.Id;
 @Entity
 public class Car {
 
+   @Id
    private String licensePlate;
 
    public void setLicensePlate(String value) {
       this.licensePlate = value;
    }
 
-   @Id
    public String getLicensePlate() {
       return this.licensePlate;
    }

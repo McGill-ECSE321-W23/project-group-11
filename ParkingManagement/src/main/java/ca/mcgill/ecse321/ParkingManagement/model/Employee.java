@@ -6,13 +6,13 @@ import javax.persistence.Id;
 @Entity
 public class Employee extends UserRole {
 
-    private int id;
+  @Id
+  private int id;
 
     public void setId(int value) {
       this.id = value;
     }
 
-    @Id
     public int getId() {
       return this.id;
     }

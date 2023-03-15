@@ -10,6 +10,7 @@ import javax.persistence.Id;
 public class SystemInfo {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
     private int id;
 
     private String openTime;
@@ -22,7 +23,6 @@ public class SystemInfo {
         this.id = value;
     }
 
-    @Id
     public int getId() {
         return this.id;
     }
