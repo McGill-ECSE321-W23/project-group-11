@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ca.mcgill.ecse321.ParkingManagement.dao.CarRepository;
-import ca.mcgill.ecse321.ParkingManagement.model.Account;
 import ca.mcgill.ecse321.ParkingManagement.model.Car;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
 
@@ -39,15 +38,8 @@ public class CarRepositoryTests {
 		car = carRepository.save(car);
 		String id = car.getLicensePlate();
 
-		// Add account that will be linked with car
-		Account account = new Account();
-		Set<Car> cars = new HashSet<Car>();
-		cars.add(car);
-		account.setCar(cars);
-
 		// Set variables to null
 		car = null;
-		account = null;
 
 		// Get car from repository
 		car = carRepository.findCarBylicensePlate(id);
@@ -57,8 +49,6 @@ public class CarRepositoryTests {
 		assertNotNull(car);
 		assertEquals("NASARULES", car.getLicensePlate()); // excpected, actual
 		assertEquals(Size.Regular, car.getSize());
-		// Associated account check
-		//assertEquals("bob@email.com", car.getAccount().getEmail()); 
 
 	}
 }

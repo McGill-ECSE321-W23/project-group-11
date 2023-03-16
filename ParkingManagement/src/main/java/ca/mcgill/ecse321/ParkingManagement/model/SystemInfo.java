@@ -5,15 +5,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.OneToOne;
 import javax.persistence.Id;
+import java.sql.Time;
 
 @Entity
 public class SystemInfo {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private int id;
 
-    private String openTime;
+    private Time openTime;
+    private Time closeTime;
     private int largeTempSpotPrice;
     private int smallTempSpotPrice;
     private int reservedSpotPrice;
@@ -29,46 +30,45 @@ public class SystemInfo {
         return this.id;
     }
 
-    public void setOpenTime(String value) {
+    public void setOpenTime(Time value) {
         this.openTime = value;
     }
 
-    public String getOpenTime() {
+    public Time getOpenTime() {
         return this.openTime;
     }
 
-    public void setlargeTempSpotPrice(int value) {
+    public void setLargeTempSpotPrice(int value) {
         this.largeTempSpotPrice = value;
     }
 
-    public int getlargeTempSpotPrice() {
+    public int getLargeTempSpotPrice() {
         return this.largeTempSpotPrice;
     }
 
 
-    public void setsmallTempSpotPrice(int value) {
+    public void setSmallTempSpotPrice(int value) {
         this.smallTempSpotPrice = value;
     }
 
-    public int getsmallTempSpotPrice() {
+    public int getSmallTempSpotPrice() {
         return this.smallTempSpotPrice;
     }
 
 
-    public void setreservedSpotPrice(int value) {
+    public void setReservedSpotPrice(int value) {
         this.reservedSpotPrice = value;
     }
 
-    public int getreservedSpotPrice() {
+    public int getReservedSpotPrice() {
         return this.reservedSpotPrice;
     }
-    private String closeTime;
 
-    public void setCloseTime(String value) {
+    public void setCloseTime(Time value) {
         this.closeTime = value;
     }
 
-    public String getCloseTime() {
+    public Time getCloseTime() {
         return this.closeTime;
     }
 
