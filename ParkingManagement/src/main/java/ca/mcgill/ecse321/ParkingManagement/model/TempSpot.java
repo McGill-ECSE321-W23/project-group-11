@@ -8,39 +8,35 @@ import javax.persistence.OneToOne;
 
 @Entity
 public abstract class TempSpot {
-
+    // attributes
+    private int id; // 1-20 for large, 21-270 for regular
+    private int duration; // number of 15 minute intervals
+    private Date date;
+    private LocalTime startTime;
+    // associations
     private Car car;
 
-    public void setCar(Car car) {
-        this.car = car;
+    // getters
+    public Date getDate() {
+        return this.date;
     }
-
+    public LocalTime getStartTime() {
+        return this.startTime;
+    }
     @OneToOne
     public Car getCar() {
         return this.car;
     }
-
-    private LocalTime startTime;
-
-    public void setStartTime(LocalTime value) {
-        this.startTime = value;
-    }
-
-    public LocalTime getStartTime() {
-        return this.startTime;
-    }
-
-    private Date date;
-
+    // setters
     public void setDate(Date value) {
         this.date = value;
     }
-
-    public Date getDate() {
-        return this.date;
+    public void setStartTime(LocalTime value) {
+        this.startTime = value;
     }
-
-    private int duration; // number of 15 minute intervals
+    public void setCar(Car car) {
+        this.car = car;
+    }
 
     public void setDuration(int value) {
         this.duration = value;
@@ -50,7 +46,7 @@ public abstract class TempSpot {
         return this.duration;
     }
 
-    private int id;
+    
 
     public void setId(int value) {
         this.id = value;

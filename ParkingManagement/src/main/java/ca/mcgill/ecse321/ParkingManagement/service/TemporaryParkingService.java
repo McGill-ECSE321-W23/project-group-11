@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.ParkingManagement.service;
 
 import ca.mcgill.ecse321.ParkingManagement.dao.*;
+import ca.mcgill.ecse321.ParkingManagement.dto.TempSpotDto;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -222,19 +223,24 @@ public class TemporaryParkingService {
      * @return list of TempSpots
      */
     @Transactional
-    public List<TempSpot> getAllTempSpots(){
-        List<TempSpot> allTempSpots = new ArrayList<TempSpot>();
+    public List<TempSpotDto> getAllTempSpots(){
+        TempSpotDto spotDto;
+        List<TempSpotDto> allTempSpots = new ArrayList<TempSpotDto>();
         for (RegularTempSpot regSpot : regularTempSpotRepository.findAll()) {
-            allTempSpots.add(regSpot);
+            spotDto = convertToDto(regSpot);
+            allTempSpots.add(spotDto);
         }
         for (LargeTempSpot largeSpot : largeTempSpotRepository.findAll()) {
-            allTempSpots.add(largeSpot);
+            spotDto = convertToDto(largeSpot);
+            allTempSpots.add(spotDto);
         }
-
         return allTempSpots;
     }
 
-
+    private TempSpotDto convertToDto(TempSpot spot) {
+        TempSpotDto dto = new TempSpotDto(spot.getId(), spot.getDuration(), spot.getDate(), spot.getStartTime(), spot.getCar());
+        return dto;
+    }
 
 
 
