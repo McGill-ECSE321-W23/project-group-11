@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.ParkingManagement.dao.ServiceTypeRepository;
+import ca.mcgill.ecse321.ParkingManagement.dao.AccountRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.ManagerRepository;
 import ca.mcgill.ecse321.ParkingManagement.model.ServiceType;
+import ca.mcgill.ecse321.ParkingManagement.model.Account;
 import ca.mcgill.ecse321.ParkingManagement.model.Manager;
 
 
@@ -18,25 +20,42 @@ public class ServiceTypeRepositoryTests {
 
 	@Autowired
 	private ServiceTypeRepository serviceTypeRepository;
+
     @Autowired
     private ManagerRepository managerRepository;
-
+    
+    @Autowired
+    private AccountRepository accountRepository;
+    
+ 
 	@AfterEach
 	public void clearDatabase() {
 		serviceTypeRepository.deleteAll();
         managerRepository.deleteAll();
+        accountRepository.deleteAll();
 	}
 
 	@Test
 	public void specificServiceTest() {
-		serviceTypeRepository.deleteAll();
-        managerRepository.deleteAll();
-		// Make manager
-        int id = 1;
+		
+        //create account
+        String email = "johndoe1955@gmail.com";
+        String password = "password";
+        Account account = new Account();
+        account.setEmail(email);
+        account.setPassword(password);
+
+        //save account
+        accountRepository.save(account);
+
+        // Create manager
+        int managerId = 1;
         Manager manager = new Manager();
-        manager.setId(id);
-        //save the manager
-        managerRepository.save(manager);
+        manager.setId(managerId);
+        manager.setAccount(account);
+        
+        // Save manager
+        manager = managerRepository.save(manager);
 
         //make a servicetype
 	    String name = "oilchange";   //make service type name
@@ -64,6 +83,6 @@ public class ServiceTypeRepositoryTests {
         //check if theres a manager
         assertNotNull(serviceType.getManager());
         //check if licence plat is the same as the one you saved
-		assertEquals(id, serviceType.getManager().getId());
+		assertEquals(managerId, serviceType.getManager().getId());
 	}
 }

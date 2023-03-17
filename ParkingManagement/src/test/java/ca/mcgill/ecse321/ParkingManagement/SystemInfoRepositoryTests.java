@@ -20,23 +20,38 @@ public class SystemInfoRepositoryTests {
     @Autowired
     private ManagerRepository managerRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
     @BeforeEach
     @AfterEach
 	public void clearDatabase() {
 		systemInfoRepository.deleteAll();
-        managerRepository.deleteAll();
-
+        managerRepository.deleteAll();        
+        accountRepository.deleteAll();
 	}
 
     @Test
     public void testPersistAndLoadSystemInfo() {
 
+        //create account
+        String email = "johndoe1955@gmail.com";
+        String password = "password";
+        Account account = new Account();
+        account.setEmail(email);
+        account.setPassword(password);
+
+        //save account
+        accountRepository.save(account);
+
         // Create manager
         int managerId = 1;
         Manager manager = new Manager();
         manager.setId(managerId);
+        manager.setAccount(account);
+        
         // Save manager
-        managerRepository.save(manager);
+        manager = managerRepository.save(manager);
     
         // Create SystemInfo object
         SystemInfo systemInfo = new SystemInfo();

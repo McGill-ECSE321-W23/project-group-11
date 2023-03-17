@@ -59,7 +59,7 @@ public class EmployeeRepositoryTests {
 
         //save object
         employeeRepository.save(employee);
-        email = account.getEmail();
+        email = employee.getAccount().getEmail();
         
         //read object
         employee = employeeRepository.findEmployeeById(222);

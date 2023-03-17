@@ -10,16 +10,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import ca.mcgill.ecse321.ParkingManagement.dao.AccountRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.CarRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.ManagerRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.ServiceTypeRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.SpecificServiceRepository;
+import ca.mcgill.ecse321.ParkingManagement.model.Account;
 import ca.mcgill.ecse321.ParkingManagement.model.Car;
 import ca.mcgill.ecse321.ParkingManagement.model.Manager;
 import ca.mcgill.ecse321.ParkingManagement.model.ServiceType;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
 import ca.mcgill.ecse321.ParkingManagement.model.SpecificService;
-import ca.mcgill.ecse321.ParkingManagement.model.SpecificServiceId;
 
 @SpringBootTest
 public class SpecificServiceRepositoryTests {
@@ -36,23 +37,38 @@ public class SpecificServiceRepositoryTests {
     @Autowired
     private CarRepository carRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
     @AfterEach
     public void clearDatabase() {
         specificServiceRepository.deleteAll();
         carRepository.deleteAll();
         serviceTypeRepository.deleteAll();
         managerRepository.deleteAll();
+        accountRepository.deleteAll();
     }
 
     @Test
     public void SpecificServiceTest() {
 
-        // Make manager
-        Manager manager = new Manager();
-        int tempid = 123;
-        manager.setId(tempid);
+        //create account
+        String email = "johndoe1955@gmail.com";
+        String password = "password";
+        Account account = new Account();
+        account.setEmail(email);
+        account.setPassword(password);
 
-        // set manager properties
+        //save account
+        accountRepository.save(account);
+
+        // Create manager
+        int managerId = 1;
+        Manager manager = new Manager();
+        manager.setId(managerId);
+        manager.setAccount(account);
+        
+        // Save manager
         manager = managerRepository.save(manager);
 
         // Create a ServiceType
@@ -78,27 +94,19 @@ public class SpecificServiceRepositoryTests {
 
         // Create a SpecificService
         SpecificService specificService = new SpecificService();
-        Date date = Date.valueOf("2023-03-15");
+        Date date = new Date(2023/02/02); // year is 1900-based, month is 0-based
         String employee = "John";
-        specificService.setDateAndTime(date);
-        specificService.setEmployee(employee);
         specificService.setServiceType(serviceType);
         specificService.setCar(car);
+        specificService.setDateAndTime(date);
+        specificService.setEmployee(employee);
 
         // Save SpecificService to repository and get its ID (this will test the getter as well)
         specificService = specificServiceRepository.save(specificService);
 
-        // Set variables to null
-        specificService = null;
-        car = null;
-        serviceType = null;
-        manager = null;
 
-        // Get SpecificService from repository
-        SpecificServiceId specificServiceId = new SpecificServiceId();
-        specificServiceId.setServiceType(serviceTypeRepository.findById("Oil Change").orElse(null));
-        specificServiceId.setCar(carRepository.findById(licensePlate).orElse(null));
-        SpecificService specificServiceFound = specificServiceRepository.findById(specificServiceId).orElse(null);
+        // Read from DB by ID
+        SpecificService specificServiceFound = specificServiceRepository.findSpecificServiceByServiceTypeAndCar(specificService.getServiceType(), specificService.getCar());
 
         // Check SpecificService attributes
         assertNotNull(specificServiceFound);
@@ -106,6 +114,5 @@ public class SpecificServiceRepositoryTests {
         assertEquals(employee, specificServiceFound.getEmployee());
         assertNotNull(specificServiceFound.getServiceType());
         assertNotNull(specificServiceFound.getCar());
-    
     }
 }

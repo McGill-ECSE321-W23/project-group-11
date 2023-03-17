@@ -3,13 +3,23 @@ package ca.mcgill.ecse321.ParkingManagement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import ca.mcgill.ecse321.ParkingManagement.dao.AccountRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.CarRepository;
+import ca.mcgill.ecse321.ParkingManagement.dao.EmployeeRepository;
+import ca.mcgill.ecse321.ParkingManagement.dao.ManagerRepository;
+import ca.mcgill.ecse321.ParkingManagement.model.Account;
 import ca.mcgill.ecse321.ParkingManagement.model.Car;
+import ca.mcgill.ecse321.ParkingManagement.model.Employee;
+import ca.mcgill.ecse321.ParkingManagement.model.Manager;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
 
 @SpringBootTest
@@ -18,30 +28,81 @@ public class CarRepositoryTests {
 	@Autowired
 	private CarRepository carRepository;
 
-	@BeforeEach
-	public void clearDatabaseBefore() {
-		carRepository.deleteAll();
-	}
+    @Autowired
+    private AccountRepository accountRepository;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private ManagerRepository managerRepository;
+
+	@BeforeEach
 	@AfterEach
 	public void clearDatabase() {
 		carRepository.deleteAll();
+        managerRepository.deleteAll();
+        employeeRepository.deleteAll();
+        accountRepository.deleteAll();
 	}
 
 	@Test
 	public void carTest() {
-		carRepository.deleteAll();
+
+        //create account for manager
+        String manageremail = "johndoe1955@gmail.com";
+        String managerpassword = "password";
+        Account manageraccount = new Account();
+        manageraccount.setEmail(manageremail);
+        manageraccount.setPassword(managerpassword);
+
+        //save account for manager
+        accountRepository.save(manageraccount);
+
+        // Create manager
+        int managerId = 1;
+        Manager manager = new Manager();
+        manager.setId(managerId);
+        manager.setAccount(manageraccount);
+        
+        // Save manager
+        manager = managerRepository.save(manager);
+
+        //create account for employee
+        String employeeemail = "johndoe1955@gmail.com";
+        String employeepassword = "password";
+        Account employeeaccount = new Account();
+        employeeaccount.setEmail(employeeemail);
+        employeeaccount.setPassword(employeepassword);
+
+        //save account for employee
+        employeeaccount = accountRepository.save(employeeaccount);
+
+        // Create employee
+        int employeeId = 2;
+        Employee employee = new Employee();
+        employee.setId(employeeId);
+        employee.setAccount(employeeaccount);
+        
+        // Save employee
+        employee = employeeRepository.save(employee);
+        Set<Employee> employeeSet = new HashSet<>();
+        employeeSet.add(employee);
 
 		// Make car
+        Car car = new Car();
 		String licensePlate = "NASARULES";
 		Size size = Size.Regular;
-		Car car = new Car();
 		car.setLicensePlate(licensePlate);
 		car.setSize(size);
+        car.setManager(manager);
+        car.setEmployees(employeeSet);
 
 		// Save car to repository and get it's ID (this will test the getter as well)
-		car = carRepository.save(car);
-		String id = car.getLicensePlate();
+        String id = car.getLicensePlate();
+        car = carRepository.save(car);
+        car = carRepository.findCarBylicensePlate(car.getLicensePlate());
+
 
 		// Set variables to null
 		car = null;
@@ -54,6 +115,8 @@ public class CarRepositoryTests {
 		assertNotNull(car);
 		assertEquals("NASARULES", car.getLicensePlate()); // excpected, actual
 		assertEquals(Size.Regular, car.getSize());
-		
+        assertEquals(manager.getId(), car.getManager().getId());
+		assertEquals(employeeemail, employeeRepository.findById(employeeId).orElse(null).getAccount().getEmail());
+
 	}
 }

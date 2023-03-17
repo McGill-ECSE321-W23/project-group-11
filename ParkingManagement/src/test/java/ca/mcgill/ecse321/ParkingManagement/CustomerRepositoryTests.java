@@ -1,45 +1,71 @@
-// package ca.mcgill.ecse321.ParkingManagement;
+package ca.mcgill.ecse321.ParkingManagement;
 
-// import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.junit.jupiter.api.Assertions.assertNotNull;
-// import org.junit.jupiter.api.AfterEach;
-// import org.junit.jupiter.api.Test;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.context.SpringBootTest;
-// import ca.mcgill.ecse321.ParkingManagement.dao.CustomerRepository;
-// import ca.mcgill.ecse321.ParkingManagement.model.*;
+import ca.mcgill.ecse321.ParkingManagement.dao.AccountRepository;
+import ca.mcgill.ecse321.ParkingManagement.dao.CustomerRepository;
+import ca.mcgill.ecse321.ParkingManagement.model.Account;
+import ca.mcgill.ecse321.ParkingManagement.model.Customer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
 
-// @SpringBootTest
-// public class CustomerRepositoryTests {
-// 	@Autowired
-// 	private CustomerRepository customerRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-// 	@AfterEach
-// 	public void clearDatabase() {
-// 		customerRepository.deleteAll();
-// 	}
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-// 	@Test
-// 	public void testPersistAndLoadAccount() {
-// 		// Create Account Object
-//         Account account = new Account();
-// 		String email = "johnbrown@email.com";
-// 		String password = "123123";
-// 		account.setEmail(email);
-//         account.setPassword(password);
+@SpringBootTest
+public class CustomerRepositoryTests {
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
-//         Customer customer = new Customer();
-//         customer.setAccount(account);
+    @BeforeEach
+    @AfterEach
+    public void clearDataBase(){
+        customerRepository.deleteAll();
+        accountRepository.deleteAll();
+    }
 
-// 		// Save object
-// 		customer = customerRepository.save(customer);
+    /**
+     * Customer persistence test
+     */
+    @Test
+    public void persistAndLoadCustomer(){
+      
+        //create account
+        String email = "johndoe1955@gmail.com";
+        String password = "password";
+        Account account = new Account();
+        account.setEmail(email);
+        account.setPassword(password);
 
-// 		// Read object from database
-// 		customer = customerRepository.findCustomerByEmail(email);
+        //save account
+        accountRepository.save(account);
 
-// 		// Assert that object has correct attributes
-// 		assertNotNull(customer);
-// 		assertEquals(email, customer.getAccount().getEmail());
-//         assertEquals(password, customer.getAccount().getPassword());
-// 	}
-// }
+        String targetEmail = account.getEmail();
+
+        //read account
+        account = accountRepository.findAccountByEmail(targetEmail);
+
+        //create Customer
+        Customer Customer = new Customer();
+        Customer.setAccount(account);
+        Customer.setId(222);
+        assertNotNull(Customer.getAccount());
+
+        //save object
+        customerRepository.save(Customer);
+        email = Customer.getAccount().getEmail();
+        
+        //read object
+        Customer = customerRepository.findCustomerByid(222);
+
+        //Check that object has correct attributes
+        assertNotNull(Customer);
+        assertNotNull(Customer.getAccount());
+        assertEquals(email, Customer.getAccount().getEmail());
+        assertEquals(password, Customer.getAccount().getPassword());
+    }
+}
