@@ -7,6 +7,6 @@ import ca.mcgill.ecse321.ParkingManagement.model.Customer;
 
 @Repository
 public interface CustomerRepository extends CrudRepository<Customer, Integer> {
-	Customer findCustomerByEmail(String email);
-	boolean existsByEmail(String email);
+	Customer findCustomerByid(Integer id);
+	boolean existsByid(Integer id);
 }

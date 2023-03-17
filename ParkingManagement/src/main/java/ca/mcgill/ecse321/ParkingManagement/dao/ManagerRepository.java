@@ -7,6 +7,6 @@ import ca.mcgill.ecse321.ParkingManagement.model.Manager;
 
 @Repository
 public interface ManagerRepository extends CrudRepository<Manager, Integer> {
-	Manager findManagerByEmail(String email);
-	boolean existsByEmail(String email);
+	Manager findManagerByid(Integer id);
+	boolean existsByid(Integer id);
 }

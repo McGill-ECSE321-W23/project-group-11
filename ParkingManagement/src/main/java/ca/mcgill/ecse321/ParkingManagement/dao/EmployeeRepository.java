@@ -7,6 +7,6 @@ import ca.mcgill.ecse321.ParkingManagement.model.Employee;
 
 @Repository
 public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
-	Employee findEmployeeByEmail(String email);
-	boolean existsByEmail(String email);
+	Employee findEmployeeById(int Id);
+	boolean existsById(int Id);
 }

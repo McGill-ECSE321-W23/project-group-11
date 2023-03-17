@@ -1,25 +1,42 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
 import javax.persistence.Entity;
+
 import java.sql.Date;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+
 
 @Entity
 public class SpecificService {
+
+   @Id
+   private int id;
+   public void setId(int id) {
+      this.id = id;
+   }
+
+   public int getId() {
+      return this.id;
+   }
+
+   @ManyToOne
+   private ServiceType serviceType;
+
+   @ManyToOne
+   private Car car;
+
    private Date dateAndTime;
 
+   private String employee;
+   
    public void setDateAndTime(Date value) {
       this.dateAndTime = value;
    }
 
-   @Id
-   public Date getDateAndTime() {
+   public Date getDate() {
       return this.dateAndTime;
    }
-
-   private String employee;
 
    public void setEmployee(String value) {
       this.employee = value;
@@ -29,9 +46,6 @@ public class SpecificService {
       return this.employee;
    }
 
-   private ServiceType serviceType;
-
-   @ManyToOne(optional = false)
    public ServiceType getServiceType() {
       return this.serviceType;
    }
@@ -40,9 +54,6 @@ public class SpecificService {
       this.serviceType = serviceType;
    }
 
-   private Car car;
-
-   @OneToOne(mappedBy = "specificService", optional = false)
    public Car getCar() {
       return this.car;
    }
@@ -51,25 +62,4 @@ public class SpecificService {
       this.car = car;
    }
 
-   private ParkingManagementSystem parkingManagementSystem;
-
-   @ManyToOne(optional = false)
-   public ParkingManagementSystem getParkingManagementSystem() {
-      return this.parkingManagementSystem;
-   }
-
-   public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
-      this.parkingManagementSystem = parkingManagementSystem;
-   }
-
-   private int id;
-
-   public void setId(int value) {
-      this.id = value;
-   }
-
-   @Id
-   public int getId() {
-      return this.id;
-   }
 }

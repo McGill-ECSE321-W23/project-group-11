@@ -2,7 +2,7 @@
 Repository for ECSE321 W23 Group 11 Project (McGill University)
 
 The goal of this project is to develop a system to manage a parking garage.
-For additional information, please consult the [wiki](../../wiki).
+For additional information, please consult the [wiki](../../wiki/Home).
 
 
 ### Wiki pages
@@ -10,6 +10,8 @@ For additional information, please consult the [wiki](../../wiki).
 [Domain Model](../../wiki/Domain-Model)
 
 [System Requirements](../../wiki/Requirements)
+
+[Quality Assurance Plan](../../wiki/Quality-Assurance-Plan)
 
 [Deliverable 1 Report](../../wiki/Deliverable-1-Report)
 

@@ -1,49 +1,89 @@
-// package ca.mcgill.ecse321.ParkingManagement;
+package ca.mcgill.ecse321.ParkingManagement;
 
-// import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.junit.jupiter.api.Assertions.assertNotNull;
-// import org.junit.jupiter.api.AfterEach;
-// import org.junit.jupiter.api.Test;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.context.SpringBootTest;
-// import ca.mcgill.ecse321.ParkingManagement.dao.SystemInfoRepository;
-// import ca.mcgill.ecse321.ParkingManagement.model.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import java.sql.Time;
+import ca.mcgill.ecse321.ParkingManagement.dao.*;
+import ca.mcgill.ecse321.ParkingManagement.model.*;
 
-// @SpringBootTest
-// public class SystemInfoRepositoryTests {
+@SpringBootTest
+public class SystemInfoRepositoryTests {
     
-//     @Autowired
-//     private SystemInfoRepository systemInfoRepository;
+    @Autowired
+    private SystemInfoRepository systemInfoRepository;
 
-//     @AfterEach
-// 	public void clearDatabase() {
-// 		systemInfoRepository.deleteAll();
-// 	}
+    @Autowired
+    private ManagerRepository managerRepository;
 
-//     @Test
-// 	public void testPersistAndLoadSystemInfo() {
-// 		// Create SystemInfo Object
-//         SystemInfo systemInfo = new SystemInfo();
-// 		String openTime = "6:00";
-// 		String closeTime = "23:00";
-// 		int id = 1;
-		
-//         systemInfo.setCloseTime(closeTime);
-//         systemInfo.setOpenTime(openTime);
-// 		systemInfo.setId(id);
+    @Autowired
+    private AccountRepository accountRepository;
 
+    @BeforeEach
+    @AfterEach
+	public void clearDatabase() {
+		systemInfoRepository.deleteAll();
+        managerRepository.deleteAll();        
+        accountRepository.deleteAll();
+	}
 
-// 		// Save object
-// 		systemInfo = systemInfoRepository.save(systemInfo);
+    @Test
+    public void testPersistAndLoadSystemInfo() {
 
-// 		// Read object from database
-// 		systemInfo = systemInfoRepository.findSystemInfoById(id);
+        //create account
+        String email = "johndoe1955@gmail.com";
+        String password = "password";
+        Account account = new Account();
+        account.setEmail(email);
+        account.setPassword(password);
 
-// 		// Assert that object has correct attributes
-// 		assertNotNull(systemInfo);
-// 		assertEquals(closeTime, systemInfo.getCloseTime());
-// 		assertEquals(openTime, systemInfo.getOpenTime());
-// 		assertEquals(id, systemInfo.getId());
-//     }
+        //save account
+        accountRepository.save(account);
 
-// }
+        // Create manager
+        int managerId = 1;
+        Manager manager = new Manager();
+        manager.setId(managerId);
+        manager.setAccount(account);
+        
+        // Save manager
+        manager = managerRepository.save(manager);
+    
+        // Create SystemInfo object
+        SystemInfo systemInfo = new SystemInfo();
+        int id = 123;
+        Time openTime = Time.valueOf("08:00:00");
+        Time closeTime = Time.valueOf("20:00:00");
+        int largeTempSpotPrice = 5;
+        int smallTempSpotPrice = 3;
+        int reservedSpotPrice = 10;
+        systemInfo.setCloseTime(closeTime);
+        systemInfo.setOpenTime(openTime);
+        systemInfo.setId(id);
+        systemInfo.setLargeTempSpotPrice(largeTempSpotPrice);
+        systemInfo.setSmallTempSpotPrice(smallTempSpotPrice);
+        systemInfo.setReservedSpotPrice(reservedSpotPrice);
+        systemInfo.setManager(manager);
+        // Save object
+        systemInfo = systemInfoRepository.save(systemInfo);
+    
+        // Read object from database
+        systemInfo = systemInfoRepository.findSystemInfoById(id);
+    
+        // Assert that object has correct attributes
+        assertNotNull(systemInfo, "SystemInfo object should not be null");
+        assertEquals(closeTime, systemInfo.getCloseTime(),"Close time should match");
+        assertEquals(openTime, systemInfo.getOpenTime(),"Open time should match");
+        assertEquals(largeTempSpotPrice, systemInfo.getLargeTempSpotPrice(), "Large temporary spot price should match");
+        assertEquals(reservedSpotPrice, systemInfo.getReservedSpotPrice(), "Reserved spot price should match");
+        assertEquals(smallTempSpotPrice, systemInfo.getSmallTempSpotPrice(), "Small temporary spot price should match");
+        assertNotNull(systemInfo.getManager(), "Manager object should not be null");
+        assertNotNull(systemInfo.getManager().getId(), "Manager ID should not be null");
+        assertEquals(managerId, systemInfo.getManager().getId(), "Manager ID should match");
+    }
+
+}

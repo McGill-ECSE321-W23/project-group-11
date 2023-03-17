@@ -1,12 +1,10 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
-import javax.persistence.Entity;
 import java.sql.Date;
 import java.time.LocalTime;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-@Entity
+
 public abstract class TempSpot {
     // attributes
     private int id; // 1-20 for large, 21-270 for regular
@@ -46,14 +44,4 @@ public abstract class TempSpot {
         return this.duration;
     }
 
-    
-
-    public void setId(int value) {
-        this.id = value;
-    }
-
-    @Id
-    public int getId() {
-        return this.id;
-    }
 }

@@ -1,23 +1,40 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+
 
 @Entity
 public class Car {
+
+   @Id
    private String licensePlate;
+
+   @ManyToMany
+   private Set<Employee> employees;
+
+   @ManyToOne(optional=true)
+   private Customer customer;
+
+   @ManyToOne
+   private Manager manager;
+
 
    public void setLicensePlate(String value) {
       this.licensePlate = value;
    }
 
-   @Id
    public String getLicensePlate() {
       return this.licensePlate;
    }
 
+   @Enumerated(EnumType.ORDINAL) 
    private Size size;
 
    public void setSize(Size value) {
@@ -28,70 +45,29 @@ public class Car {
       return this.size;
    }
 
-   private Account account;
-
-   @ManyToOne(optional = false)
-   public Account getAccount() {
-      return this.account;
+   public Customer getCustomer() {
+      return this.customer;
    }
 
-   public void setAccount(Account account) {
-      this.account = account;
+   public void setCustomer(Customer customer) {
+      this.customer= customer;
    }
 
-   private ReservedSpot reservedSpot;
-
-   @OneToOne
-   public ReservedSpot getReservedSpot() {
-      return this.reservedSpot;
+   public Set<Employee> getEmployees() {
+      return this.employees;
    }
 
-   public void setReservedSpot(ReservedSpot reservedSpot) {
-      this.reservedSpot = reservedSpot;
+   public void setEmployees(Set<Employee> employees) {
+      this.employees = employees;
    }
 
-   private SpecificService specificService;
-
-   @OneToOne
-   public SpecificService getSpecificService() {
-      return this.specificService;
+   public Manager getManager() {
+      return this.manager;
    }
 
-   public void setSpecificService(SpecificService specificService) {
-      this.specificService = specificService;
+   public void setManager(Manager manager) {
+      this.manager= manager;
    }
 
-   private RegularTempSpot regularTempSpot;
-
-   @OneToOne
-   public RegularTempSpot getRegularTempSpot() {
-      return this.regularTempSpot;
-   }
-
-   public void setRegularTempSpot(RegularTempSpot regularTempSpot) {
-      this.regularTempSpot = regularTempSpot;
-   }
-
-   private LargeTempSpot largeTempSpot;
-
-   @OneToOne
-   public LargeTempSpot getLargeTempSpot() {
-      return this.largeTempSpot;
-   }
-
-   public void setLargeTempSpot(LargeTempSpot largeTempSpot) {
-      this.largeTempSpot = largeTempSpot;
-   }
-
-   private ParkingManagementSystem parkingManagementSystem;
-
-   @ManyToOne(optional = false)
-   public ParkingManagementSystem getParkingManagementSystem() {
-      return this.parkingManagementSystem;
-   }
-
-   public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
-      this.parkingManagementSystem = parkingManagementSystem;
-   }
 
 }
