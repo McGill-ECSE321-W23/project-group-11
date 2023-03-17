@@ -166,10 +166,9 @@ public class TemporaryParkingService {
             throw e;
         }
 
-        // Delete associations TODO check that these associations are all that needs to be deleted
-        spot.getCar().setLargeTempSpot(null);
-        spot.getCar().setRegularTempSpot(null);
-
+        // Delete associations 
+        
+        // TODO check if this is all that needs to be done
         // Delete by id with DAO method
         if (spot instanceof RegularTempSpot) {
             regularTempSpotRepository.deleteById(spot.getId());
@@ -198,21 +197,21 @@ public class TemporaryParkingService {
             Exception e = new Exception("Inputted car is null.");
             throw e;
         }
-        TempSpot spot;
+
         // Find with DAO method
-        if (car.getSize() == Size.Regular) {
-            spot = car.getRegularTempSpot();
-        } else if (car.getSize() == Size.Large) {
-            spot = car.getLargeTempSpot();
-        } else {
-            Exception e = new Exception("Inputted car has unrecognizable size.");
-            throw e;
+        TempSpot carSpot = null;
+        for (TempSpot spot : largeTempSpotRepository.findAll()) {
+            if (spot.getCar() == car) {carSpot = spot; break;}
         }
-        if (spot == null) {
+        for (TempSpot spot : regularTempSpotRepository.findAll()) {
+            if (spot.getCar() == car) {carSpot = spot; break;}
+        }
+
+        if (carSpot == null) {
             Exception e = new Exception("Inputted car is not accociated with any temporary spots.");
             throw e;
         }
-        return spot;
+        return carSpot;
     }
 
 

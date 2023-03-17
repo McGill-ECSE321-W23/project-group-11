@@ -4,9 +4,9 @@ import java.sql.Date;
 import java.time.LocalTime;
 import javax.persistence.OneToOne;
 
-
 public abstract class TempSpot {
     // attributes
+
     private int id; // 1-20 for large, 21-270 for regular
     private int duration; // number of 15 minute intervals
     private Date date;
@@ -21,11 +21,19 @@ public abstract class TempSpot {
     public LocalTime getStartTime() {
         return this.startTime;
     }
+    public int getId() {
+        return this.id;
+    }
     @OneToOne
     public Car getCar() {
         return this.car;
     }
+
+
     // setters
+    public void setId(int value) {
+        this.id = value;
+    }
     public void setDate(Date value) {
         this.date = value;
     }

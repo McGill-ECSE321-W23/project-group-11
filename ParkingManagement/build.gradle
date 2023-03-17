@@ -21,7 +21,7 @@ dependencies {
 	// these last three added for controller testing according to tutorial notes 2.8.1
 	testImplementation 'org.mockito:mockito-core:2.+'
 	testImplementation 'org.mockito:mockito-junit-jupiter:2.18.3'
-	testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+	//testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.3.1' // TODO not working for some reason
 }
 
 tasks.named('test') {
