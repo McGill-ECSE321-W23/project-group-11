@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 import javax.persistence.Entity;
 
 import java.sql.Date;
-import java.sql.Time;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
@@ -13,24 +12,22 @@ import javax.persistence.ManyToOne;
 @IdClass(SpecificServiceId.class)
 public class SpecificService {
 
-   @Id 
-   @ManyToOne(optional = false)
+   @Id @ManyToOne
    private ServiceType serviceType;
 
-   @Id 
-   @ManyToOne(optional = false)
+   @Id @ManyToOne
    private Car car;
 
    private Date dateAndTime;
 
    private String employee;
-    
+   
    public void setDateAndTime(Date value) {
       this.dateAndTime = value;
    }
 
    public Date getDate() {
-      return this.date;
+      return this.dateAndTime;
    }
 
    public void setEmployee(String value) {

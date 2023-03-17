@@ -1,10 +1,12 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
-import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 
+@MappedSuperclass
 public abstract class UserRole {
-   
-   @ManyToOne(optional = false)
+
+   @OneToOne(optional = false)
    private Account account;
 
    public Account getAccount() {
@@ -14,4 +16,5 @@ public abstract class UserRole {
    public void setAccount(Account account) {
       this.account = account;
    }
+
 }

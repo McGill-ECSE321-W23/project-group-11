@@ -59,8 +59,8 @@ public class SpecificServiceRepositoryTests {
         ServiceType serviceType = new ServiceType();
         serviceType.setName("Oil Change");
         serviceType.setManager(manager);
-        serviceType.setCost("3 dollars");
-        serviceType.setDuration("10 minutes");
+        serviceType.setCost(5);
+        serviceType.setDuration(10);
 
         // Save ServiceType to repository 
         serviceType = serviceTypeRepository.save(serviceType);
@@ -102,7 +102,7 @@ public class SpecificServiceRepositoryTests {
 
         // Check SpecificService attributes
         assertNotNull(specificServiceFound);
-        assertEquals(date, specificServiceFound.getDateAndTime());
+        assertEquals(date, specificServiceFound.getDate());
         assertEquals(employee, specificServiceFound.getEmployee());
         assertNotNull(specificServiceFound.getServiceType());
         assertNotNull(specificServiceFound.getCar());

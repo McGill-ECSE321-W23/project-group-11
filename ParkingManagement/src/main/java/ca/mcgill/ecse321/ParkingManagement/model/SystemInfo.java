@@ -1,8 +1,6 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.OneToOne;
 import javax.persistence.Id;
 import java.sql.Time;
@@ -18,7 +16,6 @@ public class SystemInfo {
     private int largeTempSpotPrice;
     private int smallTempSpotPrice;
     private int reservedSpotPrice;
-    private String closeTime;
 
     @OneToOne(optional = false)
     private Manager manager;

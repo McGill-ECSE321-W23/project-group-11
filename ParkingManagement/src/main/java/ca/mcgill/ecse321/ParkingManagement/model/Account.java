@@ -2,8 +2,6 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.Set;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Account {
@@ -27,17 +25,6 @@ public class Account {
    //probably should not have this
    public String getPassword() {
       return this.password;
-   }
-
-   @OneToMany
-   private Set<Car> car;
-
-   public Set<Car> getCar() {
-      return this.car;
-   }
-
-   public void setCar(Set<Car> cars) {
-      this.car = cars;
    }
 
 }

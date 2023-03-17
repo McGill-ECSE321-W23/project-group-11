@@ -25,7 +25,7 @@ public class LargeTempSpotRepositoryTests {
 	}
 
 	@Test
-	public void regularTempSpotTest() {
+	public void LargeTempSpotTest() {
 		largeSpotRepo.deleteAll();
 
 		// Make car
