@@ -4,18 +4,26 @@ import javax.persistence.Entity;
 
 import java.sql.Date;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 
 
 @Entity
-@IdClass(SpecificServiceId.class)
 public class SpecificService {
 
-   @Id @ManyToOne
+   @Id
+   private int id;
+   public void setId(int id) {
+      this.id = id;
+   }
+
+   public int getId() {
+      return this.id;
+   }
+
+   @ManyToOne
    private ServiceType serviceType;
 
-   @Id @ManyToOne
+   @ManyToOne
    private Car car;
 
    private Date dateAndTime;
