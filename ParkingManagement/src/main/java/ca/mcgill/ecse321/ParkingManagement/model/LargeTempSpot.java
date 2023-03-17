@@ -3,9 +3,9 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class LargeTempSpot extends TempSpot {

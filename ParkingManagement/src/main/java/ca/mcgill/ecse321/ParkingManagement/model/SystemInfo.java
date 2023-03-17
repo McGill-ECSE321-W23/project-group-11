@@ -1,8 +1,8 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.Id;
 
 @Entity
 public class SystemInfo {

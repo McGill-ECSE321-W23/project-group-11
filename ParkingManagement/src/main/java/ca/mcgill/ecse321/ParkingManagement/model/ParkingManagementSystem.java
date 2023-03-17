@@ -4,11 +4,11 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 /*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Set;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
 
 @Entity
 public class ParkingManagementSystem {
