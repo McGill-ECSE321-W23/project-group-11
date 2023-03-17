@@ -11,10 +11,6 @@ public class ServiceType {
    @Id
    private String name;
 
-   
-   private String cost;
-   private String duration;
-
    public void setName(String value) {
       this.name = value;
    }
@@ -23,21 +19,23 @@ public class ServiceType {
       return this.name;
    }
 
+   private int cost;
 
-   public void setCost(String value) {
+   public void setCost(int value) {
       this.cost = value;
    }
 
-   public String getCost() {
+   public int getCost() {
       return this.cost;
    }
 
+   private int duration;
 
-   public void setDuration(String value) {
+   public void setDuration(int value) {
       this.duration = value;
    }
 
-   public String getDuration() {
+   public int getDuration() {
       return this.duration;
    }
 
