@@ -17,7 +17,8 @@ public class SystemInfo {
     private int largeTempSpotPrice;
     private int smallTempSpotPrice;
     private int reservedSpotPrice;
-    
+    private String closeTime;
+
     @OneToOne(optional = false)
     private Manager manager;
 
@@ -62,7 +63,6 @@ public class SystemInfo {
     public int getreservedSpotPrice() {
         return this.reservedSpotPrice;
     }
-    private String closeTime;
 
     public void setCloseTime(String value) {
         this.closeTime = value;

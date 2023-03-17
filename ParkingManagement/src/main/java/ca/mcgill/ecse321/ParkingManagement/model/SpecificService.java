@@ -9,21 +9,21 @@ import javax.persistence.ManyToOne;
 
 
 @Entity
+@IdClass(SpecificServiceId.class)
 public class SpecificService {
 
-   @Id
-   private int id;
+   @Id 
+   @ManyToOne(optional = false)
+   private ServiceType serviceType;
 
-   public void setId(int value) {
-      this.id = value;
-   }
-   
-   public int getId() {
-      return this.id;
-   }
-   
+   @Id 
+   @ManyToOne(optional = false)
+   private Car car;
+
    private Date dateAndTime;
 
+   private String employee;
+    
    public void setDateAndTime(Date value) {
       this.dateAndTime = value;
    }
@@ -31,8 +31,6 @@ public class SpecificService {
    public Date getDateAndTime() {
       return this.dateAndTime;
    }
-
-   private String employee;
 
    public void setEmployee(String value) {
       this.employee = value;
@@ -42,9 +40,6 @@ public class SpecificService {
       return this.employee;
    }
 
-   @ManyToOne(optional = false)
-   private ServiceType serviceType;
-
    public ServiceType getServiceType() {
       return this.serviceType;
    }
@@ -53,9 +48,6 @@ public class SpecificService {
       this.serviceType = serviceType;
    }
 
-   @ManyToOne(optional = false) 
-   private Car car;
-
    public Car getCar() {
       return this.car;
    }
@@ -63,4 +55,5 @@ public class SpecificService {
    public void setCar(Car car) {
       this.car = car;
    }
+
 }

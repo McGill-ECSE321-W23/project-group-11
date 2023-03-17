@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,11 @@ public class CarRepositoryTests {
 
 	@Autowired
 	private CarRepository carRepository;
+
+	@BeforeEach
+	public void clearDatabaseBefore() {
+		carRepository.deleteAll();
+	}
 
 	@AfterEach
 	public void clearDatabase() {
@@ -57,8 +63,6 @@ public class CarRepositoryTests {
 		assertNotNull(car);
 		assertEquals("NASARULES", car.getLicensePlate()); // excpected, actual
 		assertEquals(Size.Regular, car.getSize());
-		// Associated account check
-		//assertEquals("bob@email.com", car.getAccount().getEmail()); 
-
+		
 	}
 }

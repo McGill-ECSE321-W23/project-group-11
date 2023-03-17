@@ -11,6 +11,10 @@ public class ServiceType {
    @Id
    private String name;
 
+   
+   private String cost;
+   private String duration;
+
    public void setName(String value) {
       this.name = value;
    }
@@ -19,7 +23,6 @@ public class ServiceType {
       return this.name;
    }
 
-   private String cost;
 
    public void setCost(String value) {
       this.cost = value;
@@ -29,7 +32,6 @@ public class ServiceType {
       return this.cost;
    }
 
-   private String duration;
 
    public void setDuration(String value) {
       this.duration = value;
