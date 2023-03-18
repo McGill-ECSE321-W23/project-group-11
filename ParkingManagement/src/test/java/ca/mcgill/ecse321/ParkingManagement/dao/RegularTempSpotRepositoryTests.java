@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.ParkingManagement.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,7 @@ public class RegularTempSpotRepositoryTests {
     private CarRepository carRepository;
 
 	@AfterEach
+    @BeforeEach
 	public void clearDatabase() {
 		regSpotRepo.deleteAll();
         carRepository.deleteAll();
@@ -41,11 +43,11 @@ public class RegularTempSpotRepositoryTests {
         carRepository.save(car);
 
         //make a regular temp spot
-	    int id = 111;   //make id
 		RegularTempSpot regSpot = new RegularTempSpot();
-        regSpot.setId(id);
         regSpot.setCar(car);
         regSpotRepo.save(regSpot);  //save it in repo
+        int id = regSpot.getId();   //make id
+
 
         //set everything to null
 		regSpot = null;

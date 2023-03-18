@@ -53,16 +53,17 @@ public class EmployeeRepositoryTests {
         String schedule = "MTW";
         Employee employee = new Employee();
         employee.setAccount(account);
-        employee.setId(222);
         employee.setSchedule(schedule);
         assertNotNull(employee.getAccount());
 
         //save object
         employeeRepository.save(employee);
         email = employee.getAccount().getEmail();
+        int id = employee.getId();
+        employee=null;
         
         //read object
-        employee = employeeRepository.findEmployeeById(222);
+        employee = employeeRepository.findEmployeeById(id);
 
         //Check that object has correct attributes
         assertNotNull(employee);

@@ -60,9 +60,7 @@ public class CarRepositoryTests {
         accountRepository.save(manageraccount);
 
         // Create manager
-        int managerId = 1;
         Manager manager = new Manager();
-        manager.setId(managerId);
         manager.setAccount(manageraccount);
         
         // Save manager
@@ -79,15 +77,14 @@ public class CarRepositoryTests {
         employeeaccount = accountRepository.save(employeeaccount);
 
         // Create employee
-        int employeeId = 2;
         Employee employee = new Employee();
-        employee.setId(employeeId);
         employee.setAccount(employeeaccount);
-        
+
         // Save employee
         employee = employeeRepository.save(employee);
         Set<Employee> employeeSet = new HashSet<>();
         employeeSet.add(employee);
+        int employeeId = employee.getId();
 
 		// Make car
         Car car = new Car();

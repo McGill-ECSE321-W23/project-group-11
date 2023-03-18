@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.ParkingManagement.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,7 @@ public class ReservedRepositoryTests {
     private CarRepository carRepository;
 
 	@AfterEach
+    @BeforeEach
 	public void clearDatabase() {
 		reservedSpotRepo.deleteAll();
         carRepository.deleteAll();
@@ -41,25 +43,24 @@ public class ReservedRepositoryTests {
         carRepository.save(car);
 
         //make a regular temp spot
-	    int id = 111;   //make id
 		ReservedSpot reservedSpot = new ReservedSpot();
-        reservedSpot.setId(id);
         reservedSpot.setCar(car);
         reservedSpotRepo.save(reservedSpot);  //save it in repo
+        int id = reservedSpot.getId();
 
         //set everything to null
 		reservedSpot = null;
 
 		// Get spot from repository
-        reservedSpot = reservedSpotRepo.findReservedSpotById(id);
+        ReservedSpot reservedSpotFromDB = reservedSpotRepo.findReservedSpotById(id);
 
 		//check if there is a spot
-		assertNotNull(reservedSpot);
+		assertNotNull(reservedSpotFromDB);
         //check if the id is the same as teh one you saved
-		assertEquals(id, reservedSpot.getId());
+		assertEquals(id, reservedSpotFromDB.getId());
         //check if theres a car
-        assertNotNull(reservedSpot.getCar());
+        assertNotNull(reservedSpotFromDB.getCar());
         //check if licence plat is the same as the one you saved
-		assertEquals(licencePlate, reservedSpot.getCar().getLicensePlate());
+		assertEquals(licencePlate, reservedSpotFromDB.getCar().getLicensePlate());
 	}
 }

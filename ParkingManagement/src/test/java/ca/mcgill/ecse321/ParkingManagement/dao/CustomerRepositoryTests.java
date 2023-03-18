@@ -50,22 +50,22 @@ public class CustomerRepositoryTests {
         account = accountRepository.findAccountByEmail(targetEmail);
 
         //create Customer
-        Customer Customer = new Customer();
-        Customer.setAccount(account);
-        Customer.setId(222);
-        assertNotNull(Customer.getAccount());
+        Customer customer = new Customer();
+        customer.setAccount(account);
+        assertNotNull(customer.getAccount());
 
         //save object
-        customerRepository.save(Customer);
-        email = Customer.getAccount().getEmail();
+        customerRepository.save(customer);
+        email = customer.getAccount().getEmail();
+        int id = customer.getId();
         
         //read object
-        Customer = customerRepository.findCustomerByid(222);
+        customer = customerRepository.findCustomerByid(id);
 
         //Check that object has correct attributes
-        assertNotNull(Customer);
-        assertNotNull(Customer.getAccount());
-        assertEquals(email, Customer.getAccount().getEmail());
-        assertEquals(password, Customer.getAccount().getPassword());
+        assertNotNull(customer);
+        assertNotNull(customer.getAccount());
+        assertEquals(email, customer.getAccount().getEmail());
+        assertEquals(password, customer.getAccount().getPassword());
     }
 }

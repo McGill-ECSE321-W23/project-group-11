@@ -45,9 +45,7 @@ public class SystemInfoRepositoryTests {
         accountRepository.save(account);
 
         // Create manager
-        int managerId = 1;
         Manager manager = new Manager();
-        manager.setId(managerId);
         manager.setAccount(account);
         
         // Save manager
@@ -83,7 +81,6 @@ public class SystemInfoRepositoryTests {
         assertEquals(smallTempSpotPrice, systemInfo.getSmallTempSpotPrice(), "Small temporary spot price should match");
         assertNotNull(systemInfo.getManager(), "Manager object should not be null");
         assertNotNull(systemInfo.getManager().getId(), "Manager ID should not be null");
-        assertEquals(managerId, systemInfo.getManager().getId(), "Manager ID should match");
+        assertEquals(manager.getId(), systemInfo.getManager().getId(), "Manager ID should match");
     }
-
 }

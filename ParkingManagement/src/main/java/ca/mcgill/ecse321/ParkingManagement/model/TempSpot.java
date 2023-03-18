@@ -10,7 +10,7 @@ public abstract class TempSpot {
     private int id; // 1-20 for large, 21-270 for regular
     private int duration; // number of 15 minute intervals
     private Date date;
-    private LocalTime startTime; // TODO should this be local time or time???
+    private LocalTime startTime;
     // associations
     private Car car;
 

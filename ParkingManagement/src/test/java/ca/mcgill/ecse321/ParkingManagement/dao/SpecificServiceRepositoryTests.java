@@ -4,8 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.sql.Date;
+import java.time.LocalTime;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,6 +42,8 @@ public class SpecificServiceRepositoryTests {
     @Autowired
     private AccountRepository accountRepository;
 
+
+    @BeforeEach
     @AfterEach
     public void clearDatabase() {
         specificServiceRepository.deleteAll();
@@ -63,9 +67,7 @@ public class SpecificServiceRepositoryTests {
         accountRepository.save(account);
 
         // Create manager
-        int managerId = 1;
         Manager manager = new Manager();
-        manager.setId(managerId);
         manager.setAccount(account);
         
         // Save manager
@@ -98,24 +100,23 @@ public class SpecificServiceRepositoryTests {
         String employee = "John";
         specificService.setServiceType(serviceType);
         specificService.setCar(car);
-        specificService.setDateAndTime(date);
+        specificService.setDate(date);
+        specificService.setStartTime(LocalTime.of(9, 30));
         specificService.setEmployee(employee);
-        int id = 1;
-        specificService.setId(id);
 
         // Save SpecificService to repository and get its ID (this will test the getter as well)
         specificService = specificServiceRepository.save(specificService);
 
 
         // Read from DB by ID
-        SpecificService specificServiceFound = specificServiceRepository.findSpecificServiceById(id);
+        SpecificService specificServiceFromDB = specificServiceRepository.findSpecificServiceById(specificService.getId());
 
         // Check SpecificService attributes
-        assertNotNull(specificServiceFound);
-        assertEquals(id, specificServiceFound.getId());
-        //assertEquals(date, specificServiceFound.getDate()); // TODO not working
-        assertEquals(employee, specificServiceFound.getEmployee());
-        assertNotNull(specificServiceFound.getServiceType());
-        assertNotNull(specificServiceFound.getCar());
+        assertNotNull(specificServiceFromDB);
+        assertEquals(specificService.getId(), specificServiceFromDB.getId());
+        assertEquals(date.toString(), specificServiceFromDB.getDate().toString());
+        assertEquals(employee, specificServiceFromDB.getEmployee());
+        assertNotNull(specificServiceFromDB.getServiceType());
+        assertNotNull(specificServiceFromDB.getCar());
     }
 }
