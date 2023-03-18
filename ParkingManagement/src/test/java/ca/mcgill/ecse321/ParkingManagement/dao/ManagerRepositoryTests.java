@@ -1,4 +1,4 @@
-package ca.mcgill.ecse321.ParkingManagement;
+package ca.mcgill.ecse321.ParkingManagement.dao;
 
 import ca.mcgill.ecse321.ParkingManagement.dao.AccountRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.ManagerRepository;

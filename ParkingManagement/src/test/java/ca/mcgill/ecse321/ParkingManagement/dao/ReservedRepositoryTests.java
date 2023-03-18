@@ -1,4 +1,4 @@
-package ca.mcgill.ecse321.ParkingManagement;
+package ca.mcgill.ecse321.ParkingManagement.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -7,30 +7,30 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ca.mcgill.ecse321.ParkingManagement.dao.RegularTempSpotRepository;
+import ca.mcgill.ecse321.ParkingManagement.dao.ReservedSpotRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.CarRepository;
 import ca.mcgill.ecse321.ParkingManagement.model.Car;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
-import ca.mcgill.ecse321.ParkingManagement.model.RegularTempSpot;
+import ca.mcgill.ecse321.ParkingManagement.model.ReservedSpot;
 
 @SpringBootTest
-public class RegularTempSpotRepositoryTests {
+public class ReservedRepositoryTests {
 
 	@Autowired
-	private RegularTempSpotRepository regSpotRepo;
+	private ReservedSpotRepository reservedSpotRepo;
     @Autowired
     private CarRepository carRepository;
 
 	@AfterEach
 	public void clearDatabase() {
-		regSpotRepo.deleteAll();
+		reservedSpotRepo.deleteAll();
         carRepository.deleteAll();
 	}
 
 	@Test
-	public void regularTempSpotTest() {
-		regSpotRepo.deleteAll();
-
+	public void reservedSpotTest() {
+		reservedSpotRepo.deleteAll();
+        carRepository.deleteAll();
 		// Make car
         String licencePlate = "NASARULES";
         Size size = Size.Regular;
@@ -42,24 +42,24 @@ public class RegularTempSpotRepositoryTests {
 
         //make a regular temp spot
 	    int id = 111;   //make id
-		RegularTempSpot regSpot = new RegularTempSpot();
-        regSpot.setId(id);
-        regSpot.setCar(car);
-        regSpotRepo.save(regSpot);  //save it in repo
+		ReservedSpot reservedSpot = new ReservedSpot();
+        reservedSpot.setId(id);
+        reservedSpot.setCar(car);
+        reservedSpotRepo.save(reservedSpot);  //save it in repo
 
         //set everything to null
-		regSpot = null;
+		reservedSpot = null;
 
 		// Get spot from repository
-        regSpot = regSpotRepo.findRegularTempSpotById(id);
+        reservedSpot = reservedSpotRepo.findReservedSpotById(id);
 
 		//check if there is a spot
-		assertNotNull(regSpot);
+		assertNotNull(reservedSpot);
         //check if the id is the same as teh one you saved
-		assertEquals(id, regSpot.getId());
+		assertEquals(id, reservedSpot.getId());
         //check if theres a car
-        assertNotNull(regSpot.getCar());
+        assertNotNull(reservedSpot.getCar());
         //check if licence plat is the same as the one you saved
-		assertEquals(licencePlate, regSpot.getCar().getLicensePlate());
+		assertEquals(licencePlate, reservedSpot.getCar().getLicensePlate());
 	}
 }
