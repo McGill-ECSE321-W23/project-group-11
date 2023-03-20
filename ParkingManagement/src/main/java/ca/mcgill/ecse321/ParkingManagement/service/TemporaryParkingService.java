@@ -37,7 +37,7 @@ public class TemporaryParkingService {
      * @throws Exception
      */
     @Transactional
-    public TempSpot createTempSpot(Size size, int duration, Car car, Date date, LocalTime time) throws Exception {
+    public TempSpotDto createTempSpot(Size size, int duration, Car car, Date date, LocalTime time) throws Exception {
         TempSpot spot;
         // Null checks for objects
         if (car == null) { 
@@ -81,7 +81,7 @@ public class TemporaryParkingService {
         if (size == Size.Regular) {
             id = 21;
             while (true) {
-                if (!regularTempSpotRepository.existsById(id)) {break;} 
+                if (!regularTempSpotRepository.existsByPlaceNumber(id)) {break;} 
                 id++;
                 if (id > 270) {
                     Exception e = new Exception("There are no more regular spots available.");
@@ -91,16 +91,16 @@ public class TemporaryParkingService {
         }
         if (size == Size.Large) {
             while (id <= 20)
-                if (!largeTempSpotRepository.existsById(id)) {break;} 
+                if (!largeTempSpotRepository.existsByPlaceNumber(id)) {break;} 
                 id++;
                 if (id > 20) {
                     Exception e = new Exception("There are no more large spots available.");
                     throw e;
                 }
         } 
-        spot.setId(id);
+        spot.setPlaceNumer(id);;
 
-        return spot;
+        return convertToDto(spot);
     }
 
 
@@ -237,7 +237,12 @@ public class TemporaryParkingService {
     }
 
     private TempSpotDto convertToDto(TempSpot spot) {
-        TempSpotDto dto = new TempSpotDto(spot.getId(), spot.getDuration(), spot.getDate(), spot.getStartTime(), spot.getCar());
+        TempSpotDto dto;
+        if (spot instanceof LargeTempSpot) {
+            dto = new TempSpotDto(spot.getId(), spot.getDuration(), spot.getDate(), spot.getStartTime(), spot.getCar(), Size.Large);
+        } else {
+            dto = new TempSpotDto(spot.getId(), spot.getDuration(), spot.getDate(), spot.getStartTime(), spot.getCar(), Size.Regular);
+        }
         return dto;
     }
 

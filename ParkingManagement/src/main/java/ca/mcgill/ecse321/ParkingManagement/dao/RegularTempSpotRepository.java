@@ -10,6 +10,7 @@ public interface RegularTempSpotRepository extends CrudRepository<RegularTempSpo
 
 	RegularTempSpot findRegularTempSpotById(int id);
 	boolean existsById(int id);
-
+	boolean existsByPlaceNumber(int placeNumber);
+	RegularTempSpot findByPlaceNumber(int placeNumber);
 
 }

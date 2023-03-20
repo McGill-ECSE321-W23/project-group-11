@@ -4,6 +4,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,8 +29,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import ca.mcgill.ecse321.ParkingManagement.dao.LargeTempSpotRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.RegularTempSpotRepository;
+import ca.mcgill.ecse321.ParkingManagement.dto.TempSpotDto;
+import ca.mcgill.ecse321.ParkingManagement.model.Car;
 import ca.mcgill.ecse321.ParkingManagement.model.LargeTempSpot;
 import ca.mcgill.ecse321.ParkingManagement.model.RegularTempSpot;
+import ca.mcgill.ecse321.ParkingManagement.model.Size;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -51,7 +55,7 @@ public void setMockOutput() {
     lenient().when(largeTempDao.findById(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
         if(invocation.getArgument(0).equals(SPOT_KEY_LARGE)) {
             LargeTempSpot spot = new LargeTempSpot();
-            spot.setId(SPOT_KEY_LARGE);;
+            spot.setPlaceNumber(SPOT_KEY_LARGE);
             return spot;
         } else {
             return null;
@@ -61,13 +65,43 @@ public void setMockOutput() {
     lenient().when(regTempDao.findById(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
         if(invocation.getArgument(0).equals(SPOT_KEY_REG)) {
             RegularTempSpot spot = new RegularTempSpot();
-            spot.setId(SPOT_KEY_REG);;
+            spot.setPlaceNumber(SPOT_KEY_REG);
             return spot;
         } else {
             return null;
         }
     });
+
+    // Whenever anything is saved, just return the parameter object TODO i don't actually know what this does
+		// Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
+		// 	return invocation.getArgument(0);
+		// };
+		// lenient().when(largeTempDao.save(any(LargeTempSpot.class))).thenAnswer(returnParameterAsAnswer);
+        // lenient().when(regTempDao.save(any(RegularTempSpot.class))).thenAnswer(returnParameterAsAnswer);
 }
+
+@Test
+	public void testCreateTempSpot() {
+		assertEquals(0, service.getAllTempSpots().size());
+        int duration = 5;
+        Car car = new Car();
+        Date date = new Date(2023/02/02);
+        LocalTime time = LocalTime.of(9, 30);
+
+        TempSpotDto largeSpot = null;
+        TempSpotDto regSpot = null;
+		try {
+			largeSpot = service.createTempSpot(Size.Large, duration, car, date, time);
+            regSpot = service.createTempSpot(Size.Regular, duration, car, date, time);
+		} catch (Exception e) {
+			// Check that no error occurred
+			fail();
+		}
+		assertNotNull(largeSpot);
+		assertEquals(Size.Large, largeSpot.getSize());
+        assertNotNull(regSpot);
+        assertEquals(Size.Regular, regSpot.getSize());	
+    }
 
 
 
