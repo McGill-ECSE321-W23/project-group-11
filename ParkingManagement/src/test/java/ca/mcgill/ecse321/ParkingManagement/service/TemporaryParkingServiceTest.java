@@ -29,6 +29,7 @@ import org.mockito.stubbing.Answer;
 import ca.mcgill.ecse321.ParkingManagement.dao.LargeTempSpotRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.RegularTempSpotRepository;
 import ca.mcgill.ecse321.ParkingManagement.model.LargeTempSpot;
+import ca.mcgill.ecse321.ParkingManagement.model.RegularTempSpot;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -42,14 +43,25 @@ private RegularTempSpotRepository regTempDao;
 @InjectMocks
 private TemporaryParkingService service;
 
-private static final int SPOT_KEY = 1;
+private static final int SPOT_KEY_LARGE = 1;
+private static final int SPOT_KEY_REG = 21;
 
 @BeforeEach
 public void setMockOutput() {
     lenient().when(largeTempDao.findById(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
-        if(invocation.getArgument(0).equals(SPOT_KEY)) {
+        if(invocation.getArgument(0).equals(SPOT_KEY_LARGE)) {
             LargeTempSpot spot = new LargeTempSpot();
-            spot.setId(SPOT_KEY);;
+            spot.setId(SPOT_KEY_LARGE);;
+            return spot;
+        } else {
+            return null;
+        }
+    });
+
+    lenient().when(regTempDao.findById(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
+        if(invocation.getArgument(0).equals(SPOT_KEY_REG)) {
+            RegularTempSpot spot = new RegularTempSpot();
+            spot.setId(SPOT_KEY_REG);;
             return spot;
         } else {
             return null;
