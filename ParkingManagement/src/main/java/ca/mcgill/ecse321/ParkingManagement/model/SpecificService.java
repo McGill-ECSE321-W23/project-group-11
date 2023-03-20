@@ -1,25 +1,58 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
-import jakarta.persistence.Entity;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+
 import java.sql.Date;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import java.time.LocalTime;
+
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames={"car_licensePlate", "serviceType_name"}))
 public class SpecificService {
-   private Date dateAndTime;
-
-   public void setDateAndTime(Date value) {
-      this.dateAndTime = value;
-   }
 
    @Id
-   public Date getDateAndTime() {
-      return this.dateAndTime;
-   }
+   @GeneratedValue
+   private int id;
 
+   private Date date;
+   private LocalTime startTime;
    private String employee;
+
+   @ManyToOne
+   @JoinColumn(name = "serviceType_name")
+   private ServiceType serviceType;
+
+   @ManyToOne
+   @JoinColumn(name = "car_licensePlate")
+   private Car car;
+
+
+   public int getId() {
+      return this.id;
+   }
+  
+   public void setDate(Date value) {
+      this.date = value;
+   }
+   
+   public Date getDate() {
+      return this.date;
+   }
+   
+   public void setStartTime(LocalTime value) {
+      this.startTime = value;
+   }
+   
+   public LocalTime getStartTime() {
+      return this.startTime;
+   }
 
    public void setEmployee(String value) {
       this.employee = value;
@@ -29,9 +62,6 @@ public class SpecificService {
       return this.employee;
    }
 
-   private ServiceType serviceType;
-
-   @ManyToOne(optional = false)
    public ServiceType getServiceType() {
       return this.serviceType;
    }
@@ -40,9 +70,6 @@ public class SpecificService {
       this.serviceType = serviceType;
    }
 
-   private Car car;
-
-   @OneToOne(mappedBy = "specificService", optional = false)
    public Car getCar() {
       return this.car;
    }
@@ -51,14 +78,4 @@ public class SpecificService {
       this.car = car;
    }
 
-   private ParkingManagementSystem parkingManagementSystem;
-
-   @ManyToOne(optional = false)
-   public ParkingManagementSystem getParkingManagementSystem() {
-      return this.parkingManagementSystem;
-   }
-
-   public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
-      this.parkingManagementSystem = parkingManagementSystem;
-   }
 }

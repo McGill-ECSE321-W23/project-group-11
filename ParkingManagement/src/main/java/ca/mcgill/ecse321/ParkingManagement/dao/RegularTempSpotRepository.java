@@ -8,7 +8,7 @@ import ca.mcgill.ecse321.ParkingManagement.model.RegularTempSpot;
 @Repository
 public interface RegularTempSpotRepository extends CrudRepository<RegularTempSpot, Integer> {
 
-	RegularTempSpot findRegTempSpotById(int id);
+	RegularTempSpot findRegularTempSpotById(int id);
 	boolean existsById(int id);
 
 

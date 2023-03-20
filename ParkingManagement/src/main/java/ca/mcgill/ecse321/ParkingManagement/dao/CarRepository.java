@@ -11,4 +11,6 @@ public interface CarRepository extends CrudRepository<Car, String> {
 	Car findCarBylicensePlate(String licensePlate);
 	boolean existsBylicensePlate(String licensePlate);
 
+	
+
 }

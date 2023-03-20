@@ -1,52 +1,40 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 
 @Entity
 public class ReservedSpot {
-   private Integer id;
-
-   public void setId(Integer value) {
-      this.id = value;
-   }
 
    @Id
+   @GeneratedValue
+   private Integer id;
+
+   @ManyToOne
+   private Car car;
+   
+   private int placeNumber;
+
    public Integer getId() {
       return this.id;
    }
 
-   private float monthlyCost;
-
-   public void setMonthlyCost(float value) {
-      this.monthlyCost = value;
+   public void setplaceNumber(int value) {
+       this.placeNumber = value;
    }
-
-   public float getMonthlyCost() {
-      return this.monthlyCost;
+ 
+   public int getplaceNumber() {
+       return this.placeNumber;
    }
-
-   private Car car;
-
-   @OneToOne(mappedBy = "reservedSpot")
+   
    public Car getCar() {
       return this.car;
    }
 
    public void setCar(Car car) {
       this.car = car;
-   }
-
-   private ParkingManagementSystem parkingManagementSystem;
-
-   @ManyToOne(optional = false)
-   public ParkingManagementSystem getParkingManagementSystem() {
-      return this.parkingManagementSystem;
-   }
-
-   public void setParkingManagementSystem(ParkingManagementSystem parkingManagementSystem) {
-      this.parkingManagementSystem = parkingManagementSystem;
    }
 }

@@ -10,6 +10,4 @@ public interface ServiceTypeRepository extends CrudRepository<ServiceType, Strin
 
 	ServiceType findServiceTypeByName(String name);
 	boolean existsByName(String name);
-
-
 }
