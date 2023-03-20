@@ -6,13 +6,13 @@ import javax.persistence.Id;
 
 @Entity
 public class Manager extends UserRole {
-
+   // attributes
    @Id
    @GeneratedValue
    private int id;
 
+   // getters
    public int getId() {
       return this.id;
    }
-
 }

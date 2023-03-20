@@ -12,11 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ca.mcgill.ecse321.ParkingManagement.dao.AccountRepository;
-import ca.mcgill.ecse321.ParkingManagement.dao.CarRepository;
-import ca.mcgill.ecse321.ParkingManagement.dao.ManagerRepository;
-import ca.mcgill.ecse321.ParkingManagement.dao.ServiceTypeRepository;
-import ca.mcgill.ecse321.ParkingManagement.dao.SpecificServiceRepository;
 import ca.mcgill.ecse321.ParkingManagement.model.Account;
 import ca.mcgill.ecse321.ParkingManagement.model.Car;
 import ca.mcgill.ecse321.ParkingManagement.model.Manager;

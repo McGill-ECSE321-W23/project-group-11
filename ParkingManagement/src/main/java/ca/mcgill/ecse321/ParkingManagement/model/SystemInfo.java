@@ -7,75 +7,62 @@ import java.sql.Time;
 
 @Entity
 public class SystemInfo {
-
+    // attributes
     @Id
     private int id;
-
     private Time openTime;
     private Time closeTime;
     private int largeTempSpotPrice;
-    private int smallTempSpotPrice;
+    private int regTempSpotPrice;
     private int reservedSpotPrice;
 
+    // associations
     @OneToOne(optional = false)
     private Manager manager;
 
-    public void setId(int value) {
-        this.id = value;
-    }
-
+    // getters
     public int getId() {
         return this.id;
     }
-
-    public void setOpenTime(Time value) {
-        this.openTime = value;
-    }
-
     public Time getOpenTime() {
         return this.openTime;
     }
-
-    public void setLargeTempSpotPrice(int value) {
-        this.largeTempSpotPrice = value;
-    }
-
     public int getLargeTempSpotPrice() {
         return this.largeTempSpotPrice;
     }
-
-
-    public void setSmallTempSpotPrice(int value) {
-        this.smallTempSpotPrice = value;
+    public int getRegTempSpotPrice() {
+        return this.regTempSpotPrice;
     }
-
-    public int getSmallTempSpotPrice() {
-        return this.smallTempSpotPrice;
-    }
-
-
-    public void setReservedSpotPrice(int value) {
-        this.reservedSpotPrice = value;
-    }
-
-    public int getReservedSpotPrice() {
-        return this.reservedSpotPrice;
-    }
-
-    public void setCloseTime(Time value) {
-        this.closeTime = value;
-    }
-
     public Time getCloseTime() {
         return this.closeTime;
     }
-
     public Manager getManager() {
         return this.manager;
     }
 
+    // setters
+    public void setId(int value) {
+        this.id = value;
+    }
+    public void setOpenTime(Time value) {
+        this.openTime = value;
+    }
+    public void setLargeTempSpotPrice(int value) {
+        this.largeTempSpotPrice = value;
+    }
+    public void setRegTempSpotPrice(int value) {
+        this.regTempSpotPrice = value;
+    }
+    public void setReservedSpotPrice(int value) {
+        this.reservedSpotPrice = value;
+    }
+    public int getReservedSpotPrice() {
+        return this.reservedSpotPrice;
+    }
+    public void setCloseTime(Time value) {
+        this.closeTime = value;
+    }
     public void setManager(Manager manager) {
         this.manager = manager;
     }
-
 }
