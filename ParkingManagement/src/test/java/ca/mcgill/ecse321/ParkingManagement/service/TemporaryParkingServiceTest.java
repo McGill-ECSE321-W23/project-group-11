@@ -42,6 +42,7 @@ public class TemporaryParkingServiceTest {
 //TODO 2.8.2 step 3
 @Mock
 private LargeTempSpotRepository largeTempDao;
+@Mock
 private RegularTempSpotRepository regTempDao;
 
 @InjectMocks
@@ -52,7 +53,7 @@ private static final int SPOT_KEY_REG = 21;
 
 @BeforeEach
 public void setMockOutput() {
-    lenient().when(largeTempDao.findById(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
+    lenient().when(largeTempDao.findByPlaceNumber(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
         if(invocation.getArgument(0).equals(SPOT_KEY_LARGE)) {
             LargeTempSpot spot = new LargeTempSpot();
             spot.setPlaceNumber(SPOT_KEY_LARGE);
@@ -62,7 +63,7 @@ public void setMockOutput() {
         }
     });
 
-    lenient().when(regTempDao.findById(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
+    lenient().when(regTempDao.findByPlaceNumber(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
         if(invocation.getArgument(0).equals(SPOT_KEY_REG)) {
             RegularTempSpot spot = new RegularTempSpot();
             spot.setPlaceNumber(SPOT_KEY_REG);
