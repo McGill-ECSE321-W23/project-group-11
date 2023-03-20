@@ -59,7 +59,7 @@ public class TemporaryParkingService {
         // Set up spot based on inputs and return
         if (size == Size.Regular)  { 
             spot  = new RegularTempSpot();
-        } if  (size == Size.Large) {
+        } else if  (size == Size.Large) {
             spot  = new LargeTempSpot();
         } else {
             Exception e = new Exception("Size not recognized.");
@@ -98,7 +98,7 @@ public class TemporaryParkingService {
                     throw e;
                 }
         } 
-        spot.setPlaceNumer(id);;
+        spot.setPlaceNumer(id);
 
         return convertToDto(spot);
     }

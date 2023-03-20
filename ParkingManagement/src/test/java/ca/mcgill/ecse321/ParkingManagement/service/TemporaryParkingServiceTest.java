@@ -27,6 +27,7 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import ca.mcgill.ecse321.ParkingManagement.dao.CarRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.LargeTempSpotRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.RegularTempSpotRepository;
 import ca.mcgill.ecse321.ParkingManagement.dto.TempSpotDto;
@@ -44,6 +45,9 @@ public class TemporaryParkingServiceTest {
 private LargeTempSpotRepository largeTempDao;
 @Mock
 private RegularTempSpotRepository regTempDao;
+@Mock
+private CarRepository carRepository;
+
 
 @InjectMocks
 private TemporaryParkingService service;
@@ -89,6 +93,8 @@ public void setMockOutput() {
         Date date = new Date(2023/02/02);
         LocalTime time = LocalTime.of(9, 30);
 
+        String error = "";
+
         TempSpotDto largeSpot = null;
         TempSpotDto regSpot = null;
 		try {
@@ -96,8 +102,10 @@ public void setMockOutput() {
             regSpot = service.createTempSpot(Size.Regular, duration, car, date, time);
 		} catch (Exception e) {
 			// Check that no error occurred
-			fail();
+			error += e.getMessage();
 		}
+        assertEquals("", error);
+
 		assertNotNull(largeSpot);
 		assertEquals(Size.Large, largeSpot.getSize());
         assertNotNull(regSpot);
