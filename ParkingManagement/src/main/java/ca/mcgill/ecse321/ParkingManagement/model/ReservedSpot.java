@@ -8,32 +8,31 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class ReservedSpot {
-
+   // attributes
    @Id
    @GeneratedValue
    private Integer id;
+   private int placeNumber;
 
+   // associations
    @ManyToOne
    private Car car;
    
-   private int placeNumber;
-
+   // getters
    public Integer getId() {
       return this.id;
    }
-
-   public void setplaceNumber(int value) {
-       this.placeNumber = value;
-   }
- 
    public int getplaceNumber() {
-       return this.placeNumber;
+      return this.placeNumber;
    }
-   
    public Car getCar() {
       return this.car;
    }
 
+   // setters
+   public void setplaceNumber(int value) {
+      this.placeNumber = value;
+   }
    public void setCar(Car car) {
       this.car = car;
    }

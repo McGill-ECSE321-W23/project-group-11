@@ -12,62 +12,51 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Car {
-
+   // attributes
    @Id
    private String licensePlate;
-
-   @ManyToMany
-   private Set<Employee> employees;
-
-   @ManyToOne(optional=true)
-   private Customer customer;
-
-   @ManyToOne
-   private Manager manager;
-
-
-   public void setLicensePlate(String value) {
-      this.licensePlate = value;
-   }
-
-   public String getLicensePlate() {
-      return this.licensePlate;
-   }
-
    @Enumerated(EnumType.ORDINAL) 
    private Size size;
 
-   public void setSize(Size value) {
-      this.size = value;
-   }
+   // associations
+   @ManyToMany
+   private Set<Employee> employees;
+   @ManyToOne(optional=true)
+   private Customer customer;
+   @ManyToOne
+   private Manager manager;
 
+   // getters
+   public String getLicensePlate() {
+      return this.licensePlate;
+   }
    public Size getSize() {
       return this.size;
    }
-
    public Customer getCustomer() {
       return this.customer;
    }
-
-   public void setCustomer(Customer customer) {
-      this.customer= customer;
-   }
-
    public Set<Employee> getEmployees() {
       return this.employees;
    }
-
-   public void setEmployees(Set<Employee> employees) {
-      this.employees = employees;
-   }
-
    public Manager getManager() {
       return this.manager;
    }
 
+   // setters
+   public void setLicensePlate(String value) {
+      this.licensePlate = value;
+   }
+   public void setSize(Size value) {
+      this.size = value;
+   }
+   public void setCustomer(Customer customer) {
+      this.customer= customer;
+   }
+   public void setEmployees(Set<Employee> employees) {
+      this.employees = employees;
+   }
    public void setManager(Manager manager) {
       this.manager= manager;
    }
-
-
 }

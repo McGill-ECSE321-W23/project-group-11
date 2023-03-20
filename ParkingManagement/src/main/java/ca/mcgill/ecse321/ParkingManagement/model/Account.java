@@ -5,26 +5,24 @@ import javax.persistence.Id;
 
 @Entity
 public class Account {
-
+   // attributes
    @Id
    private String email;
+   private String password;
 
-   public void setEmail(String value) {
-      this.email = value;
-   }
-
+   // getters
    public String getEmail() {
       return this.email;
    }
-
-   private String password;
-
-   public void setPassword(String value) {
-      this.password = value;
-   }
-   //probably should not have this
    public String getPassword() {
       return this.password;
    }
 
+   // setters
+   public void setEmail(String value) {
+      this.email = value;
+   }
+   public void setPassword(String value) {
+      this.password = value;
+   }
 }
