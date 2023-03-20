@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.ParkingManagement.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -9,20 +10,26 @@ import javax.persistence.ManyToOne;
 public class ReservedSpot {
 
    @Id
+   @GeneratedValue
    private Integer id;
 
-   public void setId(Integer value) {
-      this.id = value;
-   }
+   @ManyToOne
+   private Car car;
+   
+   private int placeNumber;
 
    public Integer getId() {
       return this.id;
    }
 
+   public void setplaceNumber(int value) {
+       this.placeNumber = value;
+   }
+ 
+   public int getplaceNumber() {
+       return this.placeNumber;
+   }
    
-   @ManyToOne
-   private Car car;
-
    public Car getCar() {
       return this.car;
    }

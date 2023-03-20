@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.ParkingManagement.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +30,7 @@ public class ServiceTypeRepositoryTests {
     
  
 	@AfterEach
+    @BeforeEach
 	public void clearDatabase() {
 		serviceTypeRepository.deleteAll();
         managerRepository.deleteAll();
@@ -36,7 +38,7 @@ public class ServiceTypeRepositoryTests {
 	}
 
 	@Test
-	public void specificServiceTest() {
+	public void ServiceTypeTest() {
 		
         //create account
         String email = "johndoe1955@gmail.com";
@@ -49,9 +51,7 @@ public class ServiceTypeRepositoryTests {
         accountRepository.save(account);
 
         // Create manager
-        int managerId = 1;
         Manager manager = new Manager();
-        manager.setId(managerId);
         manager.setAccount(account);
         
         // Save manager
@@ -83,6 +83,6 @@ public class ServiceTypeRepositoryTests {
         //check if theres a manager
         assertNotNull(serviceType.getManager());
         //check if licence plat is the same as the one you saved
-		assertEquals(managerId, serviceType.getManager().getId());
+		assertEquals(manager.getId(), serviceType.getManager().getId());
 	}
 }

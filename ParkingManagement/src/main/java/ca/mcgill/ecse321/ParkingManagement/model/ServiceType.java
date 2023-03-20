@@ -3,6 +3,8 @@ package ca.mcgill.ecse321.ParkingManagement.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 
 @Entity

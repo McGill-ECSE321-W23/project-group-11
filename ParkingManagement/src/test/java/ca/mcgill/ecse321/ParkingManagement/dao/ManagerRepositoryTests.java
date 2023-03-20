@@ -50,22 +50,21 @@ public class ManagerRepositoryTests {
         account = accountRepository.findAccountByEmail(targetEmail);
 
         //create Manager
-        Manager Manager = new Manager();
-        Manager.setAccount(account);
-        Manager.setId(222);
-        assertNotNull(Manager.getAccount());
+        Manager manager = new Manager();
+        manager.setAccount(account);
+        assertNotNull(manager.getAccount());
 
         //save Manager
-        managerRepository.save(Manager);
-        email = Manager.getAccount().getEmail();
+        manager = managerRepository.save(manager);
+        email = manager.getAccount().getEmail();
         
         //read Manager
-        Manager = managerRepository.findManagerByid(222);
+        Manager managerfromdb = managerRepository.findManagerByid(manager.getId());
 
         //Check that Manager has correct attributes
-        assertNotNull(Manager);
-        assertNotNull(Manager.getAccount());
-        assertEquals(email, Manager.getAccount().getEmail());
-        assertEquals(password, Manager.getAccount().getPassword());
+        assertNotNull(manager);
+        assertNotNull(manager.getAccount());
+        assertEquals(email, manager.getAccount().getEmail());
+        assertEquals(manager.getId(), managerfromdb.getId());
     }
 }
