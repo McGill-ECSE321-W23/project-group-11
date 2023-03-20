@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Time;
-import ca.mcgill.ecse321.ParkingManagement.dao.*;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
 
 @SpringBootTest
