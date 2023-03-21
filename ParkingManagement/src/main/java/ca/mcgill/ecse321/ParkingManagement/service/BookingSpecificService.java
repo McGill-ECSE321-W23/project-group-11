@@ -14,13 +14,24 @@ import ca.mcgill.ecse321.ParkingManagement.model.*;
 public class BookingSpecificService {
 
     @Autowired
-    ManagerRepository managerRepository;
-    @Autowired
     SpecificServiceRepository specificServiceRepository;
     @Autowired
     ServiceTypeRepository serviceTypeRepository;
     @Autowired
     CarRepository carRepository;
 
+    /**
+     * Creates a ServiceType
+     * @param name name of service you are creating
+     * @param cost cost of the service
+     * @param duration duration of the service
+     * @param manager manager who is adding the service
+     * @return service type created
+     * @throws Exception
+     */
+    @Transactional
+    public createSpecificService() throws Exception {
+        
+    }
 
 }

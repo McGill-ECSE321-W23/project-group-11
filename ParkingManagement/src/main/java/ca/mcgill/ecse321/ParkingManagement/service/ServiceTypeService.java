@@ -3,8 +3,6 @@ package ca.mcgill.ecse321.ParkingManagement.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import java.util.ArrayList;
 import ca.mcgill.ecse321.ParkingManagement.dao.*;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
 import ca.mcgill.ecse321.ParkingManagement.dto.ServiceTypeDto;
@@ -12,7 +10,7 @@ import ca.mcgill.ecse321.ParkingManagement.dto.ServiceTypeDto;
 @Service
 public class ServiceTypeService{
     @Autowired
-    ServiceType serviceTypeRepository;
+    ServiceTypeRepository serviceTypeRepository;
     @Autowired
     ManagerRepository managerRepository;
     
@@ -29,13 +27,13 @@ public class ServiceTypeService{
      @Transactional
      public ServiceType createServiceType(String name, int cost, int duration, Manager manager) throws Exception{
         //check if manager is null
-        if(manager == null){
-            Exception e = new Exception("Inputted manager was null");
+        if(manager == null || name == null){
+            Exception e = new Exception("Missing information about the service type, must have a cost, name, manager and duration");
             throw e;
         }
         //check if the manager is in the database
-        if(managerRepository.existsById(manager.getId())){
-            Exception e = new Exception("Manager does not exist in database");
+        if(managerRepository.findManagerByid(manager.getId())==null){
+            Exception e = new Exception("Manager does not exist");
             throw e;
         }
         //all is good create a service type
@@ -46,7 +44,7 @@ public class ServiceTypeService{
         serviceType.setDuration(duration);
         serviceType.setManager(manager);
 
-        return serviceType;
+        return serviceTypeRepository.save(serviceType);
      }
      /**
      * Deletes an existing serviceType
@@ -63,7 +61,7 @@ public class ServiceTypeService{
             throw e;
         }
         //if it exists then delete it
-        if(serviceTypeRepository.existsByName(serviceType.getName())){
+        if(serviceTypeRepository.findServiceTypeByName(serviceType.getName())!=null){
             serviceTypeRepository.deleteById(serviceType.getName());
         }
         else{
@@ -87,7 +85,7 @@ public class ServiceTypeService{
         }
         ServiceType serviceType = null;
         //if the name exists then get it from database
-        if(serviceTypeRepository.existsByName(name)){
+        if(serviceTypeRepository.findServiceTypeByName(name)!=null){
             serviceType = serviceTypeRepository.findServiceTypeByName(name);
         }
         //if the name doesnt exist throw exception
@@ -103,17 +101,13 @@ public class ServiceTypeService{
      * @return list of TempSpots
      */
     @Transactional
-    public List<ServiceType> getAllServiceTypes() throws Exception{
-        ServiceTypeDto serviceTypeDto;
-        List<ServiceType> allServiceTypes = new ArrayList<ServiceTypeDto>();
-        //for each service type in the database add it to the list of service types
-        for(ServiceType serviceType : serviceTypeRepository.findAll().get()){
-            serviceTypeDto = convertToDto(serviceType);
-            allServiceTypes.add(serviceTypeDto);
-        }
-        return allServiceTypes;
-    }
-    //converts a Servicetype into a servicetype dto
+    public Iterable<ServiceType> getAllServiceTypes() {
+		return serviceTypeRepository.findAll();
+	}
+
+    //TODO make an edit ServiceType if the time permits
+
+    //converts a Servicetype into a servicetype dto (might be useful) 
     private ServiceTypeDto convertToDto(ServiceType serviceType) {
         ServiceTypeDto dto = new ServiceTypeDto(serviceType.getName(),serviceType.getCost(),serviceType.getDuration(),serviceType.getManager());
         return dto;
