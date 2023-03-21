@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.ParkingManagement.service;
 
 import ca.mcgill.ecse321.ParkingManagement.dao.*;
+import ca.mcgill.ecse321.ParkingManagement.dto.CarDto;
 import ca.mcgill.ecse321.ParkingManagement.dto.TempSpotDto;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,53 +30,48 @@ public class TemporaryParkingService {
     /**
      * Creates a temporary spot
      *
-     * @param size size of parking spot (Regular or Large)
      * @param duration number of 15 minute intervals requested
+     * @param carDto DTO of car booking the spot
      * @param date date of reservation
      * @param time of reservation
-     * @return temporary spot created
+     * @return DTO of temporary spot created
      * @throws Exception
      */
     @Transactional
-    public TempSpotDto createTempSpot(Size size, int duration, Car car, Date date, LocalTime time) throws Exception {
+    public TempSpotDto createTempSpot(int duration, CarDto carDto, Date date, LocalTime time) throws Exception {
         TempSpot spot;
-        // Null checks for objects
-        if (car == null) { 
-            Exception e = new Exception("Inputted car was null.");
-            throw e;
-        }
+
         // Obtain objects from database to initialize TempSpot
-        if (carRepository.existsBylicensePlate(car.getLicensePlate())) { // Check that argument exists in database
-            Exception e = new Exception("Inputted car does not have a license plate that exists in the database.");
-            throw e;
+        if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check that argument exists in database
+            throw new Exception("Inputted licence plate does not match a car in the database.");
         }
+        Car car = carRepository.findCarBylicensePlate(carDto.getLicensePlate());
 
         // Check input validity
         if (duration > 48  || duration < 1) {
-            Exception e = new Exception("Inputted durration exceeds bounds of accepted values ([1, 48] intervals of 15 minutes).");
-            throw e;
+            throw new Exception("Inputted durration exceeds bounds of accepted values ([1, 48] intervals of 15 minutes).");
         }
-        
+
         // Set up spot based on inputs and return
+        Size size = car.getSize();
         if (size == Size.Regular)  { 
             spot  = new RegularTempSpot();
         } else if  (size == Size.Large) {
             spot  = new LargeTempSpot();
         } else {
-            Exception e = new Exception("Size not recognized.");
+            Exception e = new Exception("Car size not recognized.");
             throw e;
         }
-        
         spot.setCar(car);
         spot.setDuration(duration);
         spot.setStartTime(time);
         spot.setDate(date);
 
         /*
-         * set id
-         * check to make sure that id is not used for another tempSpot
-         * large spots have ids 1-20
-         * regular spots have ids 21- 270
+         * set place number
+         * check to make sure that place number is not used for another tempSpot
+         * large spots have places 1-20
+         * regular spots have places 21- 270
          */
         int place = 1;
         if (size == Size.Regular) {
@@ -111,20 +107,18 @@ public class TemporaryParkingService {
             throw e;
         }
 
-        if ((size == Size.Regular && (place > 270 || place < 21)) || (size == Size.Large && (place > 20 || place < 1))) {
-            Exception e = new Exception("Place number generation is broken.");
-            throw e;
-        }
+        
         spot.setPlaceNumber(place);
         return convertToDto(spot);
     }
+
 
 
     /**
      * Returns a temporary spot from an id
      *
      * @param id of desired spot
-     * @return spot corresponding with id
+     * @return DTO of spot corresponding with id
      * @throws Exception
      */
     @Transactional
@@ -148,11 +142,18 @@ public class TemporaryParkingService {
      *
      * @param spot temporary spot to edit
      * @param duration new number of 15 minute intervals
-     * @return temporary spot editted
+     * @return temporary spot DTO
      * @throws Exception
      */
     @Transactional
-    public TempSpot editTempSpot (TempSpot spot, int duration) throws Exception{
+    public TempSpotDto editTempSpot (int place, int duration) throws Exception{
+        // get spot from its repository
+        TempSpot spot = null;
+        boolean large = true;
+        if (largeTempSpotRepository.existsByPlaceNumber(place)) {spot = largeTempSpotRepository.findByPlaceNumber(place);}
+        else if (regularTempSpotRepository.existsByPlaceNumber(place)) {spot = regularTempSpotRepository.findByPlaceNumber(place); large = false;}
+
+        // check for bad inputs
         if (spot == null) {
             Exception e = new Exception("Inputted spot is null.");
             throw e;
@@ -165,9 +166,12 @@ public class TemporaryParkingService {
             Exception e = new Exception("Inputted duration is not different than existing duration.");
             throw e;
         }
+        // set duration and save into correct repository
         spot.setDuration(duration);
+        if (large) {largeTempSpotRepository.save((LargeTempSpot) spot);}
+        else {regularTempSpotRepository.save((RegularTempSpot) spot);}
 
-        return spot;
+        return convertToDto(spot);
     }
 
 
