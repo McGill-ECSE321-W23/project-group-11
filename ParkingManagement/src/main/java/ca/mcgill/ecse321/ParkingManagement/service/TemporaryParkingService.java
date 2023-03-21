@@ -77,29 +77,45 @@ public class TemporaryParkingService {
          * large spots have ids 1-20
          * regular spots have ids 21- 270
          */
-        int id = 1;
+        int place = 1;
         if (size == Size.Regular) {
-            id = 21;
+            place = 21;
             while (true) {
-                if (!regularTempSpotRepository.existsByPlaceNumber(id)) {break;} 
-                id++;
-                if (id > 270) {
+                if (!regularTempSpotRepository.existsByPlaceNumber(place)) {
+                    spot.setPlaceNumber(place);
+                    break;
+                } 
+                else {
+                    place++;
+                }
+                if (place > 270) {
                     Exception e = new Exception("There are no more regular spots available.");
                     throw e;
                 }
             }
-        }
-        if (size == Size.Large) {
-            while (id <= 20)
-                if (!largeTempSpotRepository.existsByPlaceNumber(id)) {break;} 
-                id++;
-                if (id > 20) {
+        } else if (size == Size.Large) {
+            while (place <= 20)
+                if (!largeTempSpotRepository.existsByPlaceNumber(place)) {
+                    spot.setPlaceNumber(place);
+                    break;
+                } 
+                else {
+                    place++;
+                }
+                if (place > 20) {
                     Exception e = new Exception("There are no more large spots available.");
                     throw e;
                 }
-        } 
-        spot.setPlaceNumer(id);
+        } else {
+            Exception e = new Exception("Size issue.");
+            throw e;
+        }
 
+        if ((size == Size.Regular && (place > 270 || place < 21)) || (size == Size.Large && (place > 20 || place < 1))) {
+            Exception e = new Exception("Place number generation is broken.");
+            throw e;
+        }
+        spot.setPlaceNumber(place);
         return convertToDto(spot);
     }
 
@@ -112,15 +128,19 @@ public class TemporaryParkingService {
      * @throws Exception
      */
     @Transactional
-    public TempSpot getSpot(int id) throws Exception{
+    public TempSpotDto getSpotByPlaceNumber(int placeNumber) throws Exception{
         TempSpot spot;
-        if (regularTempSpotRepository.existsById(id)) {spot = regularTempSpotRepository.findById(id).get();}
-        else if (largeTempSpotRepository.existsById(id)) {spot = largeTempSpotRepository.findById(id).get();}
+        if (regularTempSpotRepository.existsByPlaceNumber(placeNumber)) {
+            spot = regularTempSpotRepository.findByPlaceNumber(placeNumber); // if someone is using this as an example and is getting an error with findById, add .get() to the end
+        }
+        else if (largeTempSpotRepository.existsByPlaceNumber(placeNumber)) {
+            spot = largeTempSpotRepository.findByPlaceNumber(placeNumber);
+        }
         else {
-            Exception e = new Exception("No temporary spot currently is reserved with that id.");
+            Exception e = new Exception("No temporary spot currently is reserved with that place number.");
             throw e;
         }
-        return spot;
+        return convertToDto(spot);
     }
 
     /**
@@ -239,9 +259,9 @@ public class TemporaryParkingService {
     private TempSpotDto convertToDto(TempSpot spot) {
         TempSpotDto dto;
         if (spot instanceof LargeTempSpot) {
-            dto = new TempSpotDto(spot.getId(), spot.getDuration(), spot.getDate(), spot.getStartTime(), spot.getCar(), Size.Large);
+            dto = new TempSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), spot.getStartTime(), spot.getCar(), Size.Large);
         } else {
-            dto = new TempSpotDto(spot.getId(), spot.getDuration(), spot.getDate(), spot.getStartTime(), spot.getCar(), Size.Regular);
+            dto = new TempSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), spot.getStartTime(), spot.getCar(), Size.Regular);
         }
         return dto;
     }

@@ -38,7 +38,7 @@ public abstract class TempSpot {
     }
 
     // setters
-    public void setPlaceNumer(int value) {
+    public void setPlaceNumber(int value) {
         this.placeNumber = value;
     }
     public void setDate(Date value) {
