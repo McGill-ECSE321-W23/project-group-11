@@ -63,7 +63,7 @@ public class ServiceTypeService{
             throw e;
         }
         //if it exists then delete it
-        if(existsByName(serviceType.getName())){
+        if(serviceTypeRepository.existsByName(serviceType.getName())){
             serviceTypeRepository.deleteById(serviceType.getName());
         }
         else{
