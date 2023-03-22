@@ -7,7 +7,7 @@ public class AccountDto {
     private String password;
 
     //constructor
-    public AccountDto(String email, string password ) {
+    public AccountDto(String email, String password ) {
         this.email = email;
         this.password = password;
     }
