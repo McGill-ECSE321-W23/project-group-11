@@ -21,17 +21,16 @@ public class SpecificServiceBookingService {
     CarRepository carRepository;
 
     /**
-     * Creates a ServiceType
+     * Creates a Booking
      * @param id unique id for the booking
      * @param date date of the booking
-     * @param startTime the time of the booking
-     * @param employee name of the employee doing the service 
+     * @param startTime of the booking
+     * @param employee name doing the service 
      * @param car the car associated with the booking
      * @param specificService the service type associated with the booking
      * @return a booking for a service
      * @throws Exception
      */
-
     @Transactional
     public SpecificService createBooking(Date date, LocalTime startTime, String employee, Car car, ServiceType serviceType) throws Exception {
         //check if any of the attributes are null
@@ -49,6 +48,13 @@ public class SpecificServiceBookingService {
             Exception e = new Exception("Service Type does not exist");
             throw e;
         }
+        //check to see if the Date and Time is already taken
+        for(SpecificService specificService:specificServiceRepository.findAll()){
+            if(specificService.getDate().compareTo(date)!=0 && specificService.getStartTime().compareTo(startTime)!=0 && specificService.getEmployee().equals(employee)){
+                Exception e = new Exception("Service Type at this time and date already exists");
+                throw e;
+            }
+        }
         //everything is good lets proceed to the creation of the booking
         SpecificService booking = new SpecificService();
         booking.setDate(date);
@@ -59,6 +65,12 @@ public class SpecificServiceBookingService {
 
         return specificServiceRepository.save(booking);
     }
+    /**
+     * Gets a booking from an id
+     * @param id unique id for the booking
+     * @return a booking for a service
+     * @throws Exception
+     */
     @Transactional
     public SpecificService getBookingById(int id) throws Exception {
         if(specificServiceRepository.findSpecificServiceById(id)==null){
@@ -70,12 +82,21 @@ public class SpecificServiceBookingService {
 
         }
     }
-
+    /**
+     * Gets all bookings
+     * @return a booking for a service
+     * @throws Exception
+     */
     @Transactional
     public Iterable<SpecificService> getAllBookings(){
         return specificServiceRepository.findAll();
     }
-
+    /**
+     * Gets all bookings associated to a car 
+     * @param car the car associated with the booking
+     * @return a List of bookings
+     * @throws Exception
+     */
     @Transactional
     public Iterable<SpecificService> getAllBookingsByCar(Car car){
         List<SpecificService> bookingList = new ArrayList();
@@ -85,5 +106,53 @@ public class SpecificServiceBookingService {
             }
         }
         return bookingList;
+    }
+    /**
+     * Deletes a Booking
+     * @param id unique id for the booking
+     * @return void
+     * @throws Exception
+     */
+    @Transactional
+    public void deleteBookingById(int id) throws Exception{
+        if(specificServiceRepository.findSpecificServiceById(id)!=null){
+            specificServiceRepository.deleteById(id);
+            return;
+        }
+        else{
+            Exception e = new Exception("Booking with given id does not exist");
+            throw e;
+        }
+    }
+    /**
+     * Edits a Booking
+     * @param id unique id for the booking
+     * @param date of the booking you want to change to
+     * @param startTime of the booking you want to change to
+     * @param employee name of the employee you are switching to
+     * @return a booking for a service
+     * @throws Exception
+     */
+    @Transactional
+    public SpecificService editBookingById(int id, Date date, LocalTime startTime, String employee) throws Exception{
+        if(date == null || startTime == null || employee == null){
+            Exception e = new Exception("Missing information about the booking");
+            throw e;
+        }
+        //check to see if the Date and Time is already taken
+        for(SpecificService specificService:specificServiceRepository.findAll()){
+            if(specificService.getDate().compareTo(date)!=0 && specificService.getStartTime().compareTo(startTime)!=0 && specificService.getEmployee().equals(employee)){
+                Exception e = new Exception("Service Type at this time and date already exists");
+                throw e;
+            }
+        }
+        //get the booking you want to edit
+        SpecificService booking = specificServiceRepository.findSpecificServiceById(id);
+        //set the variables
+        booking.setEmployee(employee);
+        booking.setDate(date);
+        booking.setStartTime(startTime);
+        //save object
+        return specificServiceRepository.save(booking);
     }
 }
