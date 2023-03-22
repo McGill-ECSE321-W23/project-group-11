@@ -12,6 +12,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -36,6 +37,7 @@ import ca.mcgill.ecse321.ParkingManagement.model.Car;
 import ca.mcgill.ecse321.ParkingManagement.model.LargeTempSpot;
 import ca.mcgill.ecse321.ParkingManagement.model.RegularTempSpot;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
+import ca.mcgill.ecse321.ParkingManagement.utility.DtoConverters;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -57,6 +59,7 @@ public class TemporaryParkingServiceTest {
     private static final String CAR_KEY = "regular plate number";
     private static final String CAR_KEY_LARGE = "large plate number";
 
+    // these set mock outputs mimic repositories for proper unit testing
     @BeforeEach
     public void setMockOutput() {
         lenient().when(largeTempDao.findByPlaceNumber(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
@@ -64,10 +67,31 @@ public class TemporaryParkingServiceTest {
                 LargeTempSpot spot = new LargeTempSpot();
                 spot.setPlaceNumber(SPOT_KEY_LARGE);
                 return spot;
-            } else if(invocation.getArgument(0).equals(SPOT_KEY_REG)) {
+            } else {
+                return null;
+            }
+        });
+
+        lenient().when(regTempDao.findByPlaceNumber(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
+            if(invocation.getArgument(0).equals(SPOT_KEY_REG)) {
                 RegularTempSpot spot = new RegularTempSpot();
                 spot.setPlaceNumber(SPOT_KEY_REG);
                 return spot;
+            } else {
+                return null;
+            }
+        });
+
+        lenient().when(regTempDao.existsByPlaceNumber(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
+            if(invocation.getArgument(0).equals(SPOT_KEY_REG)) {
+                return true;
+            } else {
+                return null;
+            }
+        });
+        lenient().when(largeTempDao.existsByPlaceNumber(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
+            if(invocation.getArgument(0).equals(SPOT_KEY_LARGE)) {
+                return true;
             } else {
                 return null;
             }
@@ -97,14 +121,15 @@ public class TemporaryParkingServiceTest {
             }
         });
 
-        // Whenever anything is saved, just return the parameter object TODO i don't actually know what this does
-            // Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
-            // 	return invocation.getArgument(0);
-            // };
-            // lenient().when(largeTempDao.save(any(LargeTempSpot.class))).thenAnswer(returnParameterAsAnswer);
-            // lenient().when(regTempDao.save(any(RegularTempSpot.class))).thenAnswer(returnParameterAsAnswer);
+        // Whenever anything is saved, just return the parameter object
+            Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
+            	return invocation.getArgument(0);
+            };
+            lenient().when(largeTempDao.save(any(LargeTempSpot.class))).thenAnswer(returnParameterAsAnswer);
+            lenient().when(regTempDao.save(any(RegularTempSpot.class))).thenAnswer(returnParameterAsAnswer);
     }
 
+    // ------------------------------------------- Create spot tests -----------------------------------------------------
     @Test
     public void testCreateTempSpot() {
         String error = "";
@@ -139,7 +164,8 @@ public class TemporaryParkingServiceTest {
         // check outputs
         assertNotNull(largeSpot);
         assertEquals(Size.Large, largeSpot.getSize());
-        assertEquals(1, largeSpot.getPlaceNumber());
+        // expected below is plus one because mock says that there is a spot with SPOT_KEY_LARGE already
+        assertEquals(SPOT_KEY_LARGE + 1, largeSpot.getPlaceNumber()); 
         assertEquals(duration, largeSpot.getDuration());
         assertEquals(largeCarPlate, largeSpot.getCar().getLicensePlate());
         assertEquals(date, largeSpot.getDate());
@@ -147,7 +173,8 @@ public class TemporaryParkingServiceTest {
 
         assertNotNull(regSpot);
         assertEquals(Size.Regular, regSpot.getSize());
-        assertEquals(21, regSpot.getPlaceNumber());
+        // expected below is plus one because mock says that there is a spot with SPOT_KEY_REG already
+        assertEquals(SPOT_KEY_REG + 1, regSpot.getPlaceNumber());
         assertEquals(duration, regSpot.getDuration());
         assertEquals(regularCarPlate, regSpot.getCar().getLicensePlate());
         assertEquals(date, regSpot.getDate());
@@ -173,7 +200,40 @@ public class TemporaryParkingServiceTest {
         assertEquals("Inputted durration exceeds bounds of accepted values ([1, 48] intervals of 15 minutes).", error);
     }
 
+
+    // ------------------------------------------- Edit spot tests -----------------------------------------------------
+    @Test
+    public void testEditTempSpot() {
+        assertEquals(0, service.getAllTempSpots().size());
+        String error = "";
+        RegularTempSpot spot = new RegularTempSpot();
+        int duration = 5;
+        Car car = new Car();
+        Date date = new Date(2023/02/02);
+        LocalTime time = LocalTime.of(9, 30);
+        spot.setCar(car);
+        spot.setDuration(duration);
+        spot.setDate(date);
+        spot.setStartTime(time);
+        spot.setPlaceNumber(SPOT_KEY_REG);
+
+        TempSpotDto spotDto = new TempSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
+        spot.getStartTime(), spot.getCar(), Size.Regular);
+        try {
+            spotDto = service.editTempSpot(spotDto, 15);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+        assertEquals("", error);
+        assertEquals(15, spotDto.getDuration());
+    }
     
+
+
+
+
+
+
 
     // @Test
     // public void testGetTempSpotByPlaceNumber() {
