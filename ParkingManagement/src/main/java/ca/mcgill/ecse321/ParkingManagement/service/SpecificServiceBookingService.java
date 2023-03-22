@@ -33,14 +33,14 @@ public class SpecificServiceBookingService {
      */
 
     @Transactional
-    public SpecificService createSpecificService(Date date, LocalTime startTime, String employee, Car car, ServiceType serviceType) throws Exception {
+    public SpecificService createBooking(Date date, LocalTime startTime, String employee, Car car, ServiceType serviceType) throws Exception {
         //check if any of the attributes are null
         if(date == null || startTime == null || employee == null || car == null || serviceType == null){
             Exception e = new Exception("Missing information about the booking");
             throw e;
         }
         //check to see if the car exists
-        if(carRepository.findCarByLicencePlate(car.getLicencePlate())==null){
+        if(carRepository.findCarBylicensePlate(car.getLicensePlate())==null){
             Exception e = new Exception("Car is not registered");
             throw e;
         }
@@ -60,6 +60,30 @@ public class SpecificServiceBookingService {
         return specificServiceRepository.save(booking);
     }
     @Transactional
-    
+    public SpecificService getBookingById(int id) throws Exception {
+        if(specificServiceRepository.findSpecificServiceById(id)==null){
+            Exception e = new Exception("Booking with given id does not exist");
+            throw e;
+        }
+        else{
+            return specificServiceRepository.findSpecificServiceById(id);
 
+        }
+    }
+
+    @Transactional
+    public Iterable<SpecificService> getAllBookings(){
+        return specificServiceRepository.findAll();
+    }
+
+    @Transactional
+    public Iterable<SpecificService> getAllBookingsByCar(Car car){
+        List<SpecificService> bookingList = new ArrayList();
+        for(SpecificService specificService : specificServiceRepository.findAll()){
+            if(specificService.getCar() == car){
+                bookingList.add(specificService);
+            }
+        }
+        return bookingList;
+    }
 }
