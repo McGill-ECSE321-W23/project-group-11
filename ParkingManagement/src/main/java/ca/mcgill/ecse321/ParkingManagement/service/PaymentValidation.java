@@ -1,5 +1,10 @@
 package ca.mcgill.ecse321.ParkingManagement.service;
 
+import ca.mcgill.ecse321.ParkingManagement.model.LargeTempSpot;
+import ca.mcgill.ecse321.ParkingManagement.model.RegularTempSpot;
+import ca.mcgill.ecse321.ParkingManagement.model.TempSpot;
+import ca.mcgill.ecse321.ParkingManagement.model.SystemInfo;
+
 public class PaymentValidation {
 
     /**
@@ -31,4 +36,28 @@ public class PaymentValidation {
             throw e;
         }
     }
+
+    /**
+     * Method that calculates the price the customer needs to pay for the spot
+     * @param spot the particular spot that the customer is taking
+     * @param hours the number of hours the customer is occupying the spot
+     * @return the float that represents the total cost for the customer to pay
+     */
+    
+    public float priceForTempSpot(TempSpot spot, int hours){
+        float price = 0f;
+        SystemInfo sys = new SystemInfo();
+        if(spot instanceof RegularTempSpot){
+            price += sys.getRegTempSpotPrice()*(hours*4);
+            return price;
+        }
+
+        if(spot instanceof LargeTempSpot){
+            price += sys.getLargeTempSpotPrice()*(hours*4);
+            return price;
+        }
+
+        return price;
+    }
+
 }
