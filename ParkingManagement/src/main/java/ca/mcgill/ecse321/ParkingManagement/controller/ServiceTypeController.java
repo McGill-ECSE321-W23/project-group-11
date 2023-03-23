@@ -1,18 +1,11 @@
 package ca.mcgill.ecse321.ParkingManagement.controller;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import ca.mcgill.ecse321.ParkingManagement.service.*;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
 import ca.mcgill.ecse321.ParkingManagement.dto.*;
@@ -32,7 +25,11 @@ public class ServiceTypeController {
 
     @GetMapping(value = { "/servicetypes", "/servicetypes/" })
     public List<ServiceTypeDto> getAllServiceTypes() {
-	    return service.getAllServiceTypes().stream().map(s -> convertToDto(s)).collect(Collectors.toList());
+	    List<ServiceTypeDto> serviceTypeList = new ArrayList<>();
+        for(ServiceType serviceType : serviceTypeService.getAllServiceTypes()){
+            serviceTypeList.add(convertToDto(serviceType));
+        }
+        return serviceTypeList;
     }
 
     /**
@@ -42,7 +39,7 @@ public class ServiceTypeController {
 	 */
 
     @GetMapping(value = {"/servicetype/{name}", "/servicetype/{name}/"})
-    public ServiceTypeDto getServiceType(@PathVariable String name) {
+    public ServiceTypeDto getServiceType(@PathVariable String name) throws Exception{
         return convertToDto(serviceTypeService.getServiceTypeByName(name));
     }
 
@@ -53,7 +50,7 @@ public class ServiceTypeController {
 	 */
 
     @PostMapping(value = {"/servicetype", "/servicetype/"})
-    public ServiceTypeDto createServiceType(@RequestBody ServiceTypeDto serviceTypeDto){
+    public ServiceTypeDto createServiceType(@RequestBody ServiceTypeDto serviceTypeDto) throws Exception{
         //convert to a serviceType
         ServiceType serviceType = serviceTypeDto.toModel();
         //call service
@@ -69,11 +66,11 @@ public class ServiceTypeController {
 	 */
 
     @DeleteMapping(value = {"/servicetype/","/servicetype"})
-    public void deleteServiceType(@RequestBody ServiceTypeDto serviceTypeDto){
+    public void deleteServiceType(@RequestBody ServiceTypeDto serviceTypeDto)  throws Exception{
         //convert to a serviceType
         ServiceType serviceType = serviceTypeDto.toModel();
         //call service
-        serviceType = serviceTypeService.removeServiceType(serviceType.getName());
+        serviceTypeService.removeServiceType(serviceType);
         //return
         return;
     }

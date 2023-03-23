@@ -1,14 +1,14 @@
-package ca.mcgill.ecse321.ParkingManagement.model.Car;
-package ca.mcgill.ecse321.ParkingManagement.model.ServiceType;
+package ca.mcgill.ecse321.ParkingManagement.dto;
+import ca.mcgill.ecse321.ParkingManagement.model.*;
 import java.sql.Date;
 import java.time.LocalTime;
 
 
 
-public class SpecificService {
+public class SpecificServiceDto{
 
     //Contructor
-    public SpecificService(int id, Date date, LocalTime startTime, String employee, ServiceType serviceType, Car car) {
+    public SpecificServiceDto(int id, Date date, LocalTime startTime, String employee, ServiceType serviceType, Car car) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;

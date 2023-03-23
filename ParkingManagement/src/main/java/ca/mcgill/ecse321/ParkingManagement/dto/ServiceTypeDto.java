@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.ParkingManagement.dto;
 import ca.mcgill.ecse321.ParkingManagement.model.Manager;
+import ca.mcgill.ecse321.ParkingManagement.model.ServiceType;
 
 public class ServiceTypeDto {
 
@@ -53,7 +54,11 @@ public class ServiceTypeDto {
     }
 
     public ServiceType toModel(){
-        ServiceType s = new ServiceType(name, cost, duration, manager);
+        ServiceType s = new ServiceType();
+        s.setName(name);
+        s.setCost(cost);
+        s.setDuration(duration);
+        s.setManager(manager);
         return s;
     }
 }
