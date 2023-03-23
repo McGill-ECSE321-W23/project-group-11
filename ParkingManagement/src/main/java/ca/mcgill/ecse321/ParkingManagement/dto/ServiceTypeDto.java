@@ -11,7 +11,6 @@ public class ServiceTypeDto {
         this.manager = manager;
     }
 
-
     //Getters and Setters
     private String name;
 

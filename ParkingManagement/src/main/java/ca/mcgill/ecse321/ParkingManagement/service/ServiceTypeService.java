@@ -106,10 +106,4 @@ public class ServiceTypeService{
 	}
 
     //TODO make an edit ServiceType if the time permits
-
-    //converts a Servicetype into a servicetype dto (might be useful) 
-    private ServiceTypeDto convertToDto(ServiceType serviceType) {
-        ServiceTypeDto dto = new ServiceTypeDto(serviceType.getName(),serviceType.getCost(),serviceType.getDuration(),serviceType.getManager());
-        return dto;
-    }
 }
