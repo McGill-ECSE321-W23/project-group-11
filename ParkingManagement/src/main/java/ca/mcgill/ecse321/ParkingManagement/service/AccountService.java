@@ -24,7 +24,7 @@ public class AccountService {
      */
 
      @Transactional
-     public Account createAccount(String email, String password) {
+     public Account createAccount(String email, String password) throws Exception {
         Account account;
 
         //null check for the fields
@@ -62,7 +62,7 @@ public class AccountService {
      */
 
     @Transactional
-    public Account getAccount(String email, String password) {
+    public Account getAccount(String email, String password) throws Exception {
         Account account;
         if(accountRepository.existsAccountByEmailAndPassword(email,password)) {
             account = accountRepository.findAccountByEmailAndPassword(email, password);
@@ -86,7 +86,7 @@ public class AccountService {
      * 
      */
     @Transactional
-    public Account editAccount(Account account, String newEmail, String newPassword) {
+    public Account editAccount(Account account, String newEmail, String newPassword) throws Exception {
 
         if(account == null) {
             Exception e = new Exception("Cant modify no accounts");
