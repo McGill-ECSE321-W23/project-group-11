@@ -68,7 +68,7 @@ public class AccountService {
             account = accountRepository.findAccountByEmailAndPassword(email, password);
         }
         else {
-            Exception e = new Exception("Couldn't find requested accound with given info.");
+            Exception e = new Exception("Couldn't find requested account with given info.");
             throw e;
         }
      return account;
@@ -135,4 +135,24 @@ public class AccountService {
         return account;
      }
 
+    /**
+     * 
+     * Get all accounts
+     * 
+     * @return all accounts in repo
+     * 
+     */
+
+     @Transactional
+     public List<Account> getAllAccounts() {
+        return toList(accountRepository.findAll());
+     }
+    
+     private <T> List<T> toList(Iterable<T> iterable){
+		List<T> resultList = new ArrayList<T>();
+		for (T t : iterable) {
+			resultList.add(t);
+		}
+		return resultList;
+	}
 }
