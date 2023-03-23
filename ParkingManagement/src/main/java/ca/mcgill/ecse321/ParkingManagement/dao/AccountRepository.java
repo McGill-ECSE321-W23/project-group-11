@@ -10,4 +10,6 @@ public interface AccountRepository extends CrudRepository<Account, String> {
 	Account findAccountByEmail(String email);
 	boolean existsByEmail(String email);
 	Account findAccountByEmailAndPassword(String email, String password);
+	boolean existsAccountByEmailAndPassword(String email, String password);
+	Account deleteAccountByEmailAndPassword(String email, String password);
 }

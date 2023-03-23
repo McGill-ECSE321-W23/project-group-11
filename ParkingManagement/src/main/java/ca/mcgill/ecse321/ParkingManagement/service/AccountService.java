@@ -64,8 +64,8 @@ public class AccountService {
     @Transactional
     public Account getAccount(String email, String password) {
         Account account;
-        if(accountRepository.existsByEmailAndPassword(email,password)) {
-            account = accountRepository.findByEmailAndPassword(email, password);
+        if(accountRepository.existsAccountByEmailAndPassword(email,password)) {
+            account = accountRepository.findAccountByEmailAndPassword(email, password);
         }
         else {
             Exception e = new Exception("Couldn't find requested accound with given info.");
@@ -100,7 +100,7 @@ public class AccountService {
             throw e;
         }
 
-        accountRepository.deleteByEmailAndPassword(email, password);
+        accountRepository.deleteAccountByEmailAndPassword(email, password);
         if(newEmail != null) {
             account.setEmail(newEmail);
         }
