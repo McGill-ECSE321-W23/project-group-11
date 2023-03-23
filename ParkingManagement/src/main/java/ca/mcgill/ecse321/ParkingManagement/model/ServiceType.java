@@ -50,4 +50,13 @@ public class ServiceType {
       this.manager = manager;
    }
 
+   public ServiceType(String name, int duration, int cost, Manager manager) {
+      this.name = name;
+      this.duration = duration;
+      this.cost = cost;
+      this.manager = manager;
+   }
+   
+   public ServiceType(){}  //default contructor
+
 }

@@ -37,13 +37,7 @@ public class ServiceTypeService{
             throw e;
         }
         //all is good create a service type
-        ServiceType serviceType = new ServiceType();
-        //set attributes
-        serviceType.setName(name);
-        serviceType.setCost(cost);
-        serviceType.setDuration(duration);
-        serviceType.setManager(manager);
-
+        ServiceType serviceType = new ServiceType(name, duration, cost, manager);
         return serviceTypeRepository.save(serviceType);
      }
      /**

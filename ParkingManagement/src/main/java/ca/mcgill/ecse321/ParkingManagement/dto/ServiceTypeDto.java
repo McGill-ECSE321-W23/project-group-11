@@ -54,11 +54,7 @@ public class ServiceTypeDto {
     }
 
     public ServiceType toModel(){
-        ServiceType s = new ServiceType();
-        s.setName(name);
-        s.setCost(cost);
-        s.setDuration(duration);
-        s.setManager(manager);
+        ServiceType s = new ServiceType(name,cost,duration,manager);
         return s;
     }
 }
