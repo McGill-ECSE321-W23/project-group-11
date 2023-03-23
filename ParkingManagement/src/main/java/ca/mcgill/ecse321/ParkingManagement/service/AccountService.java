@@ -111,6 +111,28 @@ public class AccountService {
         return account;
     }
     
+    /**
+     * 
+     * Deleting Account
+     * 
+     * @param account account
+     * @param email email
+     * @param password password
+     * @return deletion ack
+     * @throws Exception
+     */
 
+     @Transactional
+     public Account deleteAccount(String email, String password) throws Exception {
+        Account account = new Account();
+        accountRepository.deleteAccountByEmailAndPassword(email, password);
+        account = accountRepository.findAccountByEmailAndPassword(email, password);
+
+        if (account != null) {
+            Exception e = new Exception("Account not deleted.");
+            throw e;
+        }
+        return account;
+     }
 
 }
