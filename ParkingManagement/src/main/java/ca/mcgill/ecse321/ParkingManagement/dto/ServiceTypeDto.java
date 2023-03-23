@@ -51,4 +51,9 @@ public class ServiceTypeDto {
     public void setManager(Manager manager) {
         this.manager = manager;
     }
+
+    public ServiceType toModel(){
+        ServiceType s = new ServiceType(name, cost, duration, manager);
+        return s;
+    }
 }

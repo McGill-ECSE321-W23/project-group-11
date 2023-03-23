@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,19 +24,59 @@ public class ServiceTypeController {
 
     @Autowired
     private ServiceTypeService serviceTypeService;
-    
+    /**
+	 * Gets all service types.
+	 *
+	 * @return All servicetypes.
+	 */
+
     @GetMapping(value = { "/servicetypes", "/servicetypes/" })
     public List<ServiceTypeDto> getAllServiceTypes() {
 	    return service.getAllServiceTypes().stream().map(s -> convertToDto(s)).collect(Collectors.toList());
     }
+
+    /**
+	 * Gets a serviceType.
+	 *
+	 * @return serviceType.
+	 */
 
     @GetMapping(value = {"/servicetype/{name}", "/servicetype/{name}/"})
     public ServiceTypeDto getServiceType(@PathVariable String name) {
         return convertToDto(serviceTypeService.getServiceTypeByName(name));
     }
 
+    /**
+	 * Creates a service type.
+	 * @param serviceTypeDto to delete.
+	 * @return service type created.
+	 */
+
     @PostMapping(value = {"/servicetype", "/servicetype/"})
-    public ServiceTypeDto createServiceType(@RequestBody(name = "name"))
+    public ServiceTypeDto createServiceType(@RequestBody ServiceTypeDto serviceTypeDto){
+        //convert to a serviceType
+        ServiceType serviceType = serviceTypeDto.toModel();
+        //call service
+        serviceType = serviceTypeService.createServiceType(serviceType.getName(),serviceType.getCost(),serviceType.getDuration(),serviceType.getManager());
+        //return a dto
+        return convertToDto(serviceType);
+    }
+
+    /**
+	 * Deletes a service type.
+	 * @param serviceTypeDto to delete.
+	 * @return void.
+	 */
+
+    @DeleteMapping(value = {"/servicetype/","/servicetype"})
+    public void deleteServiceType(@RequestBody ServiceTypeDto serviceTypeDto){
+        //convert to a serviceType
+        ServiceType serviceType = serviceTypeDto.toModel();
+        //call service
+        serviceType = serviceTypeService.removeServiceType(serviceType.getName());
+        //return
+        return;
+    }
 
     //converts a Servicetype into a servicetype dto (might be useful) 
     private ServiceTypeDto convertToDto(ServiceType serviceType) {
