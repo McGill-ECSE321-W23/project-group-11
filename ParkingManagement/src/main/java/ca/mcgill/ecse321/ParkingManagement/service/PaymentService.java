@@ -5,7 +5,7 @@ import ca.mcgill.ecse321.ParkingManagement.model.RegularTempSpot;
 import ca.mcgill.ecse321.ParkingManagement.model.TempSpot;
 import ca.mcgill.ecse321.ParkingManagement.model.SystemInfo;
 
-public class PaymentValidation {
+public class PaymentService extends SystemInfo{
 
     /**
      * Method to validate payment for a spot
@@ -44,16 +44,15 @@ public class PaymentValidation {
      * @return the float that represents the total cost for the customer to pay
      */
     
-    public float priceForTempSpot(TempSpot spot, int hours){
-        float price = 0f;
-        SystemInfo sys = new SystemInfo();
+    public int priceForTempSpot(TempSpot spot, int hours){
+        int price = 0;
         if(spot instanceof RegularTempSpot){
-            price += sys.getRegTempSpotPrice()*(hours*4);
+            price += getRegTempSpotPrice()*(hours*4);
             return price;
         }
 
         if(spot instanceof LargeTempSpot){
-            price += sys.getLargeTempSpotPrice()*(hours*4);
+            price += getLargeTempSpotPrice()*(hours*4);
             return price;
         }
 
