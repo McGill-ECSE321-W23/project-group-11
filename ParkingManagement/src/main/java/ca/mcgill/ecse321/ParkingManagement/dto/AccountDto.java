@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.ParkingManagement.dto;
 
 import org.springframework.lang.NonNull;
 
+
 public class AccountDto {
 
     //atributes
@@ -12,13 +13,14 @@ public class AccountDto {
     @NonNull
     private String password;
     
-    private String token;//used to indicate login and logout
+
+    private boolean logInStatus;//used to indicate login and logout status of an account
 
     //constructor
-    public AccountDto(String email, String password, String token) {
+    public AccountDto(String email, String password, boolean logInStatus) {
         this.email = email;
         this.password = password;
-        this.token = token;
+        this.logInStatus = false;
     }
     //getters
     public String getEmail() {
@@ -29,8 +31,8 @@ public class AccountDto {
         return password;
     }
 
-    public String getToken() {
-        return token;
+    public boolean getlogInStatus() {
+        return logInStatus;
     }
 
     //setters
@@ -42,7 +44,7 @@ public class AccountDto {
         this.password = password;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setLogInStatus(boolean logInStatus) {
+        this.logInStatus = logInStatus;
     }
 }
