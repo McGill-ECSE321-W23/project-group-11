@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -40,10 +41,11 @@ public class ServiceTypeServiceTest {
     @InjectMocks
     private ServiceTypeService serviceTypeService;
 
+    private static final String SERVICE_TYPE_KEY = "TestPerson";
+
     @Test
-    public void testGetServiceTypeByValidId(){
+    public void testGetServiceTypeByValidName(){
         //mocking the valid ServiceType
-        final int id = 1;
         final String name = "Oil Change";
         final int duration = 15;
         final int cost = 30;
@@ -57,7 +59,8 @@ public class ServiceTypeServiceTest {
             output = serviceTypeService.getServiceTypeByName(name);
         }
         catch(Exception e){
-            System.out.println(e);
+            //check for a failiure
+            fail();
         } 
         //check output
         assertNotNull(output);
@@ -65,5 +68,25 @@ public class ServiceTypeServiceTest {
         assertEquals(duration,output.getDuration());
         assertEquals(cost,output.getCost());
         assertEquals(manager,output.getManager());
-    }   
+    }
+    @Test
+    public void testGetServiceTypeByWrongName(){
+        final String wrongName = "Not Real";
+        when(serviceTypeRepository.findServiceTypeByName(wrongName)).thenReturn(null);
+        Exception e = assertThrows(Exception.class,
+				() -> serviceTypeService.getServiceTypeByName(wrongName));
+        assertEquals(e.getMessage(),"Service Type does not exist");
+    }
+    @Test
+    public void testGetServiceTypeByNullName(){
+        final String nullName = null;
+        serviceTypeRepository.findServiceTypeByName(nullName);
+        Exception e = assertThrows(Exception.class,
+				() -> serviceTypeService.getServiceTypeByName(nullName));
+        assertEquals(e.getMessage(),"Inputted name is null.");
+    }
+    @Test
+    public void testGetAllServiceTypes(){
+    
+    } 
 }

@@ -28,12 +28,17 @@ public class ServiceTypeService{
      public ServiceType createServiceType(String name, int cost, int duration, Manager manager) throws Exception{
         //check if manager is null
         if(manager == null || name == null){
-            Exception e = new Exception("Missing information about the service type, must have a cost, name, manager and duration");
+            Exception e = new Exception("Missing information about the service type, must have a non null name and manager");
             throw e;
         }
         //check if the manager is in the database
         if(managerRepository.findManagerByid(manager.getId())==null){
             Exception e = new Exception("Manager does not exist");
+            throw e;
+        }
+        //check if the service type is already a thing
+        if(serviceTypeRepository.findServiceTypeByName(name)!=null){
+            Exception e = new Exception("Service Type already exists");
             throw e;
         }
         //all is good create a service type
