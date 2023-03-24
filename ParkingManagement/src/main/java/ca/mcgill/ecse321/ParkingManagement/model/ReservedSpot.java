@@ -22,7 +22,7 @@ public class ReservedSpot {
    public Integer getId() {
       return this.id;
    }
-   public int getplaceNumber() {
+   public int getPlaceNumber() {
       return this.placeNumber;
    }
    public Car getCar() {
@@ -30,7 +30,7 @@ public class ReservedSpot {
    }
 
    // setters
-   public void setplaceNumber(int value) {
+   public void setPlaceNumber(int value) {
       this.placeNumber = value;
    }
    public void setCar(Car car) {

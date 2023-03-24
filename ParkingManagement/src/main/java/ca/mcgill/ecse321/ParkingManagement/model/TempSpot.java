@@ -11,6 +11,7 @@ public abstract class TempSpot {
     private int duration; // number of 15 minute intervals
     private Date date;
     private LocalTime startTime;
+    private int placeNumber;
     
     // associations
     private Car car;
@@ -32,10 +33,13 @@ public abstract class TempSpot {
     public int getDuration() {
         return this.duration;
     }
+    public int getPlaceNumber() {
+        return this.placeNumber;
+    }
 
     // setters
-    public void setId(int value) {
-        this.id = value;
+    public void setPlaceNumber(int value) {
+        this.placeNumber = value;
     }
     public void setDate(Date value) {
         this.date = value;

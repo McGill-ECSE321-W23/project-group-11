@@ -1,8 +1,10 @@
 package ca.mcgill.ecse321.ParkingManagement.service;
 
 import ca.mcgill.ecse321.ParkingManagement.dao.*;
+import ca.mcgill.ecse321.ParkingManagement.dto.CarDto;
 import ca.mcgill.ecse321.ParkingManagement.dto.TempSpotDto;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
+import ca.mcgill.ecse321.ParkingManagement.utility.DtoConverters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,98 +31,112 @@ public class TemporaryParkingService {
     /**
      * Creates a temporary spot
      *
-     * @param size size of parking spot (Regular or Large)
      * @param duration number of 15 minute intervals requested
+     * @param carDto DTO of car booking the spot
      * @param date date of reservation
      * @param time of reservation
-     * @return temporary spot created
+     * @return DTO of temporary spot created
      * @throws Exception
      */
     @Transactional
-    public TempSpot createTempSpot(Size size, int duration, Car car, Date date, LocalTime time) throws Exception {
+    public TempSpotDto createTempSpot(int duration, CarDto carDto, Date date, LocalTime time) throws Exception {
         TempSpot spot;
-        // Null checks for objects
-        if (car == null) { 
-            Exception e = new Exception("Inputted car was null.");
-            throw e;
-        }
+
         // Obtain objects from database to initialize TempSpot
-        if (carRepository.existsBylicensePlate(car.getLicensePlate())) { // Check that argument exists in database
-            Exception e = new Exception("Inputted car does not have a license plate that exists in the database.");
-            throw e;
+        if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check that argument exists in database
+            throw new Exception("Inputted licence plate does not match a car in the database.");
         }
+        Car car = carRepository.findCarBylicensePlate(carDto.getLicensePlate());
 
         // Check input validity
         if (duration > 48  || duration < 1) {
-            Exception e = new Exception("Inputted durration exceeds bounds of accepted values ([1, 48] intervals of 15 minutes).");
-            throw e;
+            throw new Exception("Inputted durration exceeds bounds of accepted values ([1, 48] intervals of 15 minutes).");
         }
-        
+
         // Set up spot based on inputs and return
+        Size size = car.getSize();
         if (size == Size.Regular)  { 
             spot  = new RegularTempSpot();
-        } if  (size == Size.Large) {
+        } else if  (size == Size.Large) {
             spot  = new LargeTempSpot();
         } else {
-            Exception e = new Exception("Size not recognized.");
+            Exception e = new Exception("Car size not recognized.");
             throw e;
         }
-        
         spot.setCar(car);
         spot.setDuration(duration);
         spot.setStartTime(time);
         spot.setDate(date);
 
         /*
-         * set id
-         * check to make sure that id is not used for another tempSpot
-         * large spots have ids 1-20
-         * regular spots have ids 21- 270
+         * set place number
+         * check to make sure that place number is not used for another tempSpot
+         * large spots have places 1-20
+         * regular spots have places 21- 270
          */
-        int id = 1;
+        int place = 1;
         if (size == Size.Regular) {
-            id = 21;
+            place = 21;
             while (true) {
-                if (!regularTempSpotRepository.existsById(id)) {break;} 
-                id++;
-                if (id > 270) {
+                if (!regularTempSpotRepository.existsByPlaceNumber(place)) {
+                    spot.setPlaceNumber(place);
+                    break;
+                } 
+                else {
+                    place++;
+                }
+                if (place > 270) {
                     Exception e = new Exception("There are no more regular spots available.");
                     throw e;
                 }
             }
-        }
-        if (size == Size.Large) {
-            while (id <= 20)
-                if (!largeTempSpotRepository.existsById(id)) {break;} 
-                id++;
-                if (id > 20) {
+        } else if (size == Size.Large) {
+            while (place <= 20)
+                if (!largeTempSpotRepository.existsByPlaceNumber(place)) {
+                    spot.setPlaceNumber(place);
+                    break;
+                } 
+                else {
+                    place++;
+                }
+                if (place > 20) {
                     Exception e = new Exception("There are no more large spots available.");
                     throw e;
                 }
-        } 
-        spot.setId(id);
+        } else {
+            Exception e = new Exception("Size issue.");
+            throw e;
+        }
 
-        return spot;
+        
+        
+        spot.setPlaceNumber(place);
+        return DtoConverters.convertToTempSpotDto(spot);
     }
+
 
 
     /**
      * Returns a temporary spot from an id
      *
      * @param id of desired spot
-     * @return spot corresponding with id
+     * @return DTO of spot corresponding with id
      * @throws Exception
      */
     @Transactional
-    public TempSpot getSpot(int id) throws Exception{
+    public TempSpotDto getSpotByPlaceNumber(int placeNumber) throws Exception{
         TempSpot spot;
-        if (regularTempSpotRepository.existsById(id)) {spot = regularTempSpotRepository.findById(id).get();}
-        else if (largeTempSpotRepository.existsById(id)) {spot = largeTempSpotRepository.findById(id).get();}
+        if (regularTempSpotRepository.existsByPlaceNumber(placeNumber)) {
+            spot = regularTempSpotRepository.findByPlaceNumber(placeNumber); // if someone is using this as an example and is getting an error with findById, add .get() to the end
+        }
+        else if (largeTempSpotRepository.existsByPlaceNumber(placeNumber)) {
+            spot = largeTempSpotRepository.findByPlaceNumber(placeNumber);
+        }
         else {
-            Exception e = new Exception("No temporary spot currently is reserved with that id.");
+            Exception e = new Exception("No temporary spot currently is reserved with that place number.");
             throw e;
         }
-        return spot;
+        return DtoConverters.convertToTempSpotDto(spot);
     }
 
     /**
@@ -128,11 +144,19 @@ public class TemporaryParkingService {
      *
      * @param spot temporary spot to edit
      * @param duration new number of 15 minute intervals
-     * @return temporary spot editted
+     * @return temporary spot DTO
      * @throws Exception
      */
     @Transactional
-    public TempSpot editTempSpot (TempSpot spot, int duration) throws Exception{
+    public TempSpotDto editTempSpot (TempSpotDto spotDto, int duration) throws Exception{
+        // get spot from its repository
+        int place = spotDto.getPlaceNumber();
+        TempSpot spot = null;
+        boolean large = true;
+        if (largeTempSpotRepository.existsByPlaceNumber(place)) {spot = largeTempSpotRepository.findByPlaceNumber(place);}
+        else if (regularTempSpotRepository.existsByPlaceNumber(place)) {spot = regularTempSpotRepository.findByPlaceNumber(place); large = false;}
+
+        // check for bad inputs
         if (spot == null) {
             Exception e = new Exception("Inputted spot is null.");
             throw e;
@@ -145,9 +169,13 @@ public class TemporaryParkingService {
             Exception e = new Exception("Inputted duration is not different than existing duration.");
             throw e;
         }
+        // set duration and save into correct repository
         spot.setDuration(duration);
+        
+        if (!large) {regularTempSpotRepository.save((RegularTempSpot) spot);}
+        else {largeTempSpotRepository.save((LargeTempSpot) spot);}
 
-        return spot;
+        return DtoConverters.convertToTempSpotDto(spot);
     }
 
 
@@ -226,20 +254,17 @@ public class TemporaryParkingService {
         TempSpotDto spotDto;
         List<TempSpotDto> allTempSpots = new ArrayList<TempSpotDto>();
         for (RegularTempSpot regSpot : regularTempSpotRepository.findAll()) {
-            spotDto = convertToDto(regSpot);
+            spotDto = DtoConverters.convertToTempSpotDto(regSpot);
             allTempSpots.add(spotDto);
         }
         for (LargeTempSpot largeSpot : largeTempSpotRepository.findAll()) {
-            spotDto = convertToDto(largeSpot);
+            spotDto = DtoConverters.convertToTempSpotDto(largeSpot);
             allTempSpots.add(spotDto);
         }
         return allTempSpots;
     }
 
-    private TempSpotDto convertToDto(TempSpot spot) {
-        TempSpotDto dto = new TempSpotDto(spot.getId(), spot.getDuration(), spot.getDate(), spot.getStartTime(), spot.getCar());
-        return dto;
-    }
+    
 
 
 

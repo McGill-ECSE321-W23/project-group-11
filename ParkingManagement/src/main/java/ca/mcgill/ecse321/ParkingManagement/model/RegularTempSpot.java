@@ -18,7 +18,7 @@ public class RegularTempSpot extends TempSpot {
    private Car car;
 
    // getters
-   public int getplaceNumber() {
+   public int getPlaceNumber() {
       return this.placeNumber;
    }
    public int getId() {
@@ -29,7 +29,7 @@ public class RegularTempSpot extends TempSpot {
    }
    
    // setters
-   public void setplaceNumber(int value) {
+   public void setPlaceNumber(int value) {
       this.placeNumber = value;
    }
    public void setCar(Car car) {

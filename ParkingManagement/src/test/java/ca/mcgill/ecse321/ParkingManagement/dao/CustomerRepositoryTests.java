@@ -1,7 +1,5 @@
 package ca.mcgill.ecse321.ParkingManagement.dao;
 
-import ca.mcgill.ecse321.ParkingManagement.dao.AccountRepository;
-import ca.mcgill.ecse321.ParkingManagement.dao.CustomerRepository;
 import ca.mcgill.ecse321.ParkingManagement.model.Account;
 import ca.mcgill.ecse321.ParkingManagement.model.Customer;
 import org.junit.jupiter.api.AfterEach;
