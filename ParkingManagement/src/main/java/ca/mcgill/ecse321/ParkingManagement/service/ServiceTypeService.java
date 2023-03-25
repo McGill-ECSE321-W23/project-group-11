@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.ParkingManagement.dao.*;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
-import ca.mcgill.ecse321.ParkingManagement.dto.ServiceTypeDto;
 
 @Service
 public class ServiceTypeService{
@@ -53,15 +52,20 @@ public class ServiceTypeService{
      * @throws Exception
      */
      @Transactional
-     public void removeServiceType(ServiceType serviceType) throws Exception {
+     public boolean removeServiceType(ServiceType serviceType) throws Exception {
         //null service type check
         if(serviceType == null){
             Exception e = new Exception("Service Type is null");
             throw e;
         }
         //if it exists then delete it
+        if(managerRepository.findManagerByid(serviceType.getManager().getId())==null){
+            Exception e = new Exception("Manager does not exist");
+            throw e;
+        }
         if(serviceTypeRepository.findServiceTypeByName(serviceType.getName())!=null){
             serviceTypeRepository.deleteById(serviceType.getName());
+            return true;
         }
         else{
             //if it doesnt exist throw exception
