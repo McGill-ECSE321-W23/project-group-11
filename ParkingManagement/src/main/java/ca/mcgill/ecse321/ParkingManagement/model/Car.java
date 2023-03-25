@@ -24,7 +24,17 @@ public class Car {
 
    @ManyToOne
    private Manager manager;
+   //default contructor
+   public Car(){
 
+   }
+   //contructor
+   public Car(String licensePlate,Set<Employee> employees, Customer customer, Manager manager){
+      this.licensePlate = licensePlate;
+      this.employees = employees;
+      this.customer = customer;
+      this.manager = manager;
+   }
 
    public void setLicensePlate(String value) {
       this.licensePlate = value;

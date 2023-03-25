@@ -22,12 +22,11 @@ public class SpecificServiceBookingService {
 
     /**
      * Creates a Booking
-     * @param id unique id for the booking
      * @param date date of the booking
      * @param startTime of the booking
      * @param employee name doing the service 
-     * @param car the car associated with the booking
-     * @param specificService the service type associated with the booking
+     * @param car associated with the booking
+     * @param serviceType associated with the booking
      * @return a booking for a service
      * @throws Exception
      */

@@ -33,6 +33,17 @@ public class SpecificService {
    @JoinColumn(name = "car_licensePlate")
    private Car car;
 
+   public SpecificService(Date date, LocalTime startTime, String employee, ServiceType serviceType, Car car){
+      this.date = date;
+      this.startTime = startTime;
+      this.employee = employee;
+      this.serviceType = serviceType;
+      this.car = car;
+   }
+
+   public SpecificService(){
+
+   }
 
    public int getId() {
       return this.id;
