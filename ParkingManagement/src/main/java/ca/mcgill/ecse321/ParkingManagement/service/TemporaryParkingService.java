@@ -41,6 +41,8 @@ public class TemporaryParkingService {
      */
     @Transactional
     public TempSpotDto createTempSpot(int duration, CarDto carDto, Date date, LocalTime time) throws Exception {
+        checkTempSpots(); // Refresh to remove expired temp spots
+        
         TempSpot spot;
 
         // Obtain objects from database to initialize TempSpot
@@ -121,6 +123,8 @@ public class TemporaryParkingService {
      */
     @Transactional
     public TempSpotDto getSpotByPlaceNumber(int placeNumber) throws Exception{
+        checkTempSpots(); // Refresh to remove expired temp spots
+
         TempSpot spot;
         if (regularTempSpotRepository.existsByPlaceNumber(placeNumber)) {
             spot = regularTempSpotRepository.findByPlaceNumber(placeNumber); // if someone is using this as an example and is getting an error with findById, add .get() to the end
@@ -145,6 +149,9 @@ public class TemporaryParkingService {
      */
     @Transactional
     public TempSpotDto editTempSpot (TempSpotDto spotDto, int duration) throws Exception{
+        
+        checkTempSpots(); // Refresh to remove expired temp spots
+
         // get spot from its repository
         int place = spotDto.getPlaceNumber();
         TempSpot spot = null;
@@ -181,6 +188,8 @@ public class TemporaryParkingService {
      */
     @Transactional
     public boolean deleteTempSpot (TempSpotDto spotDto) throws Exception {
+        checkTempSpots(); // Refresh to remove expired temp spots
+
         boolean deleted = false;
         boolean large = true;
         TempSpot spot;
@@ -213,7 +222,9 @@ public class TemporaryParkingService {
      * @throws Exception
      */
     @Transactional
-    public TempSpot getTempSpotReservedByCar(Car car) throws Exception {
+    public TempSpotDto getTempSpotReservedByCar(Car car) throws Exception {
+        checkTempSpots(); // Refresh to remove expired temp spots
+
         // Null check
         if (car == null) {
             Exception e = new Exception("Inputted car is null.");
@@ -233,7 +244,7 @@ public class TemporaryParkingService {
             Exception e = new Exception("Inputted car is not accociated with any temporary spots.");
             throw e;
         }
-        return carSpot;
+        return DtoConverters.convertToTempSpotDto(carSpot);
     }
 
 
@@ -245,6 +256,8 @@ public class TemporaryParkingService {
      */
     @Transactional
     public List<TempSpotDto> getAllTempSpots(){
+        checkTempSpots(); // Refresh to remove expired temp spots
+
         TempSpotDto spotDto;
         List<TempSpotDto> allTempSpots = new ArrayList<TempSpotDto>();
         for (RegularTempSpot regSpot : regularTempSpotRepository.findAll()) {
