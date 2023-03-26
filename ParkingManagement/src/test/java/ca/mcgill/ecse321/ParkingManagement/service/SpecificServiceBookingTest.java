@@ -49,11 +49,6 @@ public class SpecificServiceBookingTest {
     ServiceType oilChange = new ServiceType();
     SpecificService oilChangeAt3pm = new SpecificService();
     
-    //general params for incomplete Specifific Service Booking
-    final Date nullDate = null;
-    final LocalTime nullStarTime = null;
-    final String nullEmployeeName = null;
-    final Car nullCar = null;
 
     @Test
     public void testCreateValidBooking(){
@@ -80,7 +75,7 @@ public class SpecificServiceBookingTest {
     @Test
     public void testCreateBookingWithNullInput(){
         Exception e = assertThrows(Exception.class,
-				() -> specificServiceBookingService.createBooking(nullDate, startTime, employeeName, car, oilChange));
+				() -> specificServiceBookingService.createBooking(null, startTime, employeeName, car, oilChange));
         assertEquals(e.getMessage(),"Missing information about the booking");
     }
     //could add tests for more null checks for better coverage, but its slightly redundant
@@ -102,23 +97,22 @@ public class SpecificServiceBookingTest {
 				() -> specificServiceBookingService.createBooking(date, startTime, employeeName, car, oilChange));
         assertEquals(e.getMessage(),"Service Type does not exist");
     }
-    // @Test
-    // public void testCreateBookingWithTakenDateTimeAndEmployee(){
-    //     car.setLicensePlate(licensePlate);
-    //     oilChange.setName(serviceTypeName);
-    //     oilChangeAt3pm.setServiceType(oilChange);
-    //     oilChangeAt3pm.setDate(date);
-    //     oilChangeAt3pm.setStartTime(startTime);
-    //     oilChangeAt3pm.setEmployee(employeeName);
-    //     listOfServices.add(oilChangeAt3pm);
-    //     when(carRepository.findCarBylicensePlate(any(String.class))).thenReturn(car);
-    //     when(serviceTypeRepository.findServiceTypeByName(any(String.class))).thenReturn(oilChange);
-    //     when(specificServiceRepository.findAll()).thenReturn(listOfServices);
-    //     when(specificServiceRepository.save(any(SpecificService.class))).thenReturn(oilChangeAt3pm);
-    //     Exception e = assertThrows(Exception.class,
-	// 			() -> specificServiceBookingService.createBooking(date, startTime, employeeName, car, oilChange));
-    //     assertEquals(e.getMessage(),"Service Type at this time and date already exists");
-    // }
+    @Test
+    public void testCreateBookingWithTakenDateTimeAndEmployee(){
+        car.setLicensePlate(licensePlate);
+        oilChange.setName(serviceTypeName);
+        oilChangeAt3pm.setServiceType(oilChange);
+        oilChangeAt3pm.setDate(date);
+        oilChangeAt3pm.setStartTime(startTime);
+        oilChangeAt3pm.setEmployee(employeeName);
+        listOfServices.add(oilChangeAt3pm);
+        when(carRepository.findCarBylicensePlate(any(String.class))).thenReturn(car);
+        when(serviceTypeRepository.findServiceTypeByName(any(String.class))).thenReturn(oilChange);
+        when(specificServiceRepository.findAll()).thenReturn(listOfServices);
+        Exception e = assertThrows(Exception.class,
+				() -> specificServiceBookingService.createBooking(date, startTime, employeeName, car, oilChange));
+        assertEquals(e.getMessage(),"Service Type at this time and date already exists");
+    }
     @Test 
     public void testGetBookingById(){
         when(specificServiceRepository.findSpecificServiceById(any(Integer.class))).thenReturn(oilChangeAt3pm);
@@ -200,7 +194,53 @@ public class SpecificServiceBookingTest {
         assertEquals(e.getMessage(),"Booking with given id does not exist");
     }
     @Test
-    public void editBoookingByValidId(){
-        
+    public void testEditBookingByValidId(){
+        //set all the things for the booking
+        oilChangeAt3pm.setDate(date);
+        oilChangeAt3pm.setStartTime(startTime);
+        oilChangeAt3pm.setEmployee(employeeName);
+        listOfServices.add(oilChangeAt3pm);
+        //change the date to something new
+        Date newDate = Date.valueOf("2023-03-16");
+        SpecificService expectedBooking = new SpecificService(newDate,startTime,employeeName,oilChange,car);
+        //mock the service call
+        when(specificServiceRepository.findAll()).thenReturn(listOfServices);
+        when(specificServiceRepository.findSpecificServiceById(any(Integer.class))).thenReturn(oilChangeAt3pm);
+        when(specificServiceRepository.save(any(SpecificService.class))).thenReturn(expectedBooking);
+        SpecificService output = null;
+        try{
+            output = specificServiceBookingService.editBookingById(oilChangeAt3pm.getId(), newDate, startTime, employeeName);
+        }
+        catch(Exception e){
+            fail();
+        }
+        assertNotNull(output);
+        assertEquals(output, expectedBooking);
+    }
+    @Test
+    public void testEditBookingWithNullInput(){
+        Exception e = assertThrows(Exception.class,
+				() -> specificServiceBookingService.editBookingById(oilChangeAt3pm.getId(),date, null, employeeName));
+        assertEquals(e.getMessage(),"Missing information about the booking");
+    }
+    @Test
+    public void testEditBookingByInvalidId(){
+        //return a null object when trying to find specific service
+        when(specificServiceRepository.findSpecificServiceById(any(Integer.class))).thenReturn(null);
+        Exception e = assertThrows(Exception.class,
+                () -> specificServiceBookingService.editBookingById(oilChangeAt3pm.getId(),date, startTime, employeeName));
+        assertEquals(e.getMessage(),"There is no existing booking with the given id");
+    }
+    @Test
+    public void testEditBookingBySameBooking(){
+        oilChangeAt3pm.setDate(date);
+        oilChangeAt3pm.setStartTime(startTime);
+        oilChangeAt3pm.setEmployee(employeeName);
+        listOfServices.add(oilChangeAt3pm);
+        when(specificServiceRepository.findSpecificServiceById(any(Integer.class))).thenReturn(oilChangeAt3pm);
+        when(specificServiceRepository.findAll()).thenReturn(listOfServices);
+        Exception e = assertThrows(Exception.class,
+                () -> specificServiceBookingService.editBookingById(oilChangeAt3pm.getId(),date, startTime, employeeName));
+        assertEquals(e.getMessage(),"Booking at this time and date already exists");
     }
 }

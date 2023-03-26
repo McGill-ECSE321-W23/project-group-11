@@ -40,8 +40,6 @@ public class ServiceTypeServiceTest {
     final ServiceType oilChange = new ServiceType(name,duration,cost,manager);
 
     //general shared attributes for an invalid ServiceType
-    final String nullName = null;
-    final Manager nullManager = null;
 
     @Test
     public void testGetServiceTypeByValidName(){
@@ -73,9 +71,9 @@ public class ServiceTypeServiceTest {
     }
     @Test
     public void testGetServiceTypeByNullName(){
-        serviceTypeRepository.findServiceTypeByName(nullName);
+        serviceTypeRepository.findServiceTypeByName(null);
         Exception e = assertThrows(Exception.class,
-				() -> serviceTypeService.getServiceTypeByName(nullName));
+				() -> serviceTypeService.getServiceTypeByName(null));
         assertEquals(e.getMessage(),"Inputted name is null.");
     }
     @Test
@@ -120,13 +118,13 @@ public class ServiceTypeServiceTest {
     @Test
     public void testCreateServiceTypeWithNullName(){
         Exception e = assertThrows(Exception.class,
-				() -> serviceTypeService.createServiceType(nullName,cost,duration,manager));
+				() -> serviceTypeService.createServiceType(null,cost,duration,manager));
         assertEquals(e.getMessage(),"Missing information about the service type, must have a non null name and manager");
     }
     @Test
     public void testCreateServiceTypeWithNullManager(){
         Exception e = assertThrows(Exception.class,
-				() -> serviceTypeService.createServiceType(name,cost,duration,nullManager));
+				() -> serviceTypeService.createServiceType(name,cost,duration,null));
         assertEquals(e.getMessage(),"Missing information about the service type, must have a non null name and manager");
     }
     @Test

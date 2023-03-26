@@ -49,7 +49,7 @@ public class SpecificServiceBookingService {
         }
         //check to see if the Date and Time is already taken
         for(SpecificService specificService:specificServiceRepository.findAll()){
-            if(specificService.getDate().compareTo(date)!=0 && specificService.getStartTime().compareTo(startTime)!=0 && specificService.getEmployee().equals(employee)){
+            if(specificService.getDate().equals(date) && specificService.getStartTime().equals(startTime) && specificService.getEmployee().equals(employee)){
                 Exception e = new Exception("Service Type at this time and date already exists");
                 throw e;
             }
@@ -138,15 +138,19 @@ public class SpecificServiceBookingService {
             Exception e = new Exception("Missing information about the booking");
             throw e;
         }
+        //get the booking you want to edit check if its a valid booking
+        SpecificService booking = specificServiceRepository.findSpecificServiceById(id);
+        if(booking == null){
+            Exception e = new Exception("There is no existing booking with the given id");
+            throw e;
+        }
         //check to see if the Date and Time is already taken
         for(SpecificService specificService:specificServiceRepository.findAll()){
-            if(specificService.getDate().compareTo(date)!=0 && specificService.getStartTime().compareTo(startTime)!=0 && specificService.getEmployee().equals(employee)){
-                Exception e = new Exception("Service Type at this time and date already exists");
+            if(specificService.getDate().equals(date) && specificService.getStartTime().equals(startTime) && specificService.getEmployee().equals(employee)){
+                Exception e = new Exception("Booking at this time and date already exists");
                 throw e;
             }
         }
-        //get the booking you want to edit
-        SpecificService booking = specificServiceRepository.findSpecificServiceById(id);
         //set the variables
         booking.setEmployee(employee);
         booking.setDate(date);
