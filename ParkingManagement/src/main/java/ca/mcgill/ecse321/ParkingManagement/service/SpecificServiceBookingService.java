@@ -100,7 +100,7 @@ public class SpecificServiceBookingService {
     public Iterable<SpecificService> getAllBookingsByCar(Car car){
         List<SpecificService> bookingList = new ArrayList();
         for(SpecificService specificService : specificServiceRepository.findAll()){
-            if(specificService.getCar() == car){
+            if(specificService.getCar().equals(car)){
                 bookingList.add(specificService);
             }
         }
@@ -113,10 +113,10 @@ public class SpecificServiceBookingService {
      * @throws Exception
      */
     @Transactional
-    public void deleteBookingById(int id) throws Exception{
+    public boolean deleteBookingById(int id) throws Exception{
         if(specificServiceRepository.findSpecificServiceById(id)!=null){
             specificServiceRepository.deleteById(id);
-            return;
+            return true;
         }
         else{
             Exception e = new Exception("Booking with given id does not exist");
