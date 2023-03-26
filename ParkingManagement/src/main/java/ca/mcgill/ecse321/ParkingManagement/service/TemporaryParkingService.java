@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,8 @@ public class TemporaryParkingService {
      */
     @Transactional
     public TempSpotDto createTempSpot(int duration, CarDto carDto, Date date, LocalTime time) throws Exception {
+        checkTempSpots(); // Refresh to remove expired temp spots
+        
         TempSpot spot;
 
         // Obtain objects from database to initialize TempSpot
@@ -52,6 +55,9 @@ public class TemporaryParkingService {
         if (duration > 48  || duration < 1) {
             throw new Exception("Inputted durration exceeds bounds of accepted values ([1, 48] intervals of 15 minutes).");
         }
+        if ((date.compareTo(Date.valueOf(LocalDate.now())) < 0) || time.compareTo(LocalTime.now()) < 0) {
+            throw new Exception("Start of attempted booking is in the past.");
+        }
 
         // Set up spot based on inputs and return
         Size size = car.getSize();
@@ -60,8 +66,7 @@ public class TemporaryParkingService {
         } else if  (size == Size.Large) {
             spot  = new LargeTempSpot();
         } else {
-            Exception e = new Exception("Car size not recognized.");
-            throw e;
+            throw new Exception("Car size not recognized.");
         }
         spot.setCar(car);
         spot.setDuration(duration);
@@ -81,13 +86,11 @@ public class TemporaryParkingService {
                 if (!regularTempSpotRepository.existsByPlaceNumber(place)) {
                     spot.setPlaceNumber(place);
                     break;
-                } 
-                else {
+                } else {
                     place++;
                 }
                 if (place > 270) {
-                    Exception e = new Exception("There are no more regular spots available.");
-                    throw e;
+                    throw new Exception("There are no more regular spots available.");
                 }
             }
         } else if (size == Size.Large) {
@@ -95,26 +98,21 @@ public class TemporaryParkingService {
                 if (!largeTempSpotRepository.existsByPlaceNumber(place)) {
                     spot.setPlaceNumber(place);
                     break;
-                } 
-                else {
+                } else {
                     place++;
                 }
                 if (place > 20) {
-                    Exception e = new Exception("There are no more large spots available.");
-                    throw e;
+                    throw new Exception("There are no more large spots available.");
                 }
         } else {
-            Exception e = new Exception("Size issue.");
-            throw e;
+            throw new Exception("Size issue.");
         }
 
-        
-        
         spot.setPlaceNumber(place);
         return DtoConverters.convertToTempSpotDto(spot);
     }
 
-
+    
 
     /**
      * Returns a temporary spot from an id
@@ -125,6 +123,8 @@ public class TemporaryParkingService {
      */
     @Transactional
     public TempSpotDto getSpotByPlaceNumber(int placeNumber) throws Exception{
+        checkTempSpots(); // Refresh to remove expired temp spots
+
         TempSpot spot;
         if (regularTempSpotRepository.existsByPlaceNumber(placeNumber)) {
             spot = regularTempSpotRepository.findByPlaceNumber(placeNumber); // if someone is using this as an example and is getting an error with findById, add .get() to the end
@@ -149,6 +149,9 @@ public class TemporaryParkingService {
      */
     @Transactional
     public TempSpotDto editTempSpot (TempSpotDto spotDto, int duration) throws Exception{
+        
+        checkTempSpots(); // Refresh to remove expired temp spots
+
         // get spot from its repository
         int place = spotDto.getPlaceNumber();
         TempSpot spot = null;
@@ -158,16 +161,13 @@ public class TemporaryParkingService {
 
         // check for bad inputs
         if (spot == null) {
-            Exception e = new Exception("Inputted spot is null.");
-            throw e;
+            throw new Exception("Inputted spot is null.");
         }
         if (duration < 1 || duration > 48) {
-            Exception e = new Exception("Inputted duration is out of accepted bounds.");
-            throw e;
+            throw new Exception("Inputted duration is out of accepted bounds.");
         }
-        if (duration == spot.getDuration()) {
-            Exception e = new Exception("Inputted duration is not different than existing duration.");
-            throw e;
+        if (duration <= spot.getDuration()) {
+            throw new Exception("Inputted duration is less than or equal to existing duration.");
         }
         // set duration and save into correct repository
         spot.setDuration(duration);
@@ -187,27 +187,30 @@ public class TemporaryParkingService {
      * @throws Exception
      */
     @Transactional
-    public boolean deleteSpot (TempSpot spot) throws Exception {
-        boolean deleted = false;
-        if (spot == null) {
-            Exception e = new Exception("Inputted spot is null.");
-            throw e;
-        }
+    public boolean deleteTempSpot (TempSpotDto spotDto) throws Exception {
+        checkTempSpots(); // Refresh to remove expired temp spots
 
-        // Delete associations 
+        boolean deleted = false;
+        boolean large = true;
+        TempSpot spot;
+        if (regularTempSpotRepository.existsByPlaceNumber(spotDto.getPlaceNumber())) {
+            large = false;
+            spot = regularTempSpotRepository.findByPlaceNumber(spotDto.getPlaceNumber());
+        } else if (largeTempSpotRepository.existsByPlaceNumber(spotDto.getPlaceNumber())) {
+            spot = largeTempSpotRepository.findByPlaceNumber(spotDto.getPlaceNumber());
+        } else {
+            throw new Exception("Inputted spot does not exist in database.");
+        }
         
         // TODO check if this is all that needs to be done
         // Delete by id with DAO method
-        if (spot instanceof RegularTempSpot) {
+        if (!large) {
             regularTempSpotRepository.deleteById(spot.getId());
             deleted = true;
-        } else if (spot instanceof LargeTempSpot) {
+        } else {
             largeTempSpotRepository.deleteById(spot.getId());
             deleted = true;
-        } else {
-            Exception e = new Exception("Inputted spot is has unrecognizable size and could not be deleted.");
-            throw e;
-        }
+        } 
         return deleted;
     }
 
@@ -219,7 +222,9 @@ public class TemporaryParkingService {
      * @throws Exception
      */
     @Transactional
-    public TempSpot getTempSpotReservedByCar(Car car) throws Exception {
+    public TempSpotDto getTempSpotReservedByCar(Car car) throws Exception {
+        checkTempSpots(); // Refresh to remove expired temp spots
+
         // Null check
         if (car == null) {
             Exception e = new Exception("Inputted car is null.");
@@ -239,7 +244,7 @@ public class TemporaryParkingService {
             Exception e = new Exception("Inputted car is not accociated with any temporary spots.");
             throw e;
         }
-        return carSpot;
+        return DtoConverters.convertToTempSpotDto(carSpot);
     }
 
 
@@ -251,6 +256,8 @@ public class TemporaryParkingService {
      */
     @Transactional
     public List<TempSpotDto> getAllTempSpots(){
+        checkTempSpots(); // Refresh to remove expired temp spots
+
         TempSpotDto spotDto;
         List<TempSpotDto> allTempSpots = new ArrayList<TempSpotDto>();
         for (RegularTempSpot regSpot : regularTempSpotRepository.findAll()) {
@@ -264,7 +271,28 @@ public class TemporaryParkingService {
         return allTempSpots;
     }
 
-    
+    /**
+     * Checks all temp spots to make sure booking duration has not expired
+     * If the booking duration has expired, the bookings are deleted
+     * @return boolean true if successfully checked
+     */
+    @Transactional
+    public boolean checkTempSpots() {
+        boolean checked = false;
+        for (RegularTempSpot regSpot : regularTempSpotRepository.findAll()) {
+                if (regSpot.getStartTime().plusMinutes(regSpot.getDuration()*15).compareTo(LocalTime.now()) > 0) { 
+                    regularTempSpotRepository.delete(regSpot);
+                    break;
+                } 
+        }
+        for (LargeTempSpot largeSpot : largeTempSpotRepository.findAll()) {
+            if (largeSpot.getStartTime().plusMinutes(largeSpot.getDuration()*15).compareTo(LocalTime.now()) > 0) { 
+                largeTempSpotRepository.delete(largeSpot);
+                break;
+            } 
+        }   
+        return checked;
+    }
 
 
 
