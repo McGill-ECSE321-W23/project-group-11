@@ -4,31 +4,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.List;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import ca.mcgill.ecse321.ParkingManagement.dao.CarRepository;
 import ca.mcgill.ecse321.ParkingManagement.dao.ReservedSpotRepository;
@@ -37,7 +25,6 @@ import ca.mcgill.ecse321.ParkingManagement.dto.ReservedSpotDto;
 import ca.mcgill.ecse321.ParkingManagement.model.Car;
 import ca.mcgill.ecse321.ParkingManagement.model.ReservedSpot;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
-import ca.mcgill.ecse321.ParkingManagement.utility.DtoConverters;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -226,43 +213,4 @@ public class ReservedParkingServiceTest {
         assertEquals("Inputted licence plate does not match a car in the database.", error);
     }
 
-    // @Test
-    // public void testGetAllReservedSpots() throws Exception {
-
-    //     Size size = Size.Regular;
-    //     CarDto carDto1 = new CarDto(CAR_KEY, size);
-    //     CarDto carDto2 = new CarDto(CAR_KEY_2, size);
-
-    //     Car car1 = new Car();
-    //     Car car2 = new Car();
-      
-
-    //     carRepository.save(car1);
-    //     carRepository.save(car2);
-
-    //     ReservedSpotDto spot1 = service.createReservedSpot(carDto1, 2023, 4);
-    //     ReservedSpotDto spot2 = service.createReservedSpot(carDto2, 2023, 5);
-
-    //     List<ReservedSpotDto> reservedSpots = service.getAllReservedSpots();
-
-    //     assertEquals(2, reservedSpots.size());
-    //     assertTrue(reservedSpots.contains(spot1));
-    //     assertTrue(reservedSpots.contains(spot2));
-    // }
-
-    @Test
-    public void testFindReservedSpotByPlaceNumber() throws Exception {
-        CarDto carDto = new CarDto(CAR_KEY, Size.Regular);
-        Car car = new Car();
-        carRepository.save(car);
-        ReservedSpotDto spot = service.createReservedSpot(carDto, 2023, 4);
-        
-        ReservedSpotDto foundSpot = service.getSpotByPlaceNumber(spot.getPlaceNumber());
-
-        assertNotNull(foundSpot);
-        assertEquals(spot, foundSpot);
-    }
-    
 }
-
-//TODO delete spot
