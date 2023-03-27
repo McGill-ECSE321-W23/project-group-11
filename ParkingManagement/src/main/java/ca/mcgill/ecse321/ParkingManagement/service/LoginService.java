@@ -69,7 +69,7 @@ public class LoginService {
             throw new Exception("Account cannot be null.");
         }
 
-        if(!accountTO.getlogInStatus()){
+        if(! (accountTO.getlogInStatus())){
             throw new Exception("Account is already logged out.");
         }
 
