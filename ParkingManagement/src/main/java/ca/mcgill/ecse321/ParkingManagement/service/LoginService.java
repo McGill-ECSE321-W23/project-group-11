@@ -25,7 +25,11 @@ public class LoginService {
      */
     @Transactional
     public boolean loginAccount(AccountDto accountTO) throws Exception {
-        
+
+        if(accountTO.getlogInStatus()){
+            throw new Exception("Account is already logged in.");
+        }
+
         if(accountRepository.existsByEmail(accountTO.getEmail())){
 
             Account account = accountRepository.findAccountByEmail(accountTO.getEmail());
@@ -57,6 +61,10 @@ public class LoginService {
     @Transactional
     public boolean logoutAccount(AccountDto accountTO) throws Exception {
         
+        if(!accountTO.getlogInStatus()){
+            throw new Exception("Account is already logged out.");
+        }
+
         if(accountRepository.existsByEmail(accountTO.getEmail())){
             accountTO.setLogInStatus(false);
             return accountTO.getlogInStatus();
