@@ -65,6 +65,10 @@ public class AccountService {
 
     @Transactional
     public Account getAccount(String email) throws Exception {
+        if(email == null || email == "") {
+            Exception e = new Exception("Couldn't find requested account with given info.");
+            throw e;            
+        }
         Account account = accountRepository.findAccountByEmail(email);
         Account new_acc;
         if(account != null) {
@@ -98,7 +102,7 @@ public class AccountService {
         String email = account.getEmail();
         String password = account.getPassword();
 
-        if(newEmail == null && newPassword == null) {
+        if((newEmail == null && newPassword == null) || (newEmail == "" && newPassword == "")) {
             Exception e = new Exception("Can't modify an account without changed values");
             throw e;
         }
@@ -127,6 +131,11 @@ public class AccountService {
 
      @Transactional
      public Account deleteAccount(String email, String password) throws Exception {
+        if((email == null && password == null) || (email == "" && password == "")) {
+            Exception e = new Exception("Can't delete an account for which parameters aren't given.");
+            throw e;
+        }
+
         Account account = new Account();
         accountRepository.deleteAccountByEmailAndPassword(email, password);
         account = accountRepository.findAccountByEmailAndPassword(email, password);
