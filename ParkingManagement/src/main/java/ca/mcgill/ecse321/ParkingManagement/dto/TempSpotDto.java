@@ -14,17 +14,21 @@ public class TempSpotDto {
     private Size size;
     private int placeNumber;
     // associations
-    private Car car;
+    private CarDto carDto;
 
 
     // constructors
-    public TempSpotDto(int id, int placeNumber, int duration, Date date, LocalTime startTime, Car car, Size size) {
+    public TempSpotDto() {
+        
+    }
+
+    public TempSpotDto(int id, int placeNumber, int duration, Date date, LocalTime startTime, CarDto carDto, Size size) {
         
         this.id = id;
         this.duration = duration;
         this.date = date;
         this.startTime = startTime;
-        this.car = car;
+        this.carDto = carDto;
         this.size = size;
         this.placeNumber = placeNumber;
     }
@@ -43,8 +47,8 @@ public class TempSpotDto {
     public LocalTime getStartTime() {
         return startTime;
     }
-    public Car getCar() {
-        return car;
+    public CarDto getCarDto() {
+        return carDto;
     }
     public Size getSize() {
         return size;
@@ -66,8 +70,8 @@ public class TempSpotDto {
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
-    public void setCar(Car car) {
-        this.car = car;
+    public void setCar(CarDto carDto) {
+        this.carDto = carDto;
     }
     public void setPlaceNumber(int placeNumber) {
         this.placeNumber = placeNumber;

@@ -4,21 +4,27 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,6 +62,7 @@ public class TemporaryParkingServiceTest {
 
     private static final int SPOT_KEY_LARGE = 1;
     private static final int SPOT_KEY_REG = 21;
+    private static final int SPOT_KEY_REG_NULL = 22;
     private static final String CAR_KEY = "regular plate number";
     private static final String CAR_KEY_LARGE = "large plate number";
 
@@ -66,6 +73,10 @@ public class TemporaryParkingServiceTest {
             if(invocation.getArgument(0).equals(SPOT_KEY_LARGE)) {
                 LargeTempSpot spot = new LargeTempSpot();
                 spot.setPlaceNumber(SPOT_KEY_LARGE);
+                Car car = new Car();
+                spot.setDuration(5);
+                car.setLicensePlate(CAR_KEY_LARGE);
+                spot.setCar(car);
                 return spot;
             } else {
                 return null;
@@ -76,6 +87,10 @@ public class TemporaryParkingServiceTest {
             if(invocation.getArgument(0).equals(SPOT_KEY_REG)) {
                 RegularTempSpot spot = new RegularTempSpot();
                 spot.setPlaceNumber(SPOT_KEY_REG);
+                spot.setDuration(5);
+                Car car = new Car();
+                car.setLicensePlate(CAR_KEY);
+                spot.setCar(car);
                 return spot;
             } else {
                 return null;
@@ -85,15 +100,17 @@ public class TemporaryParkingServiceTest {
         lenient().when(regTempDao.existsByPlaceNumber(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
             if(invocation.getArgument(0).equals(SPOT_KEY_REG)) {
                 return true;
+            } else if(invocation.getArgument(0).equals(SPOT_KEY_REG_NULL)) {
+                return false;
             } else {
-                return null;
+                return false;
             }
         });
         lenient().when(largeTempDao.existsByPlaceNumber(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
             if(invocation.getArgument(0).equals(SPOT_KEY_LARGE)) {
                 return true;
             } else {
-                return null;
+                return false;
             }
         });
 
@@ -117,9 +134,27 @@ public class TemporaryParkingServiceTest {
             if(invocation.getArgument(0).equals(CAR_KEY) || invocation.getArgument(0).equals(CAR_KEY_LARGE)) {
                 return true;
             } else {
-                return null;
+                return false;
             }
         });
+
+        // Mock for testing findAllTempSpots()
+        // Cannot be used with other unit tests as the findAllTempSpots() is used to verify no database activity at the start of each unit test
+        // lenient().when(regTempDao.findAll()).thenAnswer( (InvocationOnMock invocation) -> {
+        //     List<TempSpotDto> spots = new ArrayList<TempSpotDto>();
+        //     TempSpotDto tempSpot = new TempSpotDto();
+        //     tempSpot.setPlaceNumber(SPOT_KEY_REG);
+        //     spots.add(tempSpot);
+        //     return spots;
+        // });
+        // lenient().when(largeTempDao.findAll()).thenAnswer( (InvocationOnMock invocation) -> {
+        //     List<TempSpotDto> spots = new ArrayList<TempSpotDto>();
+        //     TempSpotDto tempSpot = new TempSpotDto();
+        //     tempSpot.setPlaceNumber(SPOT_KEY_LARGE);
+        //     spots.add(tempSpot);
+        //     return spots;
+        // });
+        
 
         // Whenever anything is saved, just return the parameter object
             Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
@@ -129,7 +164,7 @@ public class TemporaryParkingServiceTest {
             lenient().when(regTempDao.save(any(RegularTempSpot.class))).thenAnswer(returnParameterAsAnswer);
     }
 
-    // ------------------------------------------- Create spot tests -----------------------------------------------------
+    // ------------------------------------------- Create spot tests -------------------------------------------
     @Test
     public void testCreateTempSpot() {
         String error = "";
@@ -148,8 +183,8 @@ public class TemporaryParkingServiceTest {
         carRepository.save(largeCar); 
         carRepository.save(regCar);
 
-        Date date = new Date(2023/02/02);
-        LocalTime time = LocalTime.of(9, 30);
+        Date date = Date.valueOf(LocalDate.now());
+        LocalTime time = LocalTime.now().plusMinutes(1);
 
         TempSpotDto largeSpot = null;
         TempSpotDto regSpot = null;
@@ -167,7 +202,7 @@ public class TemporaryParkingServiceTest {
         // expected below is plus one because mock says that there is a spot with SPOT_KEY_LARGE already
         assertEquals(SPOT_KEY_LARGE + 1, largeSpot.getPlaceNumber()); 
         assertEquals(duration, largeSpot.getDuration());
-        assertEquals(largeCarPlate, largeSpot.getCar().getLicensePlate());
+        assertEquals(largeCarPlate, largeSpot.getCarDto().getLicensePlate());
         assertEquals(date, largeSpot.getDate());
         assertEquals(time, largeSpot.getStartTime());
 
@@ -176,7 +211,7 @@ public class TemporaryParkingServiceTest {
         // expected below is plus one because mock says that there is a spot with SPOT_KEY_REG already
         assertEquals(SPOT_KEY_REG + 1, regSpot.getPlaceNumber());
         assertEquals(duration, regSpot.getDuration());
-        assertEquals(regularCarPlate, regSpot.getCar().getLicensePlate());
+        assertEquals(regularCarPlate, regSpot.getCarDto().getLicensePlate());
         assertEquals(date, regSpot.getDate());
         assertEquals(time, regSpot.getStartTime());
     }
@@ -189,8 +224,8 @@ public class TemporaryParkingServiceTest {
         String carPlate = "regular plate number";
         Size carSize = Size.Regular;
         CarDto carDto = new CarDto(carPlate, carSize);
-        Date date = new Date(2023/02/02);
-        LocalTime time = LocalTime.of(9, 30);
+        Date date = Date.valueOf(LocalDate.now());
+        LocalTime time = LocalTime.now().plusMinutes(1);
 
         try {
             service.createTempSpot(duration, carDto, date, time);
@@ -200,8 +235,46 @@ public class TemporaryParkingServiceTest {
         assertEquals("Inputted durration exceeds bounds of accepted values ([1, 48] intervals of 15 minutes).", error);
     }
 
+    @Test
+    public void testCreateTempSpotInvalidDateAndTime() {
+        assertEquals(0, service.getAllTempSpots().size());
+        String error = "";
+        int duration = 15;
+        String carPlate = "regular plate number";
+        Size carSize = Size.Regular;
+        CarDto carDto = new CarDto(carPlate, carSize);
+        // time and date are in the past
+        Date date = new Date(2023/02/02);
+        LocalTime time = LocalTime.of(0, 0);
 
-    // ------------------------------------------- Edit spot tests -----------------------------------------------------
+        try {
+            service.createTempSpot(duration, carDto, date, time);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+        assertEquals("Start of attempted booking is in the past.", error);
+    }
+
+    @Test
+    public void testCreateTempSpotInvalidCar() {
+        assertEquals(0, service.getAllTempSpots().size());
+        String error = "";
+        int duration = 49;
+        String carPlate = "bad plate number";
+        Size carSize = Size.Regular;
+        CarDto carDto = new CarDto(carPlate, carSize);
+        Date date = Date.valueOf(LocalDate.now());
+        LocalTime time = LocalTime.now().plusMinutes(1);
+
+        try {
+            service.createTempSpot(duration, carDto, date, time);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+        assertEquals("Inputted licence plate does not match a car in the database.", error);
+    }
+
+    // ------------------------------------------- Edit Spot Tests -------------------------------------------
     @Test
     public void testEditTempSpot() {
         assertEquals(0, service.getAllTempSpots().size());
@@ -209,8 +282,8 @@ public class TemporaryParkingServiceTest {
         RegularTempSpot spot = new RegularTempSpot();
         int duration = 5;
         Car car = new Car();
-        Date date = new Date(2023/02/02);
-        LocalTime time = LocalTime.of(9, 30);
+        Date date = Date.valueOf(LocalDate.now());
+        LocalTime time = LocalTime.now().plusMinutes(1);
         spot.setCar(car);
         spot.setDuration(duration);
         spot.setDate(date);
@@ -218,7 +291,7 @@ public class TemporaryParkingServiceTest {
         spot.setPlaceNumber(SPOT_KEY_REG);
 
         TempSpotDto spotDto = new TempSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
-        spot.getStartTime(), spot.getCar(), Size.Regular);
+        spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()), Size.Regular);
         try {
             spotDto = service.editTempSpot(spotDto, 15);
         } catch (Exception e) {
@@ -228,47 +301,188 @@ public class TemporaryParkingServiceTest {
         assertEquals(15, spotDto.getDuration());
     }
     
+    @Test
+    public void testEditTempSpotInvalidDuration() {
+        assertEquals(0, service.getAllTempSpots().size());
+        String error = "";
+        RegularTempSpot spot = new RegularTempSpot();
+        int duration = 5;
+        Car car = new Car();
+        Date date = Date.valueOf(LocalDate.now());
+        LocalTime time = LocalTime.now().plusMinutes(1);
+        spot.setCar(car);
+        spot.setDuration(duration);
+        spot.setDate(date);
+        spot.setStartTime(time);
+        spot.setPlaceNumber(SPOT_KEY_REG);
+
+        TempSpotDto spotDto = new TempSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
+        spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()), Size.Regular);
+        try {
+            service.editTempSpot(spotDto, 4);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+        assertEquals("Inputted duration is less than or equal to existing duration.", error);
+    }
+
+    // ------------------------------------------- End Reservation Tests -------------------------------------------
+
+    @Test
+    public void testDeleteTempSpot() {
+        assertEquals(0, service.getAllTempSpots().size());
+        String error = "";
+        boolean deleted = false;
+
+        RegularTempSpot spot = new RegularTempSpot();
+        int duration = 5;
+        Car car = new Car();
+        Date date = Date.valueOf(LocalDate.now());
+        LocalTime time = LocalTime.now().plusMinutes(1);
+        spot.setCar(car);
+        spot.setDuration(duration);
+        spot.setDate(date);
+        spot.setStartTime(time);
+        spot.setPlaceNumber(SPOT_KEY_REG);
+
+        regTempDao.save(spot);
+
+        TempSpotDto spotDto = new TempSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
+        spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()), Size.Regular);
+        try {
+            deleted = service.deleteTempSpot(spotDto);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+        assertEquals("", error);
+        assertTrue(deleted);
+    }
+
+    @Test
+    public void testDeleteTempSpotNullSpot() {
+        assertEquals(0, service.getAllTempSpots().size());
+        String error = "";
+        boolean deleted = false;
+
+        RegularTempSpot spot = new RegularTempSpot();
+        int duration = 5;
+        Car car = new Car();
+        Date date = Date.valueOf(LocalDate.now());
+        LocalTime time = LocalTime.now().plusMinutes(1);
+        spot.setCar(car);
+        spot.setDuration(duration);
+        spot.setDate(date);
+        spot.setStartTime(time);
+        spot.setPlaceNumber(SPOT_KEY_REG_NULL);
+
+        regTempDao.save(spot);
+
+        TempSpotDto spotDto = new TempSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
+        spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()), Size.Regular);
+        try {
+            deleted = service.deleteTempSpot(spotDto);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+        assertEquals("Inputted spot does not exist in database.", error);
+        assertFalse(deleted);
+    }
+
+    // ------------------------------------------- Getter Tests -------------------------------------------
+
+    @Test
+    public void testGetTempSpotByPlaceNumber() {
+        assertEquals(0, service.getAllTempSpots().size());
+
+        int duration = 5;
+        CarDto carDtoRegular = new CarDto("regular plate number", Size.Regular);
+        CarDto carDtoLarge = new CarDto("large plate number", Size.Large);
+        Date date = Date.valueOf(LocalDate.now());
+        LocalTime time = LocalTime.now().plusMinutes(1);
+
+        String error = "";
+
+        TempSpotDto largeSpot = null;
+        TempSpotDto regSpot = null;
+        try {
+            // Tested for in previous test
+            largeSpot = service.createTempSpot(duration, carDtoLarge, date, time);
+            regSpot = service.createTempSpot(duration, carDtoRegular, date, time);
+        } catch (Exception e) {
+            fail();
+        }
+        largeSpot = null;
+        regSpot = null;
+        try {
+            largeSpot = service.getSpotByPlaceNumber(1); // only 1 large spot in system, should be place number 1
+            regSpot = service.getSpotByPlaceNumber(21);// only 1 regular spot in system, should be place number 21
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+        assertEquals("", error);
+
+        assertNotNull(largeSpot);
+        assertEquals(1, largeSpot.getPlaceNumber());
+        assertEquals(carDtoLarge.getLicensePlate(), largeSpot.getCarDto().getLicensePlate());
+
+        assertNotNull(regSpot);
+        assertEquals(21, regSpot.getPlaceNumber());
+        assertEquals(carDtoRegular.getLicensePlate(), regSpot.getCarDto().getLicensePlate());
+    }
 
 
+    @Test
+    public void testGetTempSpotByNonexistentPlaceNumber() {
+        assertEquals(0, service.getAllTempSpots().size());
+        String error = "";
+
+        TempSpotDto regSpot = null;
+        try {
+            regSpot = service.getSpotByPlaceNumber(40);// only 1 regular spot in system, should be place number 21
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+        assertEquals("No temporary spot currently is reserved with that place number.", error);
+        assertNull(regSpot);
+    }
 
 
-
-
-
+    // Cannot test this with mocks because it is used to verify that the database is inactive at the start of each unit test
     // @Test
-    // public void testGetTempSpotByPlaceNumber() {
-    //     assertEquals(0, service.getAllTempSpots().size());
+    // public void testGetAllTempSpots() {
+    //     //assertEquals(0, service.getAllTempSpots().size());
 
-    //     int duration = 5;
-    //     Car car = new Car();
-    //     Date date = new Date(2023/02/02);
-    //     LocalTime time = LocalTime.of(9, 30);
+    //     // int duration = 5;
+    //     // CarDto carDtoRegular = new CarDto("regular plate number", Size.Regular);
+    //     // CarDto carDtoLarge = new CarDto("large plate number", Size.Large);
+    //     // Date date = Date.valueOf(LocalDate.now());
+    //     // LocalTime time = LocalTime.now().plusMinutes(1);
 
     //     String error = "";
 
-    //     TempSpotDto largeSpot = null;
-    //     TempSpotDto regSpot = null;
+    //     // TempSpotDto largeSpot = null;
+    //     // TempSpotDto regSpot = null;
+    //     // try {
+    //     //     // Tested for in previous test
+    //     //     largeSpot = service.createTempSpot(duration, carDtoLarge, date, time);
+    //     //     regSpot = service.createTempSpot(duration, carDtoRegular, date, time);
+    //     // } catch (Exception e) {
+    //     //     fail();
+    //     // }
+    //     List<TempSpotDto> spotDtos = new ArrayList<TempSpotDto>();
     //     try {
-    //         // Tested for in previous test
-    //         largeSpot = service.createTempSpot(Size.Large, duration, car, date, time);
-    //         regSpot = service.createTempSpot(Size.Regular, duration, car, date, time);
-    //     } catch (Exception e) {
-    //         fail();
-    //     }
-    //     largeSpot = null;
-    //     regSpot = null;
-    //     try {
-    //         largeSpot = service.getSpotByPlaceNumber(1); // only 1 large spot in system, should be place number 1
-    //         regSpot = service.getSpotByPlaceNumber(21);// only 1 regular spot in system, should be place number 21
+    //         spotDtos =  service.getAllTempSpots(); // only 1 large spot in system, should be place number 1
     //     } catch (Exception e) {
     //         error += e.getMessage();
     //     }
     //     assertEquals("", error);
 
-    //     assertNotNull(largeSpot);
-    //     assertEquals(1, largeSpot.getPlaceNumber());
-    //     assertNotNull(regSpot);
-    //     assertEquals(21, regSpot.getPlaceNumber());
+    //     assertEquals(2, spotDtos.size());
+    //     assertEquals(21, spotDtos.get(0).getPlaceNumber());
+    //     assertEquals(1, spotDtos.get(1).getPlaceNumber());
     // }
+
+
+
 
 }
