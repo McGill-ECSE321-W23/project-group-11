@@ -3,9 +3,19 @@ package ca.mcgill.ecse321.ParkingManagement.service;
 import ca.mcgill.ecse321.ParkingManagement.model.LargeTempSpot;
 import ca.mcgill.ecse321.ParkingManagement.model.RegularTempSpot;
 import ca.mcgill.ecse321.ParkingManagement.model.TempSpot;
-import ca.mcgill.ecse321.ParkingManagement.model.SystemInfo;
 
-public class PaymentService extends SystemInfo{
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import ca.mcgill.ecse321.ParkingManagement.dao.SystemInfoRepository;
+
+@Service
+public class PaymentService {
+
+    @Autowired
+    SystemInfoRepository systemInfo;
 
     /**
      * Method to validate payment for a spot
@@ -14,6 +24,7 @@ public class PaymentService extends SystemInfo{
      * @return true if the payment is valid
      * @throws Exception
      */
+    @Transactional
     public boolean validatePayment(String cardNumber) throws Exception {
 
         boolean payment = false;
@@ -39,23 +50,28 @@ public class PaymentService extends SystemInfo{
 
     /**
      * Method that calculates the price the customer needs to pay for the spot
-     * @param spot the particular spot that the customer is taking
+     * 
+     * @param spot  the particular spot that the customer is taking
      * @param hours the number of hours the customer is occupying the spot
-     * @return the float that represents the total cost for the customer to pay
+     * @return the integer that represents the total cost that the customer has to
+     *         pay
      */
     
-    public int priceForTempSpot(TempSpot spot, int hours){
+    public int getCalculatedPriceForSpot(TempSpot spot, int hours) {
         int price = 0;
-        if(spot instanceof RegularTempSpot){
-            price += getRegTempSpotPrice()*(hours*4);
-            return price;
+        if (spot instanceof RegularTempSpot) {
+            if (systemInfo.existsById(1)) {
+                price += systemInfo.findSystemInfoById(1).getRegTempSpotPrice() * (hours * 4);
+                return price;
+            }
         }
 
-        if(spot instanceof LargeTempSpot){
-            price += getLargeTempSpotPrice()*(hours*4);
-            return price;
+        if (spot instanceof LargeTempSpot) {
+            if (systemInfo.existsById(1)) {
+                price += systemInfo.findSystemInfoById(1).getLargeTempSpotPrice() * (hours * 4);
+                return price;
+            }
         }
-
         return price;
     }
 
