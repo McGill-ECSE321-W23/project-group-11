@@ -22,7 +22,7 @@ public class PaymentService {
      * 
      * @param cardNumber a String that represents the customer's card number
      * @return true if the payment is valid
-     * @throws Exception
+     * @throws Exception if any syntax error exists in the card number string 
      */
     @Transactional
     public boolean validatePayment(String cardNumber) throws Exception {
@@ -56,7 +56,7 @@ public class PaymentService {
      * @return the integer that represents the total cost that the customer has to
      *         pay
      */
-    
+    @Transactional
     public int getCalculatedPriceForSpot(TempSpot spot, int hours) {
         int price = 0;
         if (spot instanceof RegularTempSpot) {
