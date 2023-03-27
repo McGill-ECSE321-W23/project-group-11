@@ -20,7 +20,7 @@ public class LoginService {
      * Verifies that the correct account is logged in with the correct email and password
      * @param email of the account
      * @param password of the account
-     * @return loginStatus of the account (String)
+     * @return loginStatus of the account (boolean)
      * @throws Exception if no account with that email exists or invalid password
      */
     @Transactional
@@ -51,7 +51,7 @@ public class LoginService {
      /**
      * Verifies that the correct account is logged out with the correct email 
      * @param email of the account
-     * @return loginStatus of the account (String)
+     * @return loginStatus of the account (boolean)
      * @throws Exception if no account with that email exists 
      */
     @Transactional
