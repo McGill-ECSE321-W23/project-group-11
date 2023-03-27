@@ -8,5 +8,8 @@ public interface ReservedSpotRepository extends CrudRepository<ReservedSpot, Int
 
 	ReservedSpot findReservedSpotById(int Id);
 	boolean existsById(int Id);
+	boolean existsByPlaceNumber(int placeNumber);
+	ReservedSpot findByPlaceNumber(int placeNumber);
 
-}
+}	
+
