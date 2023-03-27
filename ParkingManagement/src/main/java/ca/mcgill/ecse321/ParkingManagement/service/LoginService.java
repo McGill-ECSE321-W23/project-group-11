@@ -26,6 +26,10 @@ public class LoginService {
     @Transactional
     public boolean loginAccount(AccountDto accountTO) throws Exception {
 
+        if(accountTO == null){
+            throw new Exception("Account cannot be null.");
+        }
+
         if(accountTO.getlogInStatus()){
             throw new Exception("Account is already logged in.");
         }
@@ -61,6 +65,10 @@ public class LoginService {
     @Transactional
     public boolean logoutAccount(AccountDto accountTO) throws Exception {
         
+        if(accountTO == null){
+            throw new Exception("Account cannot be null.");
+        }
+
         if(!accountTO.getlogInStatus()){
             throw new Exception("Account is already logged out.");
         }
