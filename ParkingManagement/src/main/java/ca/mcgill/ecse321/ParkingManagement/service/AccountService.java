@@ -26,28 +26,30 @@ public class AccountService {
      @Transactional
      public Account createAccount(String email, String password) throws Exception {
         Account account;
+        Account oldAccount;
 
         //null check for the fields
 
-        if (email == null) {
-            Exception e = new Exception("Username cannot be null.");
+        if (email == null || email == "") {
+            Exception e = new Exception("Username cannot be null or empty.");
             throw e;
         }
 
-        if(accountRepository.existsByEmail(email)) {
+        oldAccount = accountRepository.findAccountByEmail(email);
+        if( oldAccount != null) {
             Exception e = new Exception("Account already exists under this email.");
             throw e;
         }
 
-        if(password == null) {
-            Exception e = new Exception("Password cannot be null.");
+        if(password == null || password == "") {
+            Exception e = new Exception("Password cannot be null or empty.");
             throw e;
         }
         account = new Account();
         account.setEmail(email);
         account.setPassword(password);
-
         accountRepository.save(account);
+        
         return account;
      }
 
@@ -62,16 +64,17 @@ public class AccountService {
      */
 
     @Transactional
-    public Account getAccount(String email, String password) throws Exception {
-        Account account;
-        if(accountRepository.existsAccountByEmailAndPassword(email,password)) {
-            account = accountRepository.findAccountByEmailAndPassword(email, password);
+    public Account getAccount(String email) throws Exception {
+        Account account = accountRepository.findAccountByEmail(email);
+        Account new_acc;
+        if(account != null) {
+            new_acc = accountRepository.findAccountByEmail(email);
         }
         else {
             Exception e = new Exception("Couldn't find requested account with given info.");
             throw e;
         }
-     return account;
+     return new_acc;
     }
 
     /**
