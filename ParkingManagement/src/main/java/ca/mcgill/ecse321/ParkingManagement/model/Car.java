@@ -37,10 +37,6 @@ public class Car {
       this.manager = manager;
    }
 
-   public void setLicensePlate(String value) {
-      this.licensePlate = value;
-   }
-
    // getters
    public String getLicensePlate() {
       return this.licensePlate;
