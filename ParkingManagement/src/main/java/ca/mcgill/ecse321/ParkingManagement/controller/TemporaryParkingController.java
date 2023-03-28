@@ -16,7 +16,6 @@ import ca.mcgill.ecse321.ParkingManagement.dto.TempSpotDto;
 import ca.mcgill.ecse321.ParkingManagement.service.TemporaryParkingService;
 
 
-
 @CrossOrigin(origins = "*")
 @RestController
 public class TemporaryParkingController {
