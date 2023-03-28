@@ -69,4 +69,8 @@ public class SpecificServiceDto{
       this.car = car;
    }
 
+   public SpecificService toModel(){
+      SpecificService s = new SpecificService(date, startTime, employee, serviceType, car);
+      return s;
+   }
 }

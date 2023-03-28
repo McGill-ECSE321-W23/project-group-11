@@ -7,13 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,7 +163,7 @@ public class SpecificServiceBookingTest {
         when(specificServiceRepository.findAll()).thenReturn(listOfServices);
         Iterable<SpecificService> output = new ArrayList<>();
         try{
-            output = specificServiceBookingService.getAllBookingsByCar(car);  
+            output = specificServiceBookingService.getAllBookingsByCar(car.getLicensePlate());  
         }
         catch(Exception e){
             fail();

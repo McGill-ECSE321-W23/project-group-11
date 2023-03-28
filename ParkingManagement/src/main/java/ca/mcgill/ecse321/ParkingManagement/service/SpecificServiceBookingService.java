@@ -92,15 +92,15 @@ public class SpecificServiceBookingService {
     }
     /**
      * Gets all bookings associated to a car 
-     * @param car the car associated with the booking
+     * @param String licence plate of the car associated with the booking
      * @return a List of bookings
      * @throws Exception
      */
     @Transactional
-    public Iterable<SpecificService> getAllBookingsByCar(Car car){
-        List<SpecificService> bookingList = new ArrayList();
+    public Iterable<SpecificService> getAllBookingsByCar(String licencePlate){
+        List<SpecificService> bookingList = new ArrayList<>();
         for(SpecificService specificService : specificServiceRepository.findAll()){
-            if(specificService.getCar().equals(car)){
+            if(specificService.getCar().getLicensePlate().equals(licencePlate)){
                 bookingList.add(specificService);
             }
         }
