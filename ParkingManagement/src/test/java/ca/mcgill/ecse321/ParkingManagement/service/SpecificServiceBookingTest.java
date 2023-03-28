@@ -152,6 +152,8 @@ public class SpecificServiceBookingTest {
         //create new specific service to add to the list of services 
         SpecificService oilChangeAt4pm = new SpecificService();
         //set cars to the given service types and add cars to the list of services
+        car.setLicensePlate(licensePlate);
+        car2.setLicensePlate("1D3F5G");
         oilChangeAt3pm.setCar(car);
         oilChangeAt4pm.setCar(car2);
         listOfServices.add(oilChangeAt3pm);
