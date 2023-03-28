@@ -11,32 +11,31 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class LargeTempSpot extends TempSpot {
-
+   // attributes
    @Id
    @GeneratedValue
    private int id;
+   private int placeNumber;
 
+   // associations
    @ManyToOne
    private Car car;
    
-   private int placeNumber;
-
-   public void setplaceNumber(int value) {
-       this.placeNumber = value;
+   // getters
+   public int getPlaceNumber() {
+      return this.placeNumber;
    }
- 
-   public int getplaceNumber() {
-       return this.placeNumber;
-   }
-
    public int getId() {
       return this.id;
    }
-
    public Car getCar() {
       return this.car;
    }
 
+   // setters
+   public void setPlaceNumber(int value) {
+      this.placeNumber = value;
+   }
    public void setCar(Car car) {
       this.car = car;
    }
