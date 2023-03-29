@@ -27,8 +27,6 @@ public class PaymentService {
     @Transactional
     public boolean validatePayment(String cardNumber) throws Exception {
 
-        boolean payment = false;
-
         if (cardNumber.isBlank()) {
             Exception e = new Exception("Card number must not be blank");
             throw e;
@@ -38,14 +36,14 @@ public class PaymentService {
             Exception e = new Exception("Card number must be 16 digits long");
             throw e;
         }
-        try {
-            Integer.parseInt(cardNumber);
-            payment = true;
-            return payment;
-        } catch (NumberFormatException n) {
-            Exception e = new Exception("Card number must only contain numbers");
-            throw e;
+        
+        for(int i = 0; i<cardNumber.length(); i++) {
+			if(!Character.isDigit(cardNumber.charAt(i))) {
+				Exception e = new Exception("Card number must only contain numbers");
+				throw e;
+			}
         }
+        return true;
     }
 
     /**
