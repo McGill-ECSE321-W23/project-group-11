@@ -35,7 +35,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void testGetCalculatedPriceForSpot() {
+    public void testGetCalculatedPriceForRegSpot() {
         int result = 0;
         TempSpotDto tempSpot = new TempSpotDto();
         CarDto car = new CarDto(licensePlate, Size.Regular);
@@ -46,6 +46,20 @@ public class PaymentServiceTest {
 
         result = service.getCalculatedPriceForSpot(tempSpot, hours, systemInfo);
         assertEquals(60, result);
+    }
+
+    @Test
+    public void testGetCalculatedPriceForLargeSpot() {
+        int result = 0;
+        TempSpotDto tempSpot = new TempSpotDto();
+        CarDto car = new CarDto(licensePlate, Size.Large);
+        SystemInfoDto systemInfo = new SystemInfoDto();
+        
+        tempSpot.setCar(car);
+        systemInfo.setLargeTempSpotPrice(20);
+
+        result = service.getCalculatedPriceForSpot(tempSpot, hours, systemInfo);
+        assertEquals(80, result);
     }
 
     @Test
@@ -82,5 +96,21 @@ public class PaymentServiceTest {
             error = e.getMessage();
         }
         assertEquals("Card number must not be blank", error);
+    }
+
+    @Test
+    public void testGetPriceForMonthlySpot(){
+        SystemInfoDto sysInfo = new SystemInfoDto();
+        sysInfo.setReservedSpotPrice(50);
+        int price = service.getPriceForMonthlySpot(sysInfo);
+        assertEquals(50, price);
+    }
+
+    @Test
+    public void testGetPriceForService(){
+        ServiceTypeDto serviceType = new ServiceTypeDto();
+        serviceType.setCost(150);
+        int price = service.getPriceForService(serviceType);
+        assertEquals(150, price);
     }
 }
