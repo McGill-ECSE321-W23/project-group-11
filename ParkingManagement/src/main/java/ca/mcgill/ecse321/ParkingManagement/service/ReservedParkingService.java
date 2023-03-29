@@ -110,7 +110,6 @@ public class ReservedParkingService {
         return spotdto;
     }
 
-
     /**
      * Returns a reserved spot from an id
      *

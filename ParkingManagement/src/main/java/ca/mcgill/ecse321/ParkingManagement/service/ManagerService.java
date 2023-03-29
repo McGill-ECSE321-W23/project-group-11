@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.ParkingManagement.service;
 import ca.mcgill.ecse321.ParkingManagement.dao.*;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
