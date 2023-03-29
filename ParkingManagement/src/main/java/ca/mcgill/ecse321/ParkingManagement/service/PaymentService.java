@@ -2,20 +2,16 @@ package ca.mcgill.ecse321.ParkingManagement.service;
 
 import ca.mcgill.ecse321.ParkingManagement.model.LargeTempSpot;
 import ca.mcgill.ecse321.ParkingManagement.model.RegularTempSpot;
+import ca.mcgill.ecse321.ParkingManagement.model.SystemInfo;
 import ca.mcgill.ecse321.ParkingManagement.model.TempSpot;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ca.mcgill.ecse321.ParkingManagement.dao.SystemInfoRepository;
 
 @Service
 public class PaymentService {
-
-    @Autowired
-    SystemInfoRepository systemInfo;
 
     /**
      * Method to validate payment for a spot
@@ -55,20 +51,17 @@ public class PaymentService {
      *         pay
      */
     @Transactional
-    public int getCalculatedPriceForSpot(TempSpot spot, int hours) {
+    public int getCalculatedPriceForSpot(TempSpot spot, int hours, SystemInfo sysInfo) {
         int price = 0;
         if (spot instanceof RegularTempSpot) {
-            if (systemInfo.existsById(1)) {
-                price += systemInfo.findSystemInfoById(1).getRegTempSpotPrice() * (hours * 4);
+                price += sysInfo.getRegTempSpotPrice() * (hours * 4);
                 return price;
-            }
+
         }
 
         if (spot instanceof LargeTempSpot) {
-            if (systemInfo.existsById(1)) {
-                price += systemInfo.findSystemInfoById(1).getLargeTempSpotPrice() * (hours * 4);
+                price += sysInfo.getLargeTempSpotPrice() * (hours * 4);
                 return price;
-            }
         }
         return price;
     }
