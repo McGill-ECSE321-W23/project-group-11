@@ -21,6 +21,14 @@ public class ReservedSpotDto {
         this.placeNumber = placeNumber;
     }
 
+    // constructors
+    public ReservedSpotDto(int month, int year, CarDto carDto) {
+        this.month = month;
+        this.year = year;
+        this.carDto = carDto;
+    }
+    
+
 
     // getters
     public int getId() {

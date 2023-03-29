@@ -34,8 +34,6 @@ public class CarService {
         } catch(Exception e) {
             throw new Exception("Car could not be saved because: " + e.getMessage()+ " ");
         }
-        
-
         return DtoConverters.convertToCarDto(car);
     }
 

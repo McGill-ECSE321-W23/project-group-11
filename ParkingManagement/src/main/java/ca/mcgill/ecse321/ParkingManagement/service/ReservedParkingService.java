@@ -36,23 +36,15 @@ public class ReservedParkingService {
      * @return DTO of reserved spot created
      * @throws Exception
      */
-    @Transactional
-    public ReservedSpotDto createReservedSpot(CarDto carDto, int year, int month) throws Exception {
-        checkReservedSpots(); // Refresh to remove expired temp spots
+    
+    public ReservedSpotDto createReservedSpot(ReservedSpotDto reservedSpotDto) throws Exception {
+        checkReservedSpots(); // Refresh to remove expired reserved spots
+        
+        ReservedSpot spot;
+        int year = reservedSpotDto.getYear();
+        int month = reservedSpotDto.getMonth();
+        CarDto carDto = reservedSpotDto.getCarDto();
 
-        if ( month > 12 ) {
-            throw new Exception("Invalid Month");
-        }
-
-        // Obtain objects from database to initialize ReservedSpot
-        if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check that argument exists in database
-            throw new Exception("Inputted licence plate does not match a car in the database.");
-        }
-
-        Car car = carRepository.findCarBylicensePlate(carDto.getLicensePlate());
-        car.setSize(carDto.getSize());
-
-        // Check input validity 
         YearMonth currentTime = YearMonth.now();
         YearMonth selectedTime = YearMonth.of(year, month);
 
@@ -60,9 +52,26 @@ public class ReservedParkingService {
             throw new Exception("Selected time cannot be in the past.");
         }
 
-        ReservedSpot spot;
-        // Make sure size is  only regular, large cars do not have monthly spots
-        Size size = car.getSize();
+        // Obtain objects from database to initialize reservedSpot
+        if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check if car exists in database
+            createCar(carDto.getLicensePlate(), carDto.getSize());
+            
+        }
+
+        if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check that argument exists in database
+            throw new Exception("Inputted licence plate does not match a car in the database.");
+        }
+
+        // Check input validity
+        if ( month > 12 ) {
+            throw new Exception("Invalid Month");
+        }
+
+        Car car = carRepository.findCarBylicensePlate(carDto.getLicensePlate());
+        Size size = carDto.getSize();
+
+
+        // Set up spot based on inputs and return
         if (size == Size.Regular)  { 
             spot  = new ReservedSpot();
         } else if (size == Size.Large)  { 
@@ -82,24 +91,25 @@ public class ReservedParkingService {
          *  spots have places 300-499
          */
         int place = 300;
-            while (true) {
-                if (!reservedSpotRepository.existsByPlaceNumber(place)) {
-                    spot.setPlaceNumber(place);
-                    break;
-                }
-                else {
-                    place++;
-                }
-                if (place > 499) {
-                    throw new Exception("There are no more monthly spots available.");
-                }
+        while (true) {
+            if (!reservedSpotRepository.existsByPlaceNumber(place)) {
+                spot.setPlaceNumber(place);
+                break;
             }
+            else {
+                place++;
+            }
+            if (place > 499) {
+                throw new Exception("There are no more monthly spots available.");
+            }
+        }
 
-            spot.setPlaceNumber(place);
-            ReservedSpotDto spotdto = DtoConverters.convertToReservedSpotDto(spot);
-            reservedSpotRepository.save(spot);
-            return spotdto;
-        } 
+        spot.setPlaceNumber(place);
+        ReservedSpotDto spotdto = DtoConverters.convertToReservedSpotDto(spot);
+        reservedSpotRepository.save(spot);
+        return spotdto;
+    }
+
 
     /**
      * Returns a reserved spot from an id
@@ -110,7 +120,7 @@ public class ReservedParkingService {
      */
     @Transactional
     public ReservedSpotDto getSpotByPlaceNumber(int placeNumber) throws Exception{
-        checkReservedSpots(); // Refresh to remove expired temp spots
+        checkReservedSpots(); // Refresh to remove expired reserved spots
 
         ReservedSpot spot;
         if (reservedSpotRepository.existsByPlaceNumber(placeNumber)) {
@@ -132,7 +142,7 @@ public class ReservedParkingService {
      */
     @Transactional
     public boolean deleteSpot (ReservedSpotDto spotDto) throws Exception {
-        checkReservedSpots(); // Refresh to remove expired temp spots
+        checkReservedSpots(); // Refresh to remove expired reserved spots
 
         boolean deleted = false;
         ReservedSpot spot;
@@ -157,7 +167,6 @@ public class ReservedParkingService {
      */
     @Transactional
     public List<ReservedSpotDto> getReservedSpotsByCar(CarDto cardto) throws Exception {
-        checkReservedSpots(); // Refresh to remove expired temp spots
 
         ReservedSpotDto spotDto;
         List<ReservedSpotDto> reservedSpots = new ArrayList<ReservedSpotDto>();
@@ -190,7 +199,7 @@ public class ReservedParkingService {
      */
     @Transactional
     public List<ReservedSpotDto> getAllReservedSpots(){
-        checkReservedSpots(); // Refresh to remove expired temp spots
+        checkReservedSpots(); // Refresh to remove expired reserved spots
 
         ReservedSpotDto spotDto;
 
@@ -229,7 +238,7 @@ public class ReservedParkingService {
      */
     @Transactional
     public boolean checkCurrentValidityReservedSpots(CarDto cardto) throws Exception {
-        checkReservedSpots(); // Refresh to remove expired temp spots
+        checkReservedSpots(); // Refresh to remove expired reserved spots
         YearMonth currentTime = YearMonth.now();
 
         for (ReservedSpotDto reservedSpot : getReservedSpotsByCar(cardto)) {
@@ -241,5 +250,28 @@ public class ReservedParkingService {
             }
         }
         return false;
+    }
+
+    /**
+     * TODO This is an anti-pattern that needs to be fixed, code exists in CarService.java
+     * Creates a car with a plate number and size
+     *
+     * @param plateNumber license plate of car
+     * @param size Size of car (regular or large)
+     * @return DTO of car created
+     * @throws Exception
+     */
+    public CarDto createCar(String plateNumber, Size size) throws Exception{
+        Car car = new Car();
+        car.setLicensePlate(plateNumber);
+        car.setSize(size);
+        try {
+            carRepository.save(car);
+        } catch(Exception e) {
+            throw new Exception("Car could not be saved because: " + e.getMessage()+ " ");
+        }
+        
+
+        return DtoConverters.convertToCarDto(car);
     }
 }

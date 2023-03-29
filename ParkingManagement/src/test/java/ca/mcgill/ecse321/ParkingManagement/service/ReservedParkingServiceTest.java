@@ -4,13 +4,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.lenient;
 
-
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -158,10 +161,10 @@ public class ReservedParkingServiceTest {
         int month = 12;
         int year = 2023; 
 
-        ReservedSpotDto spot = null;
+        ReservedSpotDto spot = null; 
 
         try { // att service method 
-            spot = service.createReservedSpot(carDto, year, month);
+            spot = service.createReservedSpot(new ReservedSpotDto(month, year, carDto));
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -186,7 +189,7 @@ public class ReservedParkingServiceTest {
         CarDto carDto = new CarDto(CAR_KEY, carSize);
 
         try {
-            service.createReservedSpot(carDto, year, month);
+            service.createReservedSpot(new ReservedSpotDto(month, year, carDto));
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -203,7 +206,7 @@ public class ReservedParkingServiceTest {
         CarDto carDto = new CarDto(CAR_KEY, carSize);
 
         try {
-            service.createReservedSpot(carDto, year, month);
+            service.createReservedSpot(new ReservedSpotDto(month, year, carDto));
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -218,7 +221,7 @@ public class ReservedParkingServiceTest {
         CarDto carDto = new CarDto("invalid license plate", carSize);
 
         try {
-            service.createReservedSpot(carDto, 2023, 4);
+            service.createReservedSpot(new ReservedSpotDto(4, 2023, carDto));
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -242,7 +245,7 @@ public class ReservedParkingServiceTest {
         ReservedSpotDto spot = null;
         try {
             // Tested for in previous test
-            spot = service.createReservedSpot( carDto, year, month);
+            spot = service.createReservedSpot( new ReservedSpotDto(month, year, carDto));
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -250,16 +253,15 @@ public class ReservedParkingServiceTest {
         ReservedSpotDto spotretrieved = null;
 
         try {
-            spotretrieved = service.getSpotByPlaceNumber(300); // only 1 large spot in system, should be place number 1
+            spotretrieved = service.getSpotByPlaceNumber(300); 
         } catch (Exception e) {
             error += e.getMessage();
         }
         assertEquals("", error);
         assertEquals(300, spotretrieved.getPlaceNumber());
         assertEquals(carDto.getLicensePlate(), spotretrieved.getCarDto().getLicensePlate());
-        }
-
-
+    }
+    
     @Test
     public void testGetSpotByNonexistentPlaceNumber() {
         assertEquals(0, service.getAllReservedSpots().size());
@@ -274,6 +276,28 @@ public class ReservedParkingServiceTest {
         assertEquals("No monthly spot currently is reserved with that place number.", error);
         assertNull(regSpot);
     }
+
+    @Test
+    public void testGetSpotByCarEmpty() {
+        assertEquals(0, service.getAllReservedSpots().size());
+
+        CarDto carDto = new CarDto("plate number", Size.Regular);
+
+        String error = "";
+
+        ReservedSpotDto spot = null;
+
+        List<ReservedSpotDto> spotretrieved = null;
+
+        try {
+            spotretrieved = service.getReservedSpotsByCar(carDto); // only 1 large spot in system, should be place number 1
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+        assertEquals("Inputted car is not accociated with any reserved spots.", error);
+    }
+
+    //TODO missing a passing test
 
     // // ------------------------------------------- End Reservation Tests -------------------------------------------
 
@@ -292,7 +316,7 @@ public class ReservedParkingServiceTest {
         ReservedSpotDto spotDto = null;
         try {
             // Tested for in previous test
-            spotDto = service.createReservedSpot( carDto, year, month);
+            spotDto = service.createReservedSpot( new ReservedSpotDto(month, year, carDto));
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -338,7 +362,7 @@ public class ReservedParkingServiceTest {
 
         try {
             // Tested for in previous test
-            spotDto = service.createReservedSpot( carDto, 2023, 12);
+            spotDto = service.createReservedSpot( new ReservedSpotDto(12, 2023, carDto));
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -354,39 +378,38 @@ public class ReservedParkingServiceTest {
 
     // // ------------------------------------------- Validity Check Tests ------------------------------------------------
 
-    //TODO fix the mocks do accomodate the change, not required because coverage is already 60%.
 
-    // @Test
-    // public void testValidityFalse() throws Exception {
-    //     assertEquals(0, service.getAllReservedSpots().size());
+    @Test
+    public void testValidityFalseNoAssociation() throws Exception {
+        assertEquals(0, service.getAllReservedSpots().size());
 
-    //     String error = "";
+        String error = "";
 
-    //     ReservedSpot spot = new ReservedSpot();
-    //     Car car = new Car();
+        int month = 12;
+        int year = 2023;
+        Size carSize = Size.Regular;
+        CarDto carDto = new CarDto(CAR_KEY, carSize);
 
-    //     spot.setCar(car);
-    //     spot.setMonth(12);
-    //     spot.setYear(2023);
-    //     spot.setPlaceNumber(302);
+        ReservedSpot spot = new ReservedSpot();
+        Car car = new Car();
 
-    //     reservedspotRepository.save(spot);
+        spot.setCar(car);
+        spot.setMonth(12);
+        spot.setYear(2023);
+        spot.setPlaceNumber(302);
 
-    //     CarDto carDto = new CarDto("plate number", Size.Regular);
+        reservedspotRepository.save(spot);
 
-    //     ReservedSpotDto spotDto = null;
+        Boolean found = false;
 
-    //     try {
-    //         // Tested for in previous test
-    //         spotDto = service.createReservedSpot( carDto, 2023, 12);
-    //     } catch (Exception e) {
-    //         error += e.getMessage();
-    //     }
+        try {
+            found = service.checkCurrentValidityReservedSpots(carDto);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
 
-    //     assertFalse(service.checkCurrentValidityReservedSpots(carDto));
-
-
-    // }
+        assertEquals("Inputted car is not accociated with any reserved spots.", error); // check for errors
+    }
 
     // @Test
     // public void testDeleteSpotNullSpot() {
@@ -424,5 +447,6 @@ public class ReservedParkingServiceTest {
 
     //     assertEquals("Inputted spot does not exist in database.", error);
     // }
+    //TODO add a passing test here
 
 }
