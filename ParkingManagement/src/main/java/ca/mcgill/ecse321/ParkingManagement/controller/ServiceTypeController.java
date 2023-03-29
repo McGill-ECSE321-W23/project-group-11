@@ -2,6 +2,8 @@ package ca.mcgill.ecse321.ParkingManagement.controller;
 import java.util.List;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ca.mcgill.ecse321.ParkingManagement.service.*;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
@@ -21,12 +23,12 @@ public class ServiceTypeController {
 	 */
 
     @GetMapping(value = { "/servicetypes", "/servicetypes/" })
-    public List<ServiceTypeDto> getAllServiceTypes() {
-	    List<ServiceTypeDto> serviceTypeList = new ArrayList<>();
+    public ResponseEntity<?> getAllServiceTypes() {
+        List<ServiceTypeDto> serviceTypeList = new ArrayList<>();
         for(ServiceType serviceType : serviceTypeService.getAllServiceTypes()){
             serviceTypeList.add(convertToDto(serviceType));
         }
-        return serviceTypeList;
+        return new ResponseEntity<>(serviceTypeList,HttpStatus.OK);
     }
 
     /**
@@ -36,8 +38,13 @@ public class ServiceTypeController {
 	 */
 
     @GetMapping(value = {"/servicetype/{name}", "/servicetype/{name}/"})
-    public ServiceTypeDto getServiceType(@PathVariable String name) throws Exception{
-        return convertToDto(serviceTypeService.getServiceTypeByName(name));
+    public ResponseEntity<?> getServiceType(@PathVariable String name) throws Exception{
+        try{
+            return new ResponseEntity<>(convertToDto(serviceTypeService.getServiceTypeByName(name)),HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
@@ -47,13 +54,18 @@ public class ServiceTypeController {
 	 */
 
     @PostMapping(value = {"/servicetype", "/servicetype/"})
-    public ServiceTypeDto createServiceType(@RequestBody ServiceTypeDto serviceTypeDto) throws Exception{
-        //convert to a serviceType
-        ServiceType serviceType = serviceTypeDto.toModel();
-        //call service
-        serviceType = serviceTypeService.createServiceType(serviceType.getName(),serviceType.getCost(),serviceType.getDuration(),serviceType.getManager());
-        //return a dto
-        return convertToDto(serviceType);
+    public ResponseEntity<?> createServiceType(@RequestBody ServiceTypeDto serviceTypeDto) throws Exception{
+        try{
+            //convert to a serviceType
+            ServiceType serviceType = serviceTypeDto.toModel();
+            //call service
+            serviceType = serviceTypeService.createServiceType(serviceType.getName(),serviceType.getCost(),serviceType.getDuration(),serviceType.getManager());
+            //return a dto
+            return new ResponseEntity<>(convertToDto(serviceType),HttpStatus.CREATED);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
@@ -63,13 +75,18 @@ public class ServiceTypeController {
 	 */
 
     @DeleteMapping(value = {"/servicetype/","/servicetype"})
-    public void deleteServiceType(@RequestBody ServiceTypeDto serviceTypeDto)  throws Exception{
-        //convert to a serviceType
-        ServiceType serviceType = serviceTypeDto.toModel();
-        //call service
-        serviceTypeService.removeServiceType(serviceType);
-        //return
-        return;
+    public ResponseEntity<?> deleteServiceType(@RequestBody ServiceTypeDto serviceTypeDto)  throws Exception{
+        try{
+            //convert to a serviceType
+            ServiceType serviceType = serviceTypeDto.toModel();
+            //call service
+            serviceTypeService.removeServiceType(serviceType);
+            //return
+            return new ResponseEntity<>("Service Type Deleted", HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     //converts a Servicetype into a servicetype dto (might be useful) 

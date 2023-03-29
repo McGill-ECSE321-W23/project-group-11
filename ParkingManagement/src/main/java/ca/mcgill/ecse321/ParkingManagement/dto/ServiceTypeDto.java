@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.ParkingManagement.dto;
+
 import ca.mcgill.ecse321.ParkingManagement.model.Manager;
 import ca.mcgill.ecse321.ParkingManagement.model.ServiceType;
 
@@ -11,6 +12,9 @@ public class ServiceTypeDto {
         this.duration = duration;
         this.manager = manager;
     }
+
+    //empty contructor
+    public ServiceTypeDto(){}
 
     //Getters and Setters
     private String name;
