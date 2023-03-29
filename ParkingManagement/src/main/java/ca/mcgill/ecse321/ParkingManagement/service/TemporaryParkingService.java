@@ -53,7 +53,7 @@ public class TemporaryParkingService {
 
         // Obtain objects from database to initialize TempSpot
         if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check if car exists in database
-            carService.createCar(carDto.getLicensePlate(), carDto.getSize());
+            createCar(carDto.getLicensePlate(), carDto.getSize());
             
         }
         Car car = carRepository.findCarBylicensePlate(carDto.getLicensePlate());
@@ -299,7 +299,28 @@ public class TemporaryParkingService {
         }
     }
 
+/**
+     * TODO This is an anti-pattern that needs to be fixed, code exists in CarService.java
+     * Creates a car with a plate number and size
+     *
+     * @param plateNumber license plate of car
+     * @param size Size of car (regular or large)
+     * @return DTO of car created
+     * @throws Exception
+     */
+    public CarDto createCar(String plateNumber, Size size) throws Exception{
+        Car car = new Car();
+        car.setLicensePlate(plateNumber);
+        car.setSize(size);
+        try {
+            carRepository.save(car);
+        } catch(Exception e) {
+            throw new Exception("Car could not be saved because: " + e.getMessage()+ " ");
+        }
+        
 
+        return DtoConverters.convertToCarDto(car);
+    }
 
 
 
