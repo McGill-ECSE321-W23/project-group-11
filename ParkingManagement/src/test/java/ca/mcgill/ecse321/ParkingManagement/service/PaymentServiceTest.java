@@ -48,4 +48,40 @@ public class PaymentServiceTest {
         assertNotEquals(0, result);
         assertEquals(systemInfoDao.findSystemInfoById(id).getRegTempSpotPrice() * hours * 4, result);
     }
+
+    @Test
+    public void testCreditCardInvalidCharacter(){
+        String invalidCard = "1234567898765abc";
+        var error = "";
+        try {
+            service.validatePayment(invalidCard);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertEquals("Card number must only contain numbers", error);
+    }
+
+    @Test
+    public void testInvalidCreditCardLength(){
+        String invalidCard = "12345678987659879874654";
+        var error = "";
+        try {
+            service.validatePayment(invalidCard);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertEquals("Card number must be 16 digits long", error);
+    }
+
+    @Test 
+    public void testBlankCreditCard(){
+        String invalidCard = "";
+        var error = "";
+        try {
+            service.validatePayment(invalidCard);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertEquals("Card number must not be blank", error);
+    }
 }
