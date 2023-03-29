@@ -1,9 +1,7 @@
 package ca.mcgill.ecse321.ParkingManagement.service;
 
-import ca.mcgill.ecse321.ParkingManagement.model.LargeTempSpot;
-import ca.mcgill.ecse321.ParkingManagement.model.RegularTempSpot;
-import ca.mcgill.ecse321.ParkingManagement.model.SystemInfo;
-import ca.mcgill.ecse321.ParkingManagement.model.TempSpot;
+import ca.mcgill.ecse321.ParkingManagement.model.*;
+import ca.mcgill.ecse321.ParkingManagement.dto.*;
 
 import javax.transaction.Transactional;
 
@@ -51,15 +49,15 @@ public class PaymentService {
      *         pay
      */
     @Transactional
-    public int getCalculatedPriceForSpot(TempSpot spot, int hours, SystemInfo sysInfo) {
+    public int getCalculatedPriceForSpot(TempSpotDto spot, int hours, SystemInfoDto sysInfo) {
         int price = 0;
-        if (spot instanceof RegularTempSpot) {
+        if (spot.getSize().equals(Size.Regular)) {
                 price += sysInfo.getRegTempSpotPrice() * (hours * 4);
                 return price;
 
         }
 
-        if (spot instanceof LargeTempSpot) {
+        if (spot.getSize().equals(Size.Large)) {
                 price += sysInfo.getLargeTempSpotPrice() * (hours * 4);
                 return price;
         }
