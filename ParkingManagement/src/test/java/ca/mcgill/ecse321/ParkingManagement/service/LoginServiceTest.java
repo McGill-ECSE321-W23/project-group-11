@@ -28,8 +28,6 @@ public class LoginServiceTest {
     @InjectMocks
 	private LoginService service;
     
-    //test cases of not existing in the database
-
     @Test
     public void testValidLogin() {//account that hasn't already logged in and exists in the database should be able to login
         
@@ -75,6 +73,36 @@ public class LoginServiceTest {
 
 
     @Test
+    public void testInvalidLogin3() {//account that hasn't been created shouldn't be able to login
+    Exception e = assertThrows(Exception.class,
+                () -> {
+                    AccountDto accountDto = new AccountDto("brianMorava123@gmail.com", "password", false);
+                    when(accountRepository.existsByEmail(any(String.class))).thenReturn(false);
+                    service.loginAccount(accountDto);
+                }
+        );
+        assertEquals(e.getMessage(),"No account with that email exists.");
+    }
+
+    @Test
+    public void testInvalidLogin4() {//if a user entered an incorrect password they shouldn't be able to login
+    Exception e = assertThrows(Exception.class,
+                () -> {
+                    AccountDto accountDto = new AccountDto("brianMorava123@gmail.com", "wrongPassword", false);
+                    when(accountRepository.existsByEmail(any(String.class))).thenReturn(true);
+                    Account account = new Account();
+                    account.setEmail(accountDto.getEmail());
+                    account.setPassword("correctPassword");
+                    when(accountRepository.findAccountByEmail(any(String.class))).thenReturn(account);
+                    service.loginAccount(accountDto);
+                }
+        );
+        assertEquals(e.getMessage(),"Invalid password.");
+    }
+
+
+
+    @Test
     public void testValidLogout() {//account that is logged in and exists in the database should be able to logout
        
         AccountDto accountDto = new AccountDto("brian@gmail.com", "password1", true);
@@ -110,6 +138,18 @@ public class LoginServiceTest {
                 }
         );
         assertEquals(e.getMessage(),"Account cannot be null.");
+    }
+
+    @Test
+    public void testInvalidLogout3() {//account that hasn't been created shouldn't be able to logout
+    Exception e = assertThrows(Exception.class,
+                () -> {
+                    AccountDto accountDto = new AccountDto("brian@gmail.com", "password1", true);
+                    when(accountRepository.existsByEmail(any(String.class))).thenReturn(false);
+                    service.logoutAccount(accountDto);
+                }
+        );
+        assertEquals(e.getMessage(),"No account with that email exists.");
     }
     
 }
