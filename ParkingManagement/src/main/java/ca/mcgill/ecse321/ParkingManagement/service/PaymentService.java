@@ -51,13 +51,13 @@ public class PaymentService {
     @Transactional
     public int getCalculatedPriceForSpot(TempSpotDto spot, int hours, SystemInfoDto sysInfo) {
         int price = 0;
-        if (spot.getSize().equals(Size.Regular)) {
+        if (spot.getCarDto().getSize().equals(Size.Regular)) {
                 price += sysInfo.getRegTempSpotPrice() * (hours * 4);
                 return price;
 
         }
 
-        if (spot.getSize().equals(Size.Large)) {
+        if (spot.getCarDto().getSize().equals(Size.Large)) {
                 price += sysInfo.getLargeTempSpotPrice() * (hours * 4);
                 return price;
         }
