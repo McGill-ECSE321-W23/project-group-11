@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.ParkingManagement.dto;
 
+import ca.mcgill.ecse321.ParkingManagement.model.Customer;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
 
 public class CarDto {
@@ -7,6 +8,9 @@ public class CarDto {
     // attributes
     private String licencePlate;
     private Size size;
+
+    // associations
+    private Customer customer;
 
     // constructors
     public CarDto(String licensePlate) {
@@ -24,15 +28,18 @@ public class CarDto {
     public Size getSize() {
         return this.size;
     }
-    public String getSizeString() {
-        if (this.size == Size.Large) {
-            return "Large";
-        }
-        return "Regular";
+    public Customer getCustomer() {
+        return this.customer;
     }
     
     // setters
     public void setSize(Size size) {
         this.size = size;
+    }
+    public void setPlaceNumber(String licencePlate) {
+        this.licencePlate = licencePlate;
+    }
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

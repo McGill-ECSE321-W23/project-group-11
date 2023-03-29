@@ -29,6 +29,8 @@ public class TemporaryParkingService {
     @Autowired
     CarRepository carRepository;
 
+    CarService carService = new CarService();
+
     /**
      * Creates a temporary spot
      *
@@ -40,14 +42,19 @@ public class TemporaryParkingService {
      * @throws Exception
      */
     @Transactional
-    public TempSpotDto createTempSpot(int duration, CarDto carDto, Date date, LocalTime time) throws Exception {
+    public TempSpotDto createTempSpot(TempSpotDto tempSpotDto) throws Exception {
         checkTempSpots(); // Refresh to remove expired temp spots
         
         TempSpot spot;
+        int duration = tempSpotDto.getDuration();
+        CarDto carDto = tempSpotDto.getCarDto();
+        Date date = tempSpotDto.getDate();
+        LocalTime time = tempSpotDto.getStartTime();
 
         // Obtain objects from database to initialize TempSpot
-        if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check that argument exists in database
-            throw new Exception("Inputted licence plate does not match a car in the database.");
+        if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check if car exists in database
+            createCar(carDto.getLicensePlate(), carDto.getSize());
+            
         }
         Car car = carRepository.findCarBylicensePlate(carDto.getLicensePlate());
 
@@ -55,8 +62,10 @@ public class TemporaryParkingService {
         if (duration > 48  || duration < 1) {
             throw new Exception("Inputted durration exceeds bounds of accepted values ([1, 48] intervals of 15 minutes).");
         }
-        if ((date.compareTo(Date.valueOf(LocalDate.now())) < 0) || time.compareTo(LocalTime.now()) < 0) {
-            throw new Exception("Start of attempted booking is in the past.");
+        if ((date.compareTo(Date.valueOf(LocalDate.now())) < 0)) {
+            if (time.compareTo(LocalTime.now()) < 0) {
+                throw new Exception("Start of attempted booking is in the past.");
+            }
         }
 
         // Set up spot based on inputs and return
@@ -109,6 +118,8 @@ public class TemporaryParkingService {
         }
 
         spot.setPlaceNumber(place);
+        if (size == Size.Large) {largeTempSpotRepository.save((LargeTempSpot) spot);}
+        else {regularTempSpotRepository.save((RegularTempSpot) spot);}
         return DtoConverters.convertToTempSpotDto(spot);
     }
 
@@ -149,7 +160,6 @@ public class TemporaryParkingService {
      */
     @Transactional
     public TempSpotDto editTempSpot (TempSpotDto spotDto, int duration) throws Exception{
-        
         checkTempSpots(); // Refresh to remove expired temp spots
 
         // get spot from its repository
@@ -274,27 +284,43 @@ public class TemporaryParkingService {
     /**
      * Checks all temp spots to make sure booking duration has not expired
      * If the booking duration has expired, the bookings are deleted
-     * @return boolean true if successfully checked
      */
     @Transactional
-    public boolean checkTempSpots() {
-        boolean checked = false;
+    public void checkTempSpots() {
         for (RegularTempSpot regSpot : regularTempSpotRepository.findAll()) {
                 if (regSpot.getStartTime().plusMinutes(regSpot.getDuration()*15).compareTo(LocalTime.now()) > 0) { 
                     regularTempSpotRepository.delete(regSpot);
-                    break;
                 } 
         }
         for (LargeTempSpot largeSpot : largeTempSpotRepository.findAll()) {
             if (largeSpot.getStartTime().plusMinutes(largeSpot.getDuration()*15).compareTo(LocalTime.now()) > 0) { 
                 largeTempSpotRepository.delete(largeSpot);
-                break;
             } 
-        }   
-        return checked;
+        }
     }
 
+/**
+     * TODO This is an anti-pattern that needs to be fixed, code exists in CarService.java
+     * Creates a car with a plate number and size
+     *
+     * @param plateNumber license plate of car
+     * @param size Size of car (regular or large)
+     * @return DTO of car created
+     * @throws Exception
+     */
+    public CarDto createCar(String plateNumber, Size size) throws Exception{
+        Car car = new Car();
+        car.setLicensePlate(plateNumber);
+        car.setSize(size);
+        try {
+            carRepository.save(car);
+        } catch(Exception e) {
+            throw new Exception("Car could not be saved because: " + e.getMessage()+ " ");
+        }
+        
 
+        return DtoConverters.convertToCarDto(car);
+    }
 
 
 
