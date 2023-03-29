@@ -54,6 +54,7 @@ public class TemporaryParkingService {
         // Obtain objects from database to initialize TempSpot
         if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check if car exists in database
             carService.createCar(carDto.getLicensePlate(), carDto.getSize());
+            
         }
         Car car = carRepository.findCarBylicensePlate(carDto.getLicensePlate());
 
@@ -61,8 +62,10 @@ public class TemporaryParkingService {
         if (duration > 48  || duration < 1) {
             throw new Exception("Inputted durration exceeds bounds of accepted values ([1, 48] intervals of 15 minutes).");
         }
-        if ((date.compareTo(Date.valueOf(LocalDate.now())) < 0) || time.compareTo(LocalTime.now()) < 0) {
-            throw new Exception("Start of attempted booking is in the past.");
+        if ((date.compareTo(Date.valueOf(LocalDate.now())) < 0)) {
+            if (time.compareTo(LocalTime.now()) < 0) {
+                throw new Exception("Start of attempted booking is in the past.");
+            }
         }
 
         // Set up spot based on inputs and return

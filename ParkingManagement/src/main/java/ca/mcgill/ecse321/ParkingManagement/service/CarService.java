@@ -29,8 +29,12 @@ public class CarService {
         Car car = new Car();
         car.setLicensePlate(plateNumber);
         car.setSize(size);
-
-        carDao.save(car);
+        try {
+            carDao.save(car);
+        } catch(Exception e) {
+            throw new Exception("Car could not be saved because: " + e.getMessage()+ " ");
+        }
+        
 
         return DtoConverters.convertToCarDto(car);
     }

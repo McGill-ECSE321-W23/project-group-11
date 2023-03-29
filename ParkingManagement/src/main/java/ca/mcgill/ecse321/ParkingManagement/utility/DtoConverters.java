@@ -5,6 +5,7 @@ import ca.mcgill.ecse321.ParkingManagement.dto.CarDto;
 
 import ca.mcgill.ecse321.ParkingManagement.dto.TempSpotDto;
 import ca.mcgill.ecse321.ParkingManagement.model.Car;
+import ca.mcgill.ecse321.ParkingManagement.model.Customer;
 import ca.mcgill.ecse321.ParkingManagement.model.ReservedSpot;
 import ca.mcgill.ecse321.ParkingManagement.model.TempSpot;
 
@@ -23,6 +24,10 @@ public class DtoConverters {
 
     public static CarDto convertToCarDto(Car car) {
         CarDto dto = new CarDto(car.getLicensePlate(), car.getSize());
+        Customer customer = car.getCustomer();
+        if (customer != null) {
+            dto.setCustomer(customer);
+        }
         return dto;
     }
 

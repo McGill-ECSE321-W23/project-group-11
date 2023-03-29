@@ -63,7 +63,7 @@ public class TemporaryParkingController {
             TempSpotDto spot = tempSpotService.createTempSpot(spotDto);
             return new ResponseEntity<>(spot, HttpStatus.CREATED);
         } catch(Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage() + "Not Created", HttpStatus.BAD_REQUEST);
         }
     }
 
