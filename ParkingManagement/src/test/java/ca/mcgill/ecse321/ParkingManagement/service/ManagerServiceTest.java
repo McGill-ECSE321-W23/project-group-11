@@ -57,5 +57,87 @@ public class ManagerServiceTest {
 
     }
 
+    @Test
+    public void testGetManagerByNullEmail() throws Exception {
+        Account account = acService.createAccount(PERSON_PW, PERSON_KEY);
+        Manager manager = new Manager();
+        Manager findManager = null;
+        String error = null;
+        manager.setAccount(account);
+
+        try{
+            findManager = manService.getManagerByEmail(null);
+        }
+        catch(Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(findManager);
+        assertNotNull(error);
+        assertEquals("Can't find manager with empty email.",error);
+
+    }
+
+    @Test
+    public void testGetManagerByEmptyEmail() throws Exception {
+        Account account = acService.createAccount(PERSON_PW, PERSON_KEY);
+        Manager manager = new Manager();
+        Manager findManager = null;
+        String error = null;
+        manager.setAccount(account);
+
+        try{
+            findManager = manService.getManagerByEmail("");
+        }
+        catch(Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(findManager);
+        assertNotNull(error);
+        assertEquals("Can't find manager with empty email.",error);
+
+    }
+
+    @Test
+    public void testGetManagerByWrongEmail() throws Exception {
+        Account account = acService.createAccount(PERSON_PW, PERSON_KEY);
+        Manager manager = new Manager();
+        Manager findManager = null;
+        String error = null;
+        manager.setAccount(account);
+
+        try{
+            findManager = manService.getManagerByEmail("obi_wan@jedi.com");
+        }
+        catch(Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(findManager);
+        assertNotNull(error);
+        assertEquals("No account with this email.",error);
+
+    }
+
+    @Test
+    public void testGetManagerByWrongAccount() throws Exception {
+        Account account = acService.createAccount(PERSON_PW, PERSON_KEY);
+        Account fake_account = acService.createAccount("Obi_wan@gmail.com", "you_wereABrother");
+        Manager manager = new Manager();
+        manager.setAccount(account);
+        Manager findManager = null;
+        String error = null;
+        when(accountDao.findAccountByEmail("Obi_wan@gmail.com")).thenReturn(fake_account);
+
+        try{
+            findManager = manService.getManagerByEmail("Obi_wan@gmail.com");
+        }
+        catch(Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(findManager);
+        assertNotNull(error);
+        assertEquals("No manager with this account.",error);
+
+    }
+
 
 }

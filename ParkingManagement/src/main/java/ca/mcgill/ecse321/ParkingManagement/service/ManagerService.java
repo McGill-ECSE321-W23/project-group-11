@@ -25,7 +25,7 @@ public class ManagerService {
     @Transactional
     public Manager getManagerByEmail(String email) throws Exception {
         if(email == null || email == "") {
-            Exception e = new Exception("Can' find manager with empty email.");
+            Exception e = new Exception("Can't find manager with empty email.");
             throw e;   
         }
         Account account = accountRepository.findAccountByEmail(email);
