@@ -29,6 +29,8 @@ public class TemporaryParkingService {
     @Autowired
     CarRepository carRepository;
 
+    CarService carService = new CarService();
+
     /**
      * Creates a temporary spot
      *
@@ -40,14 +42,18 @@ public class TemporaryParkingService {
      * @throws Exception
      */
     @Transactional
-    public TempSpotDto createTempSpot(int duration, CarDto carDto, Date date, LocalTime time) throws Exception {
+    public TempSpotDto createTempSpot(TempSpotDto tempSpotDto) throws Exception {
         checkTempSpots(); // Refresh to remove expired temp spots
         
         TempSpot spot;
+        int duration = tempSpotDto.getDuration();
+        CarDto carDto = tempSpotDto.getCarDto();
+        Date date = tempSpotDto.getDate();
+        LocalTime time = tempSpotDto.getStartTime();
 
         // Obtain objects from database to initialize TempSpot
-        if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check that argument exists in database
-            throw new Exception("Inputted licence plate does not match a car in the database.");
+        if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check if car exists in database
+            carService.createCar(carDto.getLicensePlate(), carDto.getSize());
         }
         Car car = carRepository.findCarBylicensePlate(carDto.getLicensePlate());
 
@@ -149,7 +155,6 @@ public class TemporaryParkingService {
      */
     @Transactional
     public TempSpotDto editTempSpot (TempSpotDto spotDto, int duration) throws Exception{
-        
         checkTempSpots(); // Refresh to remove expired temp spots
 
         // get spot from its repository
@@ -274,24 +279,19 @@ public class TemporaryParkingService {
     /**
      * Checks all temp spots to make sure booking duration has not expired
      * If the booking duration has expired, the bookings are deleted
-     * @return boolean true if successfully checked
      */
     @Transactional
-    public boolean checkTempSpots() {
-        boolean checked = false;
+    public void checkTempSpots() {
         for (RegularTempSpot regSpot : regularTempSpotRepository.findAll()) {
                 if (regSpot.getStartTime().plusMinutes(regSpot.getDuration()*15).compareTo(LocalTime.now()) > 0) { 
                     regularTempSpotRepository.delete(regSpot);
-                    break;
                 } 
         }
         for (LargeTempSpot largeSpot : largeTempSpotRepository.findAll()) {
             if (largeSpot.getStartTime().plusMinutes(largeSpot.getDuration()*15).compareTo(LocalTime.now()) > 0) { 
                 largeTempSpotRepository.delete(largeSpot);
-                break;
             } 
-        }   
-        return checked;
+        }
     }
 
 

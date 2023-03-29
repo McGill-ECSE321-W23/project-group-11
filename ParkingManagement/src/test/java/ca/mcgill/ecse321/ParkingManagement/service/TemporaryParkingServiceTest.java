@@ -186,11 +186,14 @@ public class TemporaryParkingServiceTest {
         Date date = Date.valueOf(LocalDate.now());
         LocalTime time = LocalTime.now().plusMinutes(1);
 
+        TempSpotDto largeSpotToCreate = new TempSpotDto(duration, date, time, largeCarDto);
+        TempSpotDto regSpotToCreate = new TempSpotDto(duration, date, time, regCarDto);
+
         TempSpotDto largeSpot = null;
         TempSpotDto regSpot = null;
         try { // attempt service method
-            largeSpot = service.createTempSpot(duration, largeCarDto, date, time);
-            regSpot = service.createTempSpot(duration, regCarDto, date, time);
+            largeSpot = service.createTempSpot(largeSpotToCreate);
+            regSpot = service.createTempSpot(regSpotToCreate);
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -228,7 +231,7 @@ public class TemporaryParkingServiceTest {
         LocalTime time = LocalTime.now().plusMinutes(1);
 
         try {
-            service.createTempSpot(duration, carDto, date, time);
+            service.createTempSpot(new TempSpotDto(duration, date, time, carDto));
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -248,31 +251,32 @@ public class TemporaryParkingServiceTest {
         LocalTime time = LocalTime.of(0, 0);
 
         try {
-            service.createTempSpot(duration, carDto, date, time);
+            service.createTempSpot(new TempSpotDto(duration, date, time, carDto));
         } catch (Exception e) {
             error += e.getMessage();
         }
         assertEquals("Start of attempted booking is in the past.", error);
     }
 
-    @Test
-    public void testCreateTempSpotInvalidCar() {
-        assertEquals(0, service.getAllTempSpots().size());
-        String error = "";
-        int duration = 49;
-        String carPlate = "bad plate number";
-        Size carSize = Size.Regular;
-        CarDto carDto = new CarDto(carPlate, carSize);
-        Date date = Date.valueOf(LocalDate.now());
-        LocalTime time = LocalTime.now().plusMinutes(1);
+    // Test no longer needed: current implementation creates a new car if one did not previously exist
+    // @Test
+    // public void testCreateTempSpotInvalidCar() {
+    //     assertEquals(0, service.getAllTempSpots().size());
+    //     String error = "";
+    //     int duration = 49;
+    //     String carPlate = "bad plate number";
+    //     Size carSize = Size.Regular;
+    //     CarDto carDto = new CarDto(carPlate, carSize);
+    //     Date date = Date.valueOf(LocalDate.now());
+    //     LocalTime time = LocalTime.now().plusMinutes(1);
 
-        try {
-            service.createTempSpot(duration, carDto, date, time);
-        } catch (Exception e) {
-            error += e.getMessage();
-        }
-        assertEquals("Inputted licence plate does not match a car in the database.", error);
-    }
+    //     try {
+    //         service.createTempSpot(duration, carDto, date, time);
+    //     } catch (Exception e) {
+    //         error += e.getMessage();
+    //     }
+    //     assertEquals("Inputted licence plate does not match a car in the database.", error);
+    // }
 
     // ------------------------------------------- Edit Spot Tests -------------------------------------------
     @Test
@@ -290,8 +294,8 @@ public class TemporaryParkingServiceTest {
         spot.setStartTime(time);
         spot.setPlaceNumber(SPOT_KEY_REG);
 
-        TempSpotDto spotDto = new TempSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
-        spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()), Size.Regular);
+        TempSpotDto spotDto = new TempSpotDto(spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
+        spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()));
         try {
             spotDto = service.editTempSpot(spotDto, 15);
         } catch (Exception e) {
@@ -316,8 +320,8 @@ public class TemporaryParkingServiceTest {
         spot.setStartTime(time);
         spot.setPlaceNumber(SPOT_KEY_REG);
 
-        TempSpotDto spotDto = new TempSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
-        spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()), Size.Regular);
+        TempSpotDto spotDto = new TempSpotDto(spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
+        spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()));
         try {
             service.editTempSpot(spotDto, 4);
         } catch (Exception e) {
@@ -347,8 +351,8 @@ public class TemporaryParkingServiceTest {
 
         regTempDao.save(spot);
 
-        TempSpotDto spotDto = new TempSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
-        spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()), Size.Regular);
+        TempSpotDto spotDto = new TempSpotDto(spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
+        spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()));
         try {
             deleted = service.deleteTempSpot(spotDto);
         } catch (Exception e) {
@@ -377,8 +381,8 @@ public class TemporaryParkingServiceTest {
 
         regTempDao.save(spot);
 
-        TempSpotDto spotDto = new TempSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
-        spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()), Size.Regular);
+        TempSpotDto spotDto = new TempSpotDto(spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
+        spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()));
         try {
             deleted = service.deleteTempSpot(spotDto);
         } catch (Exception e) {
@@ -406,8 +410,8 @@ public class TemporaryParkingServiceTest {
         TempSpotDto regSpot = null;
         try {
             // Tested for in previous test
-            largeSpot = service.createTempSpot(duration, carDtoLarge, date, time);
-            regSpot = service.createTempSpot(duration, carDtoRegular, date, time);
+            largeSpot = service.createTempSpot(new TempSpotDto(duration, date, time, carDtoLarge));
+            regSpot = service.createTempSpot(new TempSpotDto(duration, date, time, carDtoRegular));
         } catch (Exception e) {
             fail();
         }
