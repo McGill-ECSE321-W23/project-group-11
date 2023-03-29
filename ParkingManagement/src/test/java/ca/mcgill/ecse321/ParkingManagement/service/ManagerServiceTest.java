@@ -35,10 +35,11 @@ public class ManagerServiceTest {
 
     @Test
     public void testCreateManager() throws Exception {
-        Account account = acService.createAccount(PERSON_PW, PERSON_KEY);
-        Manager manager = null;
+        Account account = acService.createAccount(PERSON_KEY,PERSON_PW);
+        Manager manager = new Manager();
+        manager.setAccount(account);
         String error = null;
-
+        when(managerDao.save(any(Manager.class))).thenReturn(manager);
         try{
             manager = manService.createManager(account);
         }
@@ -47,7 +48,6 @@ public class ManagerServiceTest {
         }
 
         assertNull(error);
-        assertNotNull(manager);
         assertEquals(account,manager.getAccount());
     }
 
