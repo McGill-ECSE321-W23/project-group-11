@@ -118,6 +118,8 @@ public class TemporaryParkingService {
         }
 
         spot.setPlaceNumber(place);
+        if (size == Size.Large) {largeTempSpotRepository.save((LargeTempSpot) spot);}
+        else {regularTempSpotRepository.save((RegularTempSpot) spot);}
         return DtoConverters.convertToTempSpotDto(spot);
     }
 
