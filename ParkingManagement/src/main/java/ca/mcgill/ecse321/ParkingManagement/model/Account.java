@@ -25,4 +25,13 @@ public class Account {
    public void setPassword(String value) {
       this.password = value;
    }
+
+   public Account(String email, String password) {
+      this.email = email;
+      this.password = password;
+   }
+   public Account() {
+   }
+
+
 }

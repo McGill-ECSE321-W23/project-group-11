@@ -17,7 +17,7 @@ public class DtoConverters {
 
     public static ReservedSpotDto convertToReservedSpotDto(ReservedSpot spot) {
         ReservedSpotDto dto;
-        dto = new ReservedSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getMonth(), spot.getYear(), spot.getCar());
+        dto = new ReservedSpotDto(spot.getId(), spot.getPlaceNumber(), spot.getMonth(), spot.getYear(), convertToCarDto(spot.getCar()));
         return dto;
     }
     

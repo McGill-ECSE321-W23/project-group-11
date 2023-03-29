@@ -38,6 +38,7 @@ public class ReservedParkingService {
      */
     @Transactional
     public ReservedSpotDto createReservedSpot(CarDto carDto, int year, int month) throws Exception {
+        checkReservedSpots(); // Refresh to remove expired temp spots
 
         if ( month > 12 ) {
             throw new Exception("Invalid Month");
@@ -109,6 +110,8 @@ public class ReservedParkingService {
      */
     @Transactional
     public ReservedSpotDto getSpotByPlaceNumber(int placeNumber) throws Exception{
+        checkReservedSpots(); // Refresh to remove expired temp spots
+
         ReservedSpot spot;
         if (reservedSpotRepository.existsByPlaceNumber(placeNumber)) {
             spot = reservedSpotRepository.findByPlaceNumber(placeNumber); // if someone is using this as an example and is getting an error with findById, add .get() to the end
@@ -128,50 +131,57 @@ public class ReservedParkingService {
      * @throws Exception
      */
     @Transactional
-    public boolean deleteSpot (ReservedSpot spot) throws Exception {
+    public boolean deleteSpot (ReservedSpotDto spotDto) throws Exception {
+        checkReservedSpots(); // Refresh to remove expired temp spots
+
         boolean deleted = false;
-        if (spot == null) {
-            Exception e = new Exception("Inputted spot is not taken.");
-            throw e;
-        } else{
-            // Delete by id with DAO method
-            reservedSpotRepository.deleteById(spot.getId());
-            deleted = true;
-            return deleted;
+        ReservedSpot spot;
+        if (reservedSpotRepository.existsByPlaceNumber(spotDto.getPlaceNumber())) {
+            spot = reservedSpotRepository.findByPlaceNumber(spotDto.getPlaceNumber());
+        } else {
+            throw new Exception("Inputted spot does not exist in database.");
         }
+        
+        reservedSpotRepository.deleteById(spot.getId());            
+        deleted = true;
+        
+        return deleted;
     }
 
     /**
-     * Returns reserved spot assigned to a car
+     * Returns reserved spots assigned to a car
      *
      * @param car car with spot reservation
      * @return reservedSpot of car
      * @throws Exception
      */
     @Transactional
-    public ReservedSpot getReservedSpotReservedByCar(Car car) throws Exception {
+    public List<ReservedSpotDto> getReservedSpotsByCar(CarDto cardto) throws Exception {
+        checkReservedSpots(); // Refresh to remove expired temp spots
+
+        ReservedSpotDto spotDto;
+        List<ReservedSpotDto> reservedSpots = new ArrayList<ReservedSpotDto>();
+
         // Null check
-        if (car == null) {
+        if (cardto == null) {
             Exception e = new Exception("Inputted car is null.");
             throw e;
         }
 
         // Find with DAO method
-        ReservedSpot carSpot = null;
         for (ReservedSpot spot : reservedSpotRepository.findAll()) {
-            if (spot.getCar() == car) {
-                carSpot = spot; 
-                break;
+            if (spot.getCar().getLicensePlate() == cardto.getLicensePlate()) {
+                spotDto = DtoConverters.convertToReservedSpotDto(spot);
+                reservedSpots.add(spotDto);            
             }
         }
         
-        if (carSpot == null) {
+        if (reservedSpots.size()==0) {
             throw new Exception("Inputted car is not accociated with any reserved spots.");
         }
-        return carSpot;
+
+        return reservedSpots;
     }
-
-
 
     /**
      * Returns a list of all reserved spots
@@ -180,16 +190,56 @@ public class ReservedParkingService {
      */
     @Transactional
     public List<ReservedSpotDto> getAllReservedSpots(){
+        checkReservedSpots(); // Refresh to remove expired temp spots
+
         ReservedSpotDto spotDto;
 
         List<ReservedSpotDto> allReservedSpots = new ArrayList<ReservedSpotDto>();
         
-              for (ReservedSpot Spot : reservedSpotRepository.findAll()) {
-            spotDto = DtoConverters.convertToReservedSpotDto(Spot);
+            for (ReservedSpot spot : reservedSpotRepository.findAll()) {
+            spotDto = DtoConverters.convertToReservedSpotDto(spot);
             allReservedSpots.add(spotDto);
         }
 
         return allReservedSpots;
     }
 
+    /**
+     * Checks all reserved spots to make sure booking duration has not expired
+     * If the booking duration has expired, the bookings are deleted
+     */
+    @Transactional
+    public void checkReservedSpots() {
+
+        for (ReservedSpot reservedSpot : reservedSpotRepository.findAll()) {
+
+            YearMonth currentTime = YearMonth.now();
+            YearMonth selectedTime = YearMonth.of(reservedSpot.getYear(), reservedSpot.getMonth());
+            
+            if (selectedTime.isBefore(currentTime)) { 
+                reservedSpotRepository.delete(reservedSpot);
+            }
+        }
+    }
+
+    /**
+     * Checks if the car has a valid reservedspot for the current month, since they can bet bought for any date in the future.
+     * @return boolean true if successfully checked
+     * @throws Exception
+     */
+    @Transactional
+    public boolean checkCurrentValidityReservedSpots(CarDto cardto) throws Exception {
+        checkReservedSpots(); // Refresh to remove expired temp spots
+        YearMonth currentTime = YearMonth.now();
+
+        for (ReservedSpotDto reservedSpot : getReservedSpotsByCar(cardto)) {
+
+            YearMonth selectedTime = YearMonth.of(reservedSpot.getYear(), reservedSpot.getMonth());
+            
+            if (selectedTime==currentTime) { 
+                return true;
+            }
+        }
+        return false;
+    }
 }
