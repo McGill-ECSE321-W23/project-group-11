@@ -2,6 +2,8 @@ package ca.mcgill.ecse321.ParkingManagement.dto;
 
 import org.springframework.lang.NonNull;
 
+import ca.mcgill.ecse321.ParkingManagement.model.Account;
+
 
 public class AccountDto {
 
@@ -46,5 +48,9 @@ public class AccountDto {
 
     public void setLogInStatus(boolean logInStatus) {
         this.logInStatus = logInStatus;
+    }
+    public Account toModel() {
+        Account a = new Account(email,password);
+        return a;
     }
 }
