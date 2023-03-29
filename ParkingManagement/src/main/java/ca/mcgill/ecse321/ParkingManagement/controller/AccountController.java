@@ -1,8 +1,6 @@
 package ca.mcgill.ecse321.ParkingManagement.controller;
 
-import java.util.stream.Collectors;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,6 @@ import ca.mcgill.ecse321.ParkingManagement.dao.*;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
 import ca.mcgill.ecse321.ParkingManagement.dto.*;
 
-import java.lang.module.ResolutionException;
 import java.util.*;
 
 @CrossOrigin(origins = "*")

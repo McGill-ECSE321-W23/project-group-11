@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.ParkingManagement.service;
 
 import ca.mcgill.ecse321.ParkingManagement.dao.*;
-import ca.mcgill.ecse321.ParkingManagement.dto.AccountDto;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

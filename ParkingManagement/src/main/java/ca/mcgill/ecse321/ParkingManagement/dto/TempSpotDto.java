@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.ParkingManagement.dto;
 
 import java.sql.Date;
 import java.time.LocalTime;
-import ca.mcgill.ecse321.ParkingManagement.model.Car;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
 
 public class TempSpotDto {

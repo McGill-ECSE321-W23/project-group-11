@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.ParkingManagement.dto;
 
-import ca.mcgill.ecse321.ParkingManagement.model.Car;
 
 public class ReservedSpotDto {
     // attributes
@@ -9,17 +8,16 @@ public class ReservedSpotDto {
     private int month;
     private int year;
     // associations
-    private Car car;
-
+    private CarDto carDto;
 
     // constructors
-    public ReservedSpotDto(int id, int placeNumber, int month, int year, Car car) {
+    public ReservedSpotDto(int id, int placeNumber, int month, int year, CarDto carDto) {
         
         this.id = id;
         this.placeNumber = placeNumber;
         this.month = month;
         this.year = year;
-        this.car = car;
+        this.carDto = carDto;
         this.placeNumber = placeNumber;
     }
 
@@ -34,8 +32,8 @@ public class ReservedSpotDto {
     public int getYear() {
         return year;
     }
-    public Car getCar() {
-        return car;
+    public CarDto getCarDto() {
+        return carDto;
     }
     public int getPlaceNumber() {
         return placeNumber;
@@ -51,8 +49,8 @@ public class ReservedSpotDto {
     public void setYear(int year) {
         this.year = year;
     }
-    public void setCar(Car car) {
-        this.car = car;
+    public void setCar(CarDto carDto) {
+        this.carDto = carDto;
     }
     public void setPlaceNumber(int placeNumber) {
         this.placeNumber = placeNumber;
