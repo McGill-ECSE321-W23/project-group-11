@@ -8,18 +8,22 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class ReservedSpot {
+
    // attributes
    @Id
    @GeneratedValue
-   private Integer id;
+   private int id;
+
    private int placeNumber;
+   private int month;
+   private int year;
 
    // associations
    @ManyToOne
    private Car car;
    
    // getters
-   public Integer getId() {
+   public int getId() {
       return this.id;
    }
    public int getPlaceNumber() {
@@ -28,6 +32,12 @@ public class ReservedSpot {
    public Car getCar() {
       return this.car;
    }
+   public int getMonth() {
+      return this.month;
+   }
+   public int getYear() {
+      return this.year;
+   }
 
    // setters
    public void setPlaceNumber(int value) {
@@ -35,5 +45,11 @@ public class ReservedSpot {
    }
    public void setCar(Car car) {
       this.car = car;
+   }
+   public void setMonth(int month) {
+      this.month = month;
+   }   
+   public void setYear(int year) {
+      this.year = year;
    }
 }

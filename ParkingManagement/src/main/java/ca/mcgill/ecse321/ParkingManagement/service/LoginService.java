@@ -20,12 +20,20 @@ public class LoginService {
      * Verifies that the correct account is logged in with the correct email and password
      * @param email of the account
      * @param password of the account
-     * @return loginStatus of the account (String)
+     * @return loginStatus of the account (boolean)
      * @throws Exception if no account with that email exists or invalid password
      */
     @Transactional
     public boolean loginAccount(AccountDto accountTO) throws Exception {
-        
+
+        if(accountTO == null){
+            throw new Exception("Account cannot be null.");
+        }
+
+        if(accountTO.getlogInStatus()){
+            throw new Exception("Account is already logged in.");
+        }
+
         if(accountRepository.existsByEmail(accountTO.getEmail())){
 
             Account account = accountRepository.findAccountByEmail(accountTO.getEmail());
@@ -51,12 +59,20 @@ public class LoginService {
      /**
      * Verifies that the correct account is logged out with the correct email 
      * @param email of the account
-     * @return loginStatus of the account (String)
+     * @return loginStatus of the account (boolean)
      * @throws Exception if no account with that email exists 
      */
     @Transactional
     public boolean logoutAccount(AccountDto accountTO) throws Exception {
         
+        if(accountTO == null){
+            throw new Exception("Account cannot be null.");
+        }
+
+        if(! (accountTO.getlogInStatus())){
+            throw new Exception("Account is already logged out.");
+        }
+
         if(accountRepository.existsByEmail(accountTO.getEmail())){
             accountTO.setLogInStatus(false);
             return accountTO.getlogInStatus();

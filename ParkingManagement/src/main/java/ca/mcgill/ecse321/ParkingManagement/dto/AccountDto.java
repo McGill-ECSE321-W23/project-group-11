@@ -20,7 +20,7 @@ public class AccountDto {
     public AccountDto(String email, String password, boolean logInStatus) {
         this.email = email;
         this.password = password;
-        this.logInStatus = false;
+        this.logInStatus = logInStatus;
     }
     //getters
     public String getEmail() {

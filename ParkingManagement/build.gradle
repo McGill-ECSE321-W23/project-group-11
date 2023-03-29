@@ -15,9 +15,9 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
 	// these last three added for controller testing according to tutorial notes 2.8.1
 	testImplementation 'org.mockito:mockito-core:2.+'
 	testImplementation 'org.mockito:mockito-junit-jupiter:2.18.3'
@@ -25,8 +25,14 @@ dependencies {
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
-	testLogging {
-		exceptionFormat "full"
+    useJUnitPlatform{
+	    systemProperty "org.hibernate.level", "WARN"
+        systemProperty "com.zaxxer.hikari.level", "WARN"
 	}
+	outputs.upToDateWhen { false }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+		exceptionFormat = "full"
+    }
 }
