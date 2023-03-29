@@ -33,13 +33,30 @@ public class CarRepositoryTests {
     @Autowired
     private ManagerRepository managerRepository;
 
+    @Autowired
+    private LargeTempSpotRepository largeTempSpotRepository;
+
+    @Autowired
+    private RegularTempSpotRepository regTempSpotRepository;
+
 	@BeforeEach
-	@AfterEach
-	public void clearDatabase() {
+	public void clearDatabaseBefore() {
 		carRepository.deleteAll();
         managerRepository.deleteAll();
         employeeRepository.deleteAll();
         accountRepository.deleteAll();
+        largeTempSpotRepository.deleteAll();
+        regTempSpotRepository.deleteAll();
+	}
+
+    @AfterEach
+	public void clearDatabaseAfter() {
+		carRepository.deleteAll();
+        managerRepository.deleteAll();
+        employeeRepository.deleteAll();
+        accountRepository.deleteAll();
+        largeTempSpotRepository.deleteAll();
+        regTempSpotRepository.deleteAll();
 	}
 
 	@Test

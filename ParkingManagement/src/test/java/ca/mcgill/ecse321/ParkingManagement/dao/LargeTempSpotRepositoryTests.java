@@ -15,13 +15,25 @@ public class LargeTempSpotRepositoryTests {
 
 	@Autowired
 	private LargeTempSpotRepository largeSpotRepo;
+
+    @Autowired
+	private LargeTempSpotRepository regTempSpotRepo;
+    
     @Autowired
     private CarRepository carRepository;
 
-	@AfterEach
+
     @BeforeEach
-	public void clearDatabase() {
+	public void clearDatabaseBefore() {
 		largeSpotRepo.deleteAll();
+        regTempSpotRepo.deleteAll();
+        carRepository.deleteAll();
+	}
+
+	@AfterEach
+	public void clearDatabaseAfter() {
+		largeSpotRepo.deleteAll();
+        regTempSpotRepo.deleteAll();
         carRepository.deleteAll();
 	}
 
