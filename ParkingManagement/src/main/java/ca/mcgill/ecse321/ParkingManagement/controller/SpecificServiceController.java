@@ -40,17 +40,12 @@ public class SpecificServiceController {
 	 * @return all bookings.
 	 */
      @GetMapping(value = {"/bookings", "/bookings/"})
-     public ResponseEntity<?> getAllBookings() throws Exception{
-        try{
-            List<SpecificServiceDto> specificServiceList = new ArrayList<>();
-            for(SpecificService specificService : specificServiceBookingService.getAllBookings()){
-                specificServiceList.add(convertToDto(specificService));
-            }
-            return new ResponseEntity<>(specificServiceList,HttpStatus.OK);
+     public ResponseEntity<?> getAllBookings(){
+        List<SpecificServiceDto> specificServiceList = new ArrayList<>();
+        for(SpecificService specificService : specificServiceBookingService.getAllBookings()){
+            specificServiceList.add(convertToDto(specificService));
         }
-        catch(Exception e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(specificServiceList,HttpStatus.OK);
     }
 
     /**
@@ -115,7 +110,7 @@ public class SpecificServiceController {
      * @param employee of booking.
 	 * @return booking created.
 	 */
-    @PutMapping(value = {"/bookings/{id}","/bookings/{id}/"})
+    @PutMapping(value = {"/booking/{id}","/booking/{id}/"})
     public ResponseEntity<?> editBookingById(@PathVariable int id, @RequestBody Date date, @RequestBody LocalTime starTime, @RequestBody String employee) throws Exception{
         try{
             return new ResponseEntity<>(specificServiceBookingService.editBookingById(id,date,starTime,employee),HttpStatus.ACCEPTED);
