@@ -33,6 +33,12 @@ public class CarRepositoryTests {
     @Autowired
     private ManagerRepository managerRepository;
 
+    @Autowired
+    private LargeTempSpotRepository largeTempSpotRepository;
+
+    @Autowired
+    private RegularTempSpotRepository regTempSpotRepository;
+
 	@BeforeEach
 	@AfterEach
 	public void clearDatabase() {
@@ -40,6 +46,8 @@ public class CarRepositoryTests {
         managerRepository.deleteAll();
         employeeRepository.deleteAll();
         accountRepository.deleteAll();
+        largeTempSpotRepository.deleteAll();
+        regTempSpotRepository.deleteAll();
 	}
 
 	@Test

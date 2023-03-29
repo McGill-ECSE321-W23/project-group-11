@@ -72,15 +72,23 @@ public class TemporaryParkingService {
         Size size = car.getSize();
         if (size == Size.Regular)  { 
             spot  = new RegularTempSpot();
+            ((RegularTempSpot)spot).setCar(car);
+            ((RegularTempSpot)spot).setCar(car);
+            ((RegularTempSpot)spot).setStartTime(time);
+            ((RegularTempSpot)spot).setDate(date);
+            //((RegularTempSpot)spot).setDuration(duration);
         } else if  (size == Size.Large) {
             spot  = new LargeTempSpot();
+            ((LargeTempSpot)spot).setCar(car);
+            ((LargeTempSpot)spot).setCar(car);
+            ((LargeTempSpot)spot).setStartTime(time);
+            ((LargeTempSpot)spot).setDate(date);
+            //((LargeTempSpot)spot).setDuration(duration);
         } else {
             throw new Exception("Car size not recognized.");
         }
-        spot.setCar(car);
         spot.setDuration(duration);
-        spot.setStartTime(time);
-        spot.setDate(date);
+        
 
         /*
          * set place number
@@ -93,7 +101,7 @@ public class TemporaryParkingService {
             place = 21;
             while (true) {
                 if (!regularTempSpotRepository.existsByPlaceNumber(place)) {
-                    spot.setPlaceNumber(place);
+                    ((RegularTempSpot)spot).setPlaceNumber(place);
                     break;
                 } else {
                     place++;
@@ -105,7 +113,7 @@ public class TemporaryParkingService {
         } else if (size == Size.Large) {
             while (place <= 20)
                 if (!largeTempSpotRepository.existsByPlaceNumber(place)) {
-                    spot.setPlaceNumber(place);
+                    ((LargeTempSpot)spot).setPlaceNumber(place);
                     break;
                 } else {
                     place++;
@@ -117,7 +125,6 @@ public class TemporaryParkingService {
             throw new Exception("Size issue.");
         }
 
-        spot.setPlaceNumber(place);
         if (size == Size.Large) {largeTempSpotRepository.save((LargeTempSpot) spot);}
         else {regularTempSpotRepository.save((RegularTempSpot) spot);}
         return DtoConverters.convertToTempSpotDto(spot);
@@ -215,10 +222,10 @@ public class TemporaryParkingService {
         // TODO check if this is all that needs to be done
         // Delete by id with DAO method
         if (!large) {
-            regularTempSpotRepository.deleteById(spot.getId());
+            regularTempSpotRepository.deleteById(((RegularTempSpot)spot).getId());
             deleted = true;
         } else {
-            largeTempSpotRepository.deleteById(spot.getId());
+            largeTempSpotRepository.deleteById(((LargeTempSpot)spot).getId());
             deleted = true;
         } 
         return deleted;
@@ -244,10 +251,11 @@ public class TemporaryParkingService {
         // Find with DAO method
         TempSpot carSpot = null;
         for (TempSpot spot : largeTempSpotRepository.findAll()) {
-            if (spot.getCar() == car) {carSpot = spot; break;}
+
+            if (((LargeTempSpot)spot).getCar() == car) {carSpot = spot; break;}
         }
         for (TempSpot spot : regularTempSpotRepository.findAll()) {
-            if (spot.getCar() == car) {carSpot = spot; break;}
+            if (((RegularTempSpot)spot).getCar() == car) {carSpot = spot; break;}
         }
 
         if (carSpot == null) {
