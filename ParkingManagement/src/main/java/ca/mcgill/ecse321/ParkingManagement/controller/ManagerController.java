@@ -61,10 +61,10 @@ public class ManagerController {
         }
     }
 
-        private ManagerDto convertToDto(Manager manager) {
-            ManagerDto dto = new ManagerDto(manager.getId(), manager.getAccount().toString());
-            return dto;
-        }
+    private ManagerDto convertToDto(Manager manager) {
+        ManagerDto dto = new ManagerDto(manager.getId(), manager.getAccount().toString());
+        return dto;
+    }
 
     @DeleteMapping(value = {"/manager", "/manager/"})
     public ResponseEntity<?> deleteManager(@RequestBody ManagerDto managerDto) {

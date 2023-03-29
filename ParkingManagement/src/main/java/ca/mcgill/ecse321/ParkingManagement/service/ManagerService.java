@@ -29,10 +29,13 @@ public class ManagerService {
             Exception e = new Exception("Can't create a manager with null account.");
             throw e;
         }
-
+        if(managerRepository.findManagerByAccount(account)!=null){
+            Exception e = new Exception("Manager already exists.");
+            throw e;
+        }
         Manager manager = new Manager();
         manager.setAccount(account);
-        return manager;
+        return managerRepository.save(manager);
     }
 
 
