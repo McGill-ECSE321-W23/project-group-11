@@ -68,4 +68,18 @@ public class LargeTempSpot extends TempSpot {
        this.startTime = value;
     }
 
+    // attributes
+    private int duration; // number of 15 minute intervals
+    
+
+    // getters=
+    public int getDuration() {
+        return this.duration;
+    }
+
+    // setters
+    public void setDuration(int value) {
+        this.duration = value;
+    }
+
 }
