@@ -215,6 +215,23 @@ public class ReservedParkingServiceTest {
     }
 
     @Test
+    public void testCreateReservedSpotWithNoSize() {
+        assertEquals(0, service.getAllReservedSpots().size());
+        String error = "";
+        int month = 12;
+        int year = 2023;
+        CarDto carDto = new CarDto(CAR_KEY);
+
+        try {
+            service.createReservedSpot(new ReservedSpotDto(month, year, carDto));
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+
+        assertEquals("Car size not recognized.", error);
+    }
+
+    @Test
     public void testCreateReservedSpotWithInvalidLicensePlate() {
         String error = "";
         Size carSize = Size.Regular;
@@ -227,6 +244,21 @@ public class ReservedParkingServiceTest {
         }
 
         assertEquals("Inputted licence plate does not match a car in the database.", error);
+    }
+
+    @Test
+    public void testCreateReservedSpotWithInvalidMonth() {
+        String error = "";
+        Size carSize = Size.Regular;
+        CarDto carDto = new CarDto("invalid license plate", carSize);
+
+        try {
+            service.createReservedSpot(new ReservedSpotDto(25, 2023, carDto));
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+
+        assertEquals("Invalid value for MonthOfYear (valid values 1 - 12): 25", error);
     }
 
     // ---------------------------------------------- Getter tests -----------------------------------------------------
@@ -296,6 +328,26 @@ public class ReservedParkingServiceTest {
         }
         assertEquals("Inputted car is not accociated with any reserved spots.", error);
     }
+
+    @Test
+    public void testAllReservedSpotsFail() {        
+        
+        assertEquals(0, service.getAllReservedSpots().size());
+        
+        String error = "";
+
+        List<ReservedSpotDto> spotretrieved = null;
+
+        try {
+            spotretrieved = service.getAllReservedSpots(); 
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+        assertEquals("", error);
+        assertEquals(0, spotretrieved.size());
+    
+    }
+
 
     //TODO missing a passing test
 
@@ -409,6 +461,20 @@ public class ReservedParkingServiceTest {
         }
 
         assertEquals("Inputted car is not accociated with any reserved spots.", error); // check for errors
+    }
+
+    @Test
+    public void testcheckReservedSpots() throws Exception {
+        
+        String error = "";
+
+        try {
+            service.checkReservedSpots();
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+
+        assertEquals("", error); // check for errors
     }
 
     // @Test
