@@ -11,7 +11,9 @@ For additional information, please consult the [wiki](../../wiki/Home).
 
 [System Requirements](../../wiki/Requirements)
 
-[Quality Assurance Plan](../../wiki/Quality-Assurance-Plan)
+[Quality Assurance](../../wiki/Quality-Assurance)
+
+[Endpoints](../../wiki/Endpoints)
 
 [Deliverable 1 Report](../../wiki/Deliverable-1-Report)
 
