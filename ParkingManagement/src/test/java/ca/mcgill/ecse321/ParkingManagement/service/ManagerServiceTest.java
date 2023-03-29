@@ -36,6 +36,82 @@ public class ManagerServiceTest {
     
 
     @Test
+    public void testCreateManager() throws Exception {
+        Account account = acService.createAccount(PERSON_PW, PERSON_KEY);
+        Manager manager = null;
+        String error = null;
+
+        try{
+            manager = manService.createManager(account);
+        }
+        catch(Exception e) {
+            error = e.getMessage();
+        }
+
+        assertNull(error);
+        assertNotNull(manager);
+        assertEquals(account,manager.getAccount());
+    }
+
+    @Test
+    public void testCreateManagerNullAccount() throws Exception {
+        Account account = null;
+        Manager manager = null;
+        String error = null;
+
+        try{
+            manager = manService.createManager(account);
+        }
+        catch(Exception e) {
+            error = e.getMessage();
+        }
+
+        assertNotNull(error);
+        assertNull(manager);
+        assertEquals("Can't create a manager with null account.",error);
+    }
+
+    @Test
+    public void testDeleteManager() throws Exception {
+        Account account = acService.createAccount(PERSON_PW, PERSON_KEY);
+        Manager manager = new Manager();
+        Manager dummy = null;
+        String error = null;
+        manager.setAccount(account);
+        when(managerDao.findManagerByAccount(account)).thenReturn(null);
+
+        try{
+            dummy = manService.deleteManager(manager);
+        }
+        catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(error);
+        assertNull(dummy);
+
+    }
+
+    @Test
+    public void testDeleteNullManager() throws Exception {
+        Manager manager = null;
+        Manager dummy=null;
+        String error = null;
+
+        try{
+            dummy = manService.deleteManager(manager);
+        }
+        catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNotNull(error);
+        assertNull(dummy);
+        assertEquals("Cant delete a manager without an account", error);
+
+    } 
+
+
+
+    @Test
     public void testGetManagerByEmail() throws Exception {
         Account account = acService.createAccount(PERSON_PW, PERSON_KEY);
         Manager manager = new Manager();

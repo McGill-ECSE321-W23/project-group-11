@@ -22,6 +22,20 @@ public class ManagerService {
         return toList(managerRepository.findAll());
     }
 
+    
+    @Transactional
+    public Manager createManager(Account account) throws Exception {
+        if(account == null) {
+            Exception e = new Exception("Can't create a manager with null account.");
+            throw e;
+        }
+
+        Manager manager = new Manager();
+        manager.setAccount(account);
+        return manager;
+    }
+
+
     @Transactional
     public Manager getManagerByEmail(String email) throws Exception {
         if(email == null || email == "") {
@@ -39,6 +53,22 @@ public class ManagerService {
             throw e;
         }
         return manager;
+    }
+
+    @Transactional
+    public Manager deleteManager(Manager manager) throws Exception {
+        Manager manager_dummy = null;
+        if(manager == null) {
+            Exception e = new Exception("Cant delete a manager without an account");
+            throw e;
+        }
+        managerRepository.deleteManagerByAccount(manager.getAccount());
+        manager_dummy = managerRepository.findManagerByAccount(manager.getAccount());
+        if (manager_dummy != null) {
+            Exception e = new Exception("Manager not deleted");
+            throw e;
+        }
+        return manager_dummy;
     }
 
     private <T> List<T> toList(Iterable<T> iterable){

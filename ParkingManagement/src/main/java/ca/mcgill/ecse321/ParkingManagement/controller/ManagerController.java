@@ -4,6 +4,7 @@ package ca.mcgill.ecse321.ParkingManagement.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,10 +41,43 @@ public class ManagerController {
         }
         return new ResponseEntity<>(accountList, HttpStatus.OK);   
         }
+    
+    /**
+     * 
+     * @param accountDto
+     * @return
+     */
+
+    @PostMapping(value = {"/manager", "/manager/"})
+    public ResponseEntity<?> createManager(@RequestBody AccountDto accountDto) {
+        try{
+            //convert to an Account
+            Account account = accountDto.toModel();
+            Manager manager = managerService.createManager(account);
+            return new ResponseEntity<>(convertToDto(manager), HttpStatus.CREATED);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 
         private ManagerDto convertToDto(Manager manager) {
             ManagerDto dto = new ManagerDto(manager.getId(), manager.getAccount().toString());
             return dto;
         }
+
+    @DeleteMapping(value = {"/manager", "/manager/"})
+    public ResponseEntity<?> deleteManager(@RequestBody ManagerDto managerDto) {
+        try{
+           Manager manager = managerService.getManagerByEmail(managerDto.getAccount());
+            managerService.deleteManager(manager);
+            return new ResponseEntity<>("Account deleted", HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+
+    }
+    
     
 }

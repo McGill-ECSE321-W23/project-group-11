@@ -32,4 +32,5 @@ public class ManagerDto {
     public int getId() {
         return this.id;
     }
+    
 }
