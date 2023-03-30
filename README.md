@@ -7,6 +7,8 @@ For additional information, please consult the [wiki](../../wiki/Home).
 
 ### Wiki pages
 
+[Home](../../wiki/Home)
+
 [Domain Model](../../wiki/Domain-Model)
 
 [System Requirements](../../wiki/Requirements)
