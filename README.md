@@ -24,12 +24,12 @@ For additional information, please consult the [wiki](../../wiki/Home).
 ## Team Members
 | Name          | GitHub username | Team Role      | Deliverable 1 Hours | Deliverable 2 Hours | Deliverable 3 Hours |
 | ------------- | --------------- | -------------- | ------------------- | ------------------- | ------------------- |
-| Lukas Bebee   | LukeBebee       | Lead Programmer|        25           |                     |                     |
+| Lukas Bebee   | LukeBebee       | Lead Programmer|        25           |          45         |                     |
 | Brian Morava  | Morava83       |Quality Assurance|        25           |                     |                     |
 |Jacques Zaarour| jacqueszaarour  |Database Manager|        25           |                     |                     |
 | James Willems | JamesWillems   |Project Architect|        25           |                     |                     |
 | Massimo Rosati| Mrosati22       | Project Manager|        25           |                     |                     |
-| Ralph Choucha |RalphChoucha|Programming Assistant|        25           |                     |                     |
+| Ralph Choucha |RalphChoucha|Programming Assistant|        25           |          15         |                     |
 
 
 
