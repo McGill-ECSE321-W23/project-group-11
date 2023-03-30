@@ -72,7 +72,7 @@ public class LoginService {
         if(! (accountTO.getlogInStatus())){
             throw new Exception("Account is already logged out.");
         }
-
+        
         if(accountRepository.existsByEmail(accountTO.getEmail())){
             accountTO.setLogInStatus(false);
             return accountTO.getlogInStatus();
