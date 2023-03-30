@@ -24,18 +24,18 @@ public class CarService {
      * @return DTO of car created
      * @throws Exception
      */
-    @Transactional
-    public CarDto createCar(String plateNumber, Size size) throws Exception{
-        Car car = new Car();
-        car.setLicensePlate(plateNumber);
-        car.setSize(size);
-        try {
-            carDao.save(car);
-        } catch(Exception e) {
-            throw new Exception("Car could not be saved because: " + e.getMessage()+ " ");
-        }
-        return DtoConverters.convertToCarDto(car);
-    }
+    // @Transactional
+    // public CarDto createCar(String plateNumber, Size size) throws Exception{
+    //     Car car = new Car();
+    //     car.setLicensePlate(plateNumber);
+    //     car.setSize(size);
+    //     try {
+    //         carDao.save(car);
+    //     } catch(Exception e) {
+    //         throw new Exception("Car could not be saved because: " + e.getMessage()+ " ");
+    //     }
+    //     return DtoConverters.convertToCarDto(car);
+    // }
 
 
     

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,9 +63,29 @@ public class TemporaryParkingController {
         }
     }
 
-    // @PostMapping(value = { "/tempspot/addtime/{placeNumber}", "/tempspot/addtime/{placeNumber}/" }) // 
-    // public TempSpotDto addTimeToTemporarySpot(@PathVariable("placeNumber") Integer placeNumber, 
-    // @RequestParam Integer duration) throws Exception {
-    //     return tempSpotService.editTempSpot(tempSpotService.getSpotByPlaceNumber(placeNumber), 0);
-    // }
-}
+    @PostMapping(value = { "/tempspot/addtime", "/tempspot/addtime/" }) // 
+    public ResponseEntity<?> addTimeToTemporarySpot(@RequestBody TempSpotDto spotDto) throws Exception {
+        try {
+            TempSpotDto spot = tempSpotService.editTempSpot(spotDto);
+            return new ResponseEntity<>(spot, HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage() + "Not Edited.", HttpStatus.BAD_REQUEST);
+        } 
+    }
+
+
+/**
+     * Returns a temporary spot with the inputted place number
+     * @param placeNumber
+     * @return ResponseEntity with DTO of spot with the place number or error message
+     */
+    @DeleteMapping(value = {"/tempspot/endbooking", "/tempspot/endbooking/"}) 
+    public ResponseEntity<?> endTemporarySpotBooking(@RequestBody TempSpotDto spotDto) {
+        try {
+            boolean spot = tempSpotService.deleteTempSpot(spotDto);
+            return new ResponseEntity<>(spot, HttpStatus.NO_CONTENT);
+        } catch(Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+} 

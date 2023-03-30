@@ -166,33 +166,44 @@ public class TemporaryParkingService {
      * @throws Exception
      */
     @Transactional
-    public TempSpotDto editTempSpot (TempSpotDto spotDto, int duration) throws Exception{
+    public TempSpotDto editTempSpot (TempSpotDto spotDto) throws Exception{
         checkTempSpots(); // Refresh to remove expired temp spots
-
+        
+        // simple check
         if (spotDto == null) {
             throw new Exception("Inputted spot is null.");
         }
+
+        int newDuration = spotDto.getDuration();
+        int oldDuration = -1;
         // get spot from its repository
         int place = spotDto.getPlaceNumber();
         TempSpot spot = null;
         boolean large = true;
-        if (largeTempSpotRepository.existsByPlaceNumber(place)) {spot = largeTempSpotRepository.findByPlaceNumber(place);}
-        else if (regularTempSpotRepository.existsByPlaceNumber(place)) {spot = regularTempSpotRepository.findByPlaceNumber(place); large = false;}
+        if (largeTempSpotRepository.existsByPlaceNumber(place)) {
+            spot = largeTempSpotRepository.findByPlaceNumber(place);
+            oldDuration = ((LargeTempSpot)spot).getDuration();
+        }
+        else if (regularTempSpotRepository.existsByPlaceNumber(place)) {
+            spot = regularTempSpotRepository.findByPlaceNumber(place); 
+            large = false;
+            oldDuration = ((RegularTempSpot)spot).getDuration();
+        }
         else {throw new Exception("Car does not exist.");}
         // check for bad inputs
         
-        if (duration < 1 || duration > 48) {
+        if (newDuration < 1 || newDuration > 48) {
             throw new Exception("Inputted duration is out of accepted bounds.");
         }
-        if (duration <= spotDto.getDuration()) {
+        if (newDuration <= oldDuration) {
             throw new Exception("Inputted duration is less than or equal to existing duration.");
         }
         // set duration and save into correct repository
         if (!large) {
-            ((RegularTempSpot)spot).setDuration(duration);
+            ((RegularTempSpot)spot).setDuration(newDuration);
             regularTempSpotRepository.save((RegularTempSpot) spot);}
         else {
-            ((LargeTempSpot)spot).setDuration(duration);
+            ((LargeTempSpot)spot).setDuration(newDuration);
             largeTempSpotRepository.save((LargeTempSpot) spot);}
 
         return DtoConverters.convertToTempSpotDto(spot);
@@ -222,7 +233,6 @@ public class TemporaryParkingService {
             throw new Exception("Inputted spot does not exist in database.");
         }
         
-        // TODO check if this is all that needs to be done
         // Delete by id with DAO method
         if (!large) {
             regularTempSpotRepository.deleteById(((RegularTempSpot)spot).getId());
