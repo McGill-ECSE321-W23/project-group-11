@@ -21,9 +21,8 @@ import ca.mcgill.ecse321.ParkingManagement.service.ReservedParkingService;
 public class ReservedParkingController {
     
     @Autowired
-    private ReservedParkingService reservedSpotService;
+     ReservedParkingService reservedSpotService = new ReservedParkingService();
     
-
     // @GetMapping(value = { "/reservedspots", "/reservedspots/" })
     // public List<ReservedSpotDto> getAllReservedSpots() {
     //     return reservedSpotService.getAllReservedSpots().stream().collect(Collectors.toList());

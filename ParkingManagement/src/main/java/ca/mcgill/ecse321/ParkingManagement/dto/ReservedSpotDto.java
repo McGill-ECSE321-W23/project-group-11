@@ -18,7 +18,6 @@ public class ReservedSpotDto {
         this.month = month;
         this.year = year;
         this.carDto = carDto;
-        this.placeNumber = placeNumber;
     }
 
     // constructors
@@ -26,7 +25,7 @@ public class ReservedSpotDto {
         this.month = month;
         this.year = year;
         this.carDto = carDto;
-    }
+    }   
     
 
 

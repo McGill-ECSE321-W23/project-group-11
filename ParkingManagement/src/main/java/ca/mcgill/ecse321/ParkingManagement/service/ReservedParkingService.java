@@ -46,20 +46,17 @@ public class ReservedParkingService {
         CarDto carDto = reservedSpotDto.getCarDto();
 
         YearMonth currentTime = YearMonth.now();
-        YearMonth selectedTime = YearMonth.of(year, month);
-
-        if (selectedTime.isBefore(currentTime)) {
-            throw new Exception("Selected time cannot be in the past.");
-        }
+        YearMonth selectedTime = YearMonth.of(year, month);     
 
         // Obtain objects from database to initialize reservedSpot
         if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check if car exists in database
             createCar(carDto.getLicensePlate(), carDto.getSize());
             
         }
+        Car car = carRepository.findCarBylicensePlate(carDto.getLicensePlate());
 
-        if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check that argument exists in database
-            throw new Exception("Inputted licence plate does not match a car in the database.");
+        if (selectedTime.isBefore(currentTime)) {
+            throw new Exception("Selected time cannot be in the past.");
         }
 
         // Check input validity
@@ -67,13 +64,18 @@ public class ReservedParkingService {
             throw new Exception("Invalid Month");
         }
 
-        Car car = carRepository.findCarBylicensePlate(carDto.getLicensePlate());
-        Size size = carDto.getSize();
-
+        if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check that argument exists in database
+            throw new Exception("Inputted licence plate does not match a car in the database.");
+        }
 
         // Set up spot based on inputs and return
+        Size size = carDto.getSize();
         if (size == Size.Regular)  { 
             spot  = new ReservedSpot();
+            ((ReservedSpot)spot).setCar(car);
+            ((ReservedSpot)spot).setCar(car);
+            ((ReservedSpot)spot).setMonth(month);
+            ((ReservedSpot)spot).setYear(year);
         } else if (size == Size.Large)  { 
             throw new Exception("Only regular sized cars can reserve a monthly spot.");
         } else {
@@ -104,9 +106,9 @@ public class ReservedParkingService {
             }
         }
 
-        spot.setPlaceNumber(place);
+        ((ReservedSpot)spot).setPlaceNumber(place);
+        reservedSpotRepository.save((ReservedSpot)spot);
         ReservedSpotDto spotdto = DtoConverters.convertToReservedSpotDto(spot);
-        reservedSpotRepository.save(spot);
         return spotdto;
     }
 
