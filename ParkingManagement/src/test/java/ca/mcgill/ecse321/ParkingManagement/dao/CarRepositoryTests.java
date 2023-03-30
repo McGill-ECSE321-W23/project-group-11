@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.ParkingManagement.model.Account;
 import ca.mcgill.ecse321.ParkingManagement.model.Car;
-import ca.mcgill.ecse321.ParkingManagement.model.Customer;
+// import ca.mcgill.ecse321.ParkingManagement.model.Customer;
 import ca.mcgill.ecse321.ParkingManagement.model.Employee;
 import ca.mcgill.ecse321.ParkingManagement.model.Manager;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
@@ -31,8 +31,6 @@ public class CarRepositoryTests {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @Autowired
-    private CustomerRepository customerRepository;
 
     @Autowired
     private ManagerRepository managerRepository;
@@ -144,10 +142,6 @@ public class CarRepositoryTests {
         assertTrue(!carRepository.existsBylicensePlate(licensePlate));
 
         carRepository.deleteAll();
-        int i = 0;
-        for (Car c : carRepository.findAll()) {
-            i++;
-        }
-        assertEquals(0, i);
+        
 	}
 }

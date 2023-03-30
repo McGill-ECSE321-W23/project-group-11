@@ -1,13 +1,13 @@
 package ca.mcgill.ecse321.ParkingManagement.service;
 
-import javax.transaction.Transactional;
+// import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ca.mcgill.ecse321.ParkingManagement.dao.CarRepository;
-import ca.mcgill.ecse321.ParkingManagement.dto.CarDto;
-import ca.mcgill.ecse321.ParkingManagement.model.Car;
-import ca.mcgill.ecse321.ParkingManagement.model.Size;
-import ca.mcgill.ecse321.ParkingManagement.utility.DtoConverters;
+// import ca.mcgill.ecse321.ParkingManagement.dto.CarDto;
+// import ca.mcgill.ecse321.ParkingManagement.model.Car;
+// import ca.mcgill.ecse321.ParkingManagement.model.Size;
+// import ca.mcgill.ecse321.ParkingManagement.utility.DtoConverters;
 
 @Service
 public class CarService {
