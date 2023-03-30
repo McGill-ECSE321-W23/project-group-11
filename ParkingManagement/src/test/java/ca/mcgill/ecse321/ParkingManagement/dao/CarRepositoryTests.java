@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.ParkingManagement.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.ParkingManagement.model.Account;
 import ca.mcgill.ecse321.ParkingManagement.model.Car;
+import ca.mcgill.ecse321.ParkingManagement.model.Customer;
 import ca.mcgill.ecse321.ParkingManagement.model.Employee;
 import ca.mcgill.ecse321.ParkingManagement.model.Manager;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
@@ -29,6 +30,9 @@ public class CarRepositoryTests {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
     private ManagerRepository managerRepository;
@@ -99,6 +103,9 @@ public class CarRepositoryTests {
         employeeSet.add(employee);
         int employeeId = employee.getId();
 
+
+        
+
 		// Make car
         Car car = new Car();
 		String licensePlate = "NASARULES";
@@ -122,11 +129,25 @@ public class CarRepositoryTests {
 
 		// Check that everthing exists as it should
 		// Car checks
+        assertTrue(carRepository.existsBylicensePlate(licensePlate));
+        assertTrue(carRepository.existsById(licensePlate));
 		assertNotNull(car);
 		assertEquals("NASARULES", car.getLicensePlate()); // excpected, actual
 		assertEquals(Size.Regular, car.getSize());
         assertEquals(manager.getId(), car.getManager().getId());
+        assertEquals(null, car.getCustomer());
 		assertEquals(employeeemail, employeeRepository.findById(employeeId).orElse(null).getAccount().getEmail());
 
+        
+
+        carRepository.delete(car);
+        assertTrue(!carRepository.existsBylicensePlate(licensePlate));
+
+        carRepository.deleteAll();
+        int i = 0;
+        for (Car c : carRepository.findAll()) {
+            i++;
+        }
+        assertEquals(0, i);
 	}
 }

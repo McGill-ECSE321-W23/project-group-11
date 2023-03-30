@@ -292,10 +292,10 @@ public class TemporaryParkingServiceTest {
         spot.setStartTime(time);
         spot.setPlaceNumber(SPOT_KEY_REG);
 
-        TempSpotDto spotDto = new TempSpotDto(spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
+        TempSpotDto spotDto = new TempSpotDto(spot.getPlaceNumber(), 15, spot.getDate(), 
         spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()));
         try {
-            spotDto = service.editTempSpot(spotDto, 15);
+            spotDto = service.editTempSpot(spotDto);
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -318,10 +318,10 @@ public class TemporaryParkingServiceTest {
         spot.setStartTime(time);
         spot.setPlaceNumber(SPOT_KEY_LARGE);
 
-        TempSpotDto spotDto = new TempSpotDto(spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
+        TempSpotDto spotDto = new TempSpotDto(spot.getPlaceNumber(), 15, spot.getDate(), 
         spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()));
         try {
-            spotDto = service.editTempSpot(spotDto, 15);
+            spotDto = service.editTempSpot(spotDto);
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -344,10 +344,10 @@ public class TemporaryParkingServiceTest {
         spot.setStartTime(time);
         spot.setPlaceNumber(SPOT_KEY_REG);
 
-        TempSpotDto spotDto = new TempSpotDto(spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
+        TempSpotDto spotDto = new TempSpotDto(spot.getPlaceNumber(), 4, spot.getDate(), 
         spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()));
         try {
-            service.editTempSpot(spotDto, 4);
+            service.editTempSpot(spotDto);
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -369,10 +369,10 @@ public class TemporaryParkingServiceTest {
         spot.setStartTime(time);
         spot.setPlaceNumber(SPOT_KEY_REG);
 
-        TempSpotDto spotDto = new TempSpotDto(spot.getPlaceNumber(), spot.getDuration(), spot.getDate(), 
+        TempSpotDto spotDto = new TempSpotDto(spot.getPlaceNumber(), -2, spot.getDate(), 
         spot.getStartTime(), DtoConverters.convertToCarDto(spot.getCar()));
         try {
-            service.editTempSpot(spotDto, -2);
+            service.editTempSpot(spotDto);
         } catch (Exception e) {
             error += e.getMessage();
         }
@@ -383,7 +383,7 @@ public class TemporaryParkingServiceTest {
         assertEquals(0, service.getAllTempSpots().size());
         String error = "";
         try {
-            service.editTempSpot(null, 4);
+            service.editTempSpot(null);
         } catch (Exception e) {
             error += e.getMessage();
         }
