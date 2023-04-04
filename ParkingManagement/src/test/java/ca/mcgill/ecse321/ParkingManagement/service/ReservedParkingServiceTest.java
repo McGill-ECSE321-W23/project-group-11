@@ -255,7 +255,7 @@ public class ReservedParkingServiceTest {
             error += e.getMessage();
         }
 
-        assertEquals("Invalid value for MonthOfYear (valid values 1 - 12): 25", error);
+        assertEquals("Invalid month", error);
     }
 
     // ---------------------------------------------- Getter tests -----------------------------------------------------

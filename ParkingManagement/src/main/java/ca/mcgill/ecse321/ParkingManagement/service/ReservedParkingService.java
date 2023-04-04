@@ -45,6 +45,10 @@ public class ReservedParkingService {
         int month = reservedSpotDto.getMonth();
         CarDto carDto = reservedSpotDto.getCarDto();
 
+        if (month <= 0 || month > 12) {
+            throw new Exception("Invalid month");
+        }
+
         YearMonth currentTime = YearMonth.now();
         YearMonth selectedTime = YearMonth.of(year, month);     
 
@@ -59,11 +63,6 @@ public class ReservedParkingService {
             throw new Exception("Selected time cannot be in the past.");
         }
 
-        // Check input validity
-        if ( month > 12 ) {
-            throw new Exception("Invalid Month");
-        }
-
         if (!carRepository.existsBylicensePlate(carDto.getLicensePlate())) { // Check that argument exists in database
             throw new Exception("Inputted licence plate does not match a car in the database.");
         }
@@ -72,10 +71,10 @@ public class ReservedParkingService {
         Size size = carDto.getSize();
         if (size == Size.Regular)  { 
             spot  = new ReservedSpot();
-            ((ReservedSpot)spot).setCar(car);
-            ((ReservedSpot)spot).setCar(car);
-            ((ReservedSpot)spot).setMonth(month);
-            ((ReservedSpot)spot).setYear(year);
+            spot.setCar(car);
+            spot.setCar(car);
+            spot.setMonth(month);
+            spot.setYear(year);
         } else if (size == Size.Large)  { 
             throw new Exception("Only regular sized cars can reserve a monthly spot.");
         } else {
@@ -106,10 +105,13 @@ public class ReservedParkingService {
             }
         }
 
-        ((ReservedSpot)spot).setPlaceNumber(place);
-        reservedSpotRepository.save((ReservedSpot)spot);
-        ReservedSpotDto spotdto = DtoConverters.convertToReservedSpotDto(spot);
-        return spotdto;
+        // ((ReservedSpot)spot).setPlaceNumber(place);
+        // reservedSpotRepository.save((ReservedSpot)spot);
+        // ReservedSpotDto spotdto = DtoConverters.convertToReservedSpotDto(spot);
+        // return spotdto;
+
+        reservedSpotRepository.save(spot);
+        return DtoConverters.convertToReservedSpotDto(spot);
     }
 
     /**

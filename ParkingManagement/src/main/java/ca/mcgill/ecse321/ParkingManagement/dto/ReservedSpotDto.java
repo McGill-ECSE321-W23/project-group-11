@@ -11,6 +11,9 @@ public class ReservedSpotDto {
     private CarDto carDto;
 
     // constructors
+    public ReservedSpotDto() {
+    }
+
     public ReservedSpotDto(int id, int placeNumber, int month, int year, CarDto carDto) {
         
         this.id = id;
@@ -56,7 +59,7 @@ public class ReservedSpotDto {
     public void setYear(int year) {
         this.year = year;
     }
-    public void setCar(CarDto carDto) {
+    public void setCarDto(CarDto carDto) {
         this.carDto = carDto;
     }
     public void setPlaceNumber(int placeNumber) {

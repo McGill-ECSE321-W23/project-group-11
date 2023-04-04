@@ -36,8 +36,8 @@ public class CarDto {
     public void setSize(Size size) {
         this.size = size;
     }
-    public void setPlaceNumber(String licencePlate) {
-        this.licencePlate = licencePlate;
+    public void setPlaceNumber(String licensePlate) {
+        this.licencePlate = licensePlate;
     }
     public void setCustomer(Customer customer) {
         this.customer = customer;
