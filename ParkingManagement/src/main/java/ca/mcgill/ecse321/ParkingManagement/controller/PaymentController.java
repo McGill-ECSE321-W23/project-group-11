@@ -26,7 +26,7 @@ public class PaymentController {
     }
 
     @GetMapping(value ={"/price/service/{name}", "/price/service/{name}/"})
-    public ResponseEntity<?> getServicePrice(@PathVariable String name) throws Exception{
+    public ResponseEntity<?> getServicePrice(@PathVariable("name") String name) throws Exception{
         try{
             return new ResponseEntity<>(paymentService.getPriceForService(name), HttpStatus.OK);
         } catch(Exception e){
@@ -36,7 +36,7 @@ public class PaymentController {
     }
 
     @GetMapping(value ={"/payment/{cardNumber}", "/payment/{cardNumber}/"})
-    public ResponseEntity<?> getPaymentValidation(@PathVariable String cardNumber) throws Exception{
+    public ResponseEntity<?> getPaymentValidation(@PathVariable("cardNumber") String cardNumber) throws Exception{
         String result = "";
         try{
             paymentService.validatePayment(cardNumber);
