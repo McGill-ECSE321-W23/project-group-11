@@ -1,53 +1,33 @@
-<template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'hello',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  }
+<style>
+div {
+  margin-bottom: 10px;
 }
-</script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
+label {
+  display: table;
+  width: 200px;
+  text-align: center;
 }
-
-ul {
-  list-style-type: none;
-  padding: 0;
+input{
+  width:300px
 }
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
+button{
+  border-radius:4px;
+  background-color:#80A7A4;
+  border:2px solid #51706D;
 }
 </style>
+<template>
+<div>
+<center>
+  <h1>ParkingPlus</h1>
+
+  <label for="email">Enter your email:</label>
+  <input type="email" id="email" name="email"><br><br>
+
+  <label for="password">Enter your password:</label>
+  <input type="password" id="password" name="password"><br><br>
+
+  <button type="submit">Login</button>
+</center>
+</div>
+</template>
