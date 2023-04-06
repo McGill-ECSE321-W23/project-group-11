@@ -17,9 +17,13 @@ For additional information, please consult the [wiki](../../wiki/Home).
 
 [Endpoints](../../wiki/Endpoints)
 
+[Architecture Modelling](../../wiki/Architecture-Modelling)
+
 [Deliverable 1 Report](../../wiki/Deliverable-1-Report)
 
 [Deliverable 2 Report](../../wiki/Deliverable-2-Report)
+
+[Deliverable 3 Report](../../wiki/Deliverable-3-Report)
 
 
 
