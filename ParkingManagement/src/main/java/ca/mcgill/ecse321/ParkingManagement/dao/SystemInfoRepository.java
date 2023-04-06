@@ -7,4 +7,5 @@ import ca.mcgill.ecse321.ParkingManagement.model.SystemInfo;
 public interface SystemInfoRepository extends CrudRepository<SystemInfo, Integer> {
     SystemInfo findSystemInfoById(int id);
     boolean existsById(int id);
+    SystemInfo deleteSystemInfoById(int id);
 }

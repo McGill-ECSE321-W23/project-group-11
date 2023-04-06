@@ -2,8 +2,6 @@ package ca.mcgill.ecse321.ParkingManagement.dto;
 
 import java.sql.Time;
 
-import ca.mcgill.ecse321.ParkingManagement.model.Manager;
-
 public class SystemInfoDto {
     
     //attributes
@@ -14,21 +12,21 @@ public class SystemInfoDto {
     private int regTempSpotPrice;
     private int reservedSpotPrice;
     //association
-    private Manager manager;
+    private ManagerDto managerDto;
 
     //constructors
     public SystemInfoDto(){
 
     }
 
-    public SystemInfoDto(int id, Time openTime, Time closeTime, int largeTempSpotPrice, int regTempSpotPrice, int reservedSpotPrice, Manager manager){
+    public SystemInfoDto(int id, ManagerDto managerDto, Time openTime, Time closeTime, int largeTempSpotPrice, int regTempSpotPrice, int reservedSpotPrice){
         this.id = id;
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.largeTempSpotPrice = largeTempSpotPrice;
         this.regTempSpotPrice = regTempSpotPrice;
         this.reservedSpotPrice = reservedSpotPrice;
-        this.manager = manager;
+        this.managerDto = managerDto;
 
     }
 
@@ -57,8 +55,8 @@ public class SystemInfoDto {
         return this.reservedSpotPrice;
     }
 
-    public Manager getManager(){
-        return this.manager;
+    public ManagerDto getManager(){
+        return this.managerDto;
     }
 
     //setters
@@ -86,7 +84,7 @@ public class SystemInfoDto {
         this.reservedSpotPrice = reservedSpotPrice;
     }
 
-    public void setManager(Manager manager){
-        this.manager = manager;
+    public void setManager(ManagerDto managerDto){
+        this.managerDto = managerDto;
     }
 }
