@@ -19,7 +19,7 @@ button{
 <template>
 <div>
 <center>
-  <h1>ParkingPlus</h1>
+  <h1>ParkingPlus<br><br></h1>
 
   <label for="email">Enter your email:</label>
   <input type="email" id="email" name="email"><br><br>
@@ -28,6 +28,10 @@ button{
   <input type="password" id="password" name="password"><br><br>
 
   <button type="submit">Login</button>
+
+  <label><br><br>Don't have an account yet?</label>
+  <button type="submit">Create Account</button>
+
 </center>
 </div>
 </template>
