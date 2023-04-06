@@ -108,7 +108,7 @@ public class AccountController {
     //converts an Account into a dto
 
     private AccountDto convertToDto(Account account) {
-        AccountDto dto = new AccountDto(account.getEmail(), account.getPassword(), false);
+        AccountDto dto = new AccountDto(account.getEmail(), account.getPassword(), account.getLoginStatus());
         return dto;
     }
 }

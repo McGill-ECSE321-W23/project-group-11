@@ -36,9 +36,11 @@ public class SystemInfoRepositoryTests {
         //create account
         String email = "johndoe1955@gmail.com";
         String password = "password";
+        boolean loginStatus = false;
         Account account = new Account();
         account.setEmail(email);
         account.setPassword(password);
+        account.setloginStatus(loginStatus);
 
         //save account
         accountRepository.save(account);

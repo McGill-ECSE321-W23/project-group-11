@@ -47,6 +47,7 @@ public class AccountService {
         account = new Account();
         account.setEmail(email);
         account.setPassword(password);
+        account.setloginStatus(false);
         accountRepository.save(account);
         
         return account;

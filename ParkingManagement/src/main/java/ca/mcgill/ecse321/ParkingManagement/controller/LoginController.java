@@ -26,9 +26,9 @@ public class LoginController {
      * @return response with message or error
      */
     @PostMapping(value = {"/login","/login/"})
-    public ResponseEntity<?> login(@RequestBody AccountDto account) {
+    public ResponseEntity<?> login(@RequestBody AccountDto accountDTO) {
         try {
-            service.loginAccount(account);
+            service.loginAccount(accountDTO);
             return new ResponseEntity<>("Login Successful", HttpStatus.OK);
         } catch (Exception e) {
             if (e.getMessage().equals("Account cannot be null.")) {
@@ -55,9 +55,9 @@ public class LoginController {
      * @return response with message or error
      */
     @PostMapping(value = {"/logout","/logout/"})
-    public ResponseEntity<?> logout(@RequestBody AccountDto account) {
+    public ResponseEntity<?> logout(@RequestBody AccountDto accountDTO) {
         try {
-            service.logoutAccount(account);
+            service.logoutAccount(accountDTO);
             return new ResponseEntity<>("Logout Successful",HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
