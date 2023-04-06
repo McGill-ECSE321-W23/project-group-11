@@ -10,6 +10,11 @@
       input{
         width:300px
       }
+      button{
+        border-radius:4px;
+        background-color:#80A7A4;
+        border:2px solid #51706D;
+      }
     </style>
 <template>
     <div>
@@ -30,10 +35,10 @@
             <option value="manager">Manager</option>
         </select><br><br>
 
-        <button type="create">Create Account</button><br><br>
+        <button type="submit">Create Account</button><br><br>
 
         <Label for="backtologin">Already have an account?</label>
-        <button type="backtologin">Login Instead</button>
+        <button type="submit">Login Instead</button>
     </center>
     </div>
 </template>
