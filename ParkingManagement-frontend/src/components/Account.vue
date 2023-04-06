@@ -23,9 +23,6 @@
         <label for="password">Enter your password:</label>
         <input type="password" id="password" name="password"><br><br>
 
-        <label>Enter your license plate:</label>
-        <input id="licenseplate" name="licenseplate"><br><br>
-
         <label for="logintype">Registering as a:</label>
         <select name="Type" id="logintype">
             <option value="customer">Customer</option>
@@ -34,6 +31,9 @@
         </select><br><br>
 
         <button type="create">Create Account</button><br><br>
+
+        <Label for="backtologin">Already have an account?</label>
+        <button type="backtologin">Login Instead</button>
     </center>
     </div>
 </template>
