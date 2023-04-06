@@ -53,10 +53,12 @@ public class LoginServiceTest {
     Exception e = assertThrows(Exception.class,
                 () -> {
                     AccountDto accountDto = new AccountDto("brianMorava123@gmail.com", "password", true);
+                    when(accountRepository.existsByEmail(any(String.class))).thenReturn(true);
+                    when(accountRepository.findAccountByEmail(any(String.class))).thenReturn(accountDto.toModel());
                     service.loginAccount(accountDto);
                 }
         );
-        assertEquals(e.getMessage(),"Account is already logged in.");
+        assertEquals("Account is already logged in.", e.getMessage());
     }
 
 
@@ -68,7 +70,7 @@ public class LoginServiceTest {
                     service.loginAccount(accountDto);
                 }
         );
-        assertEquals(e.getMessage(),"Account cannot be null.");
+        assertEquals("Account cannot be null.", e.getMessage());
     }
 
 
@@ -81,7 +83,7 @@ public class LoginServiceTest {
                     service.loginAccount(accountDto);
                 }
         );
-        assertEquals(e.getMessage(),"No account with that email exists.");
+        assertEquals("No account with that email exists.", e.getMessage());
     }
 
     @Test
@@ -97,7 +99,7 @@ public class LoginServiceTest {
                     service.loginAccount(accountDto);
                 }
         );
-        assertEquals(e.getMessage(),"Invalid password.");
+        assertEquals("Invalid password.", e.getMessage());
     }
 
 
@@ -107,6 +109,7 @@ public class LoginServiceTest {
        
         AccountDto accountDto = new AccountDto("brian@gmail.com", "password1", true);
         when(accountRepository.existsByEmail(any(String.class))).thenReturn(true);
+        when(accountRepository.findAccountByEmail(any(String.class))).thenReturn(accountDto.toModel());
         boolean output = true;
         try {
             output = service.logoutAccount(accountDto);
@@ -123,10 +126,12 @@ public class LoginServiceTest {
     Exception e = assertThrows(Exception.class,
                 () -> {
                     AccountDto accountDto = new AccountDto("brianMorava123@gmail.com", "password", false);
+                    when(accountRepository.existsByEmail(any(String.class))).thenReturn(true);
+                    when(accountRepository.findAccountByEmail(any(String.class))).thenReturn(accountDto.toModel());
                     service.logoutAccount(accountDto);
                 }
         );
-        assertEquals(e.getMessage(),"Account is already logged out.");
+        assertEquals("Account is already logged out.", e.getMessage());
     }
 
     @Test
@@ -137,7 +142,7 @@ public class LoginServiceTest {
                     service.logoutAccount(accountDto);
                 }
         );
-        assertEquals(e.getMessage(),"Account cannot be null.");
+        assertEquals("Account cannot be null.", e.getMessage());
     }
 
     @Test
@@ -149,7 +154,7 @@ public class LoginServiceTest {
                     service.logoutAccount(accountDto);
                 }
         );
-        assertEquals(e.getMessage(),"No account with that email exists.");
+        assertEquals("No account with that email exists.", e.getMessage());
     }
     
 }

@@ -16,13 +16,13 @@ public class AccountDto {
     private String password;
     
 
-    private boolean logInStatus;//used to indicate login and logout status of an account
+    private boolean loginStatus;//used to indicate login and logout status of an account
 
     //constructor
-    public AccountDto(String email, String password, boolean logInStatus) {
+    public AccountDto(String email, String password, boolean loginStatus) {
         this.email = email;
         this.password = password;
-        this.logInStatus = logInStatus;
+        this.loginStatus = loginStatus;
     }
     //getters
     public String getEmail() {
@@ -33,8 +33,8 @@ public class AccountDto {
         return password;
     }
 
-    public boolean getlogInStatus() {
-        return logInStatus;
+    public boolean getloginStatus() {
+        return loginStatus;
     }
 
     //setters
@@ -46,11 +46,11 @@ public class AccountDto {
         this.password = password;
     }
 
-    public void setLogInStatus(boolean logInStatus) {
-        this.logInStatus = logInStatus;
+    public void setLogInStatus(boolean loginStatus) {
+        this.loginStatus = loginStatus;
     }
     public Account toModel() {
-        Account a = new Account(email,password);
+        Account a = new Account(email, password, loginStatus);
         return a;
     }
 }

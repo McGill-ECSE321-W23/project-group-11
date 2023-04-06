@@ -70,6 +70,7 @@ public class CarRepositoryTests {
         Account manageraccount = new Account();
         manageraccount.setEmail(manageremail);
         manageraccount.setPassword(managerpassword);
+        manageraccount.setloginStatus(false);
 
         //save account for manager
         accountRepository.save(manageraccount);
@@ -84,9 +85,11 @@ public class CarRepositoryTests {
         //create account for employee
         String employeeemail = "johndoe1955@gmail.com";
         String employeepassword = "password";
+        boolean loginStatus = false;
         Account employeeaccount = new Account();
         employeeaccount.setEmail(employeeemail);
         employeeaccount.setPassword(employeepassword);
+        employeeaccount.setloginStatus(loginStatus);
 
         //save account for employee
         employeeaccount = accountRepository.save(employeeaccount);

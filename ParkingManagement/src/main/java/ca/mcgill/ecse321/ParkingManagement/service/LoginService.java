@@ -30,17 +30,18 @@ public class LoginService {
             throw new Exception("Account cannot be null.");
         }
 
-        if(accountTO.getlogInStatus()){
-            throw new Exception("Account is already logged in.");
-        }
-
         if(accountRepository.existsByEmail(accountTO.getEmail())){
 
             Account account = accountRepository.findAccountByEmail(accountTO.getEmail());
 
+            if(account.getLoginStatus()){
+                throw new Exception("Account is already logged in.");
+            }
+
             if (account.getPassword().equals(accountTO.getPassword())) {
                 accountTO.setLogInStatus(true);
-                return accountTO.getlogInStatus();
+                account.setloginStatus(true);
+                return accountTO.getloginStatus();
 
             } else {
                 throw new Exception("Invalid password.");
@@ -69,18 +70,21 @@ public class LoginService {
             throw new Exception("Account cannot be null.");
         }
 
-        if(! (accountTO.getlogInStatus())){
+        if(! (accountRepository.existsByEmail(accountTO.getEmail()))){
+            throw new Exception("No account with that email exists.");
+        }
+
+
+        Account account = accountRepository.findAccountByEmail(accountTO.getEmail());
+
+        if(! (account.getLoginStatus())){
             throw new Exception("Account is already logged out.");
         }
         
-        if(accountRepository.existsByEmail(accountTO.getEmail())){
-            accountTO.setLogInStatus(false);
-            return accountTO.getlogInStatus();
+        accountTO.setLogInStatus(false);
+        account.setloginStatus(false);
+        return accountTO.getloginStatus();
 
-        }else{
-            throw new Exception("No account with that email exists.");
-        }
-        
     }
      
 }

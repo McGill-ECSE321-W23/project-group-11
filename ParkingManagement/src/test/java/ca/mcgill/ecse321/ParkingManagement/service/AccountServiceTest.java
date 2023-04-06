@@ -128,8 +128,10 @@ public void testGetAccount() {
     Account a = null;
     String email = "anakin@padme.com";
     String pw = "I_H8_U";
+    boolean loginStatus = false;
     account.setEmail(email);
     account.setPassword(pw);
+    account.setloginStatus(loginStatus);
     when(accountDao.findAccountByEmail(any(String.class))).thenReturn(account);
     try{
         a=service.getAccount(email);
@@ -141,7 +143,7 @@ public void testGetAccount() {
     assertNotNull(a);
     assertEquals(email, a.getEmail());
     assertEquals(pw,a.getPassword());
- 
+    assertEquals(loginStatus,a.getLoginStatus());
 }
 
 @Test

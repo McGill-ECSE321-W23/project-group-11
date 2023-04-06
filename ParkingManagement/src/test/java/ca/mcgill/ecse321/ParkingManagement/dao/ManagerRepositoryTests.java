@@ -35,9 +35,11 @@ public class ManagerRepositoryTests {
         //create account
         String email = "johndoe1955@gmail.com";
         String password = "password";
+        boolean loginStatus = false;
         Account account = new Account();
         account.setEmail(email);
         account.setPassword(password);
+        account.setloginStatus(loginStatus);
 
         //save account
         accountRepository.save(account);
@@ -64,5 +66,7 @@ public class ManagerRepositoryTests {
         assertNotNull(manager.getAccount());
         assertEquals(email, manager.getAccount().getEmail());
         assertEquals(manager.getId(), managerfromdb.getId());
+        assertEquals(password, manager.getAccount().getPassword());
+        assertEquals(loginStatus, manager.getAccount().getLoginStatus());
     }
 }

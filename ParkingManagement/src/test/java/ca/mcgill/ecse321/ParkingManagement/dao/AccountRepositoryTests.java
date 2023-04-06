@@ -30,10 +30,12 @@ class AccountRepositoryTests {
 		// make Account
         String username = "anakin.skywalker@gmail.com";
 		String password = "Padme4eva";
+		boolean loginStatus = false;
 
 		Account account = new Account();
 		account.setEmail(username);
 		account.setPassword(password);
+		account.setloginStatus(loginStatus);
 		accountRepository.save(account);
 
 
@@ -44,5 +46,6 @@ class AccountRepositoryTests {
 		// check that everthing exists as it should
 		assertEquals(username, account.getEmail());
 		assertEquals(password, account.getPassword()); // excpected, actual
+		assertEquals(loginStatus, account.getLoginStatus());
 	}
 }
