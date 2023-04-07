@@ -5,6 +5,8 @@ import Home from '@/components/Home'
 import RegisterCar from '@/components/RegisterCar'
 import BookCarService from '@/components/BookCarService'
 import Login from '@/components/Login'
+import TemporaryParking from '@/components/TemporaryParking'
+import CreateAccount from '@/components/CreateAccount'
 
 Vue.use(Router)
 
@@ -34,6 +36,16 @@ export default new Router({
       path: '/',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/TemporaryParking',
+      name: 'TemporaryParking',
+      component: TemporaryParking
+    },
+    {
+      path: '/CreateAccount',
+      name: 'CreateAccount',
+      component: CreateAccount
     }
   ]
 })

@@ -2,7 +2,7 @@
     <div id="homePage">
         <h2>ParkingPlus Home Page</h2>
         <a href="/#/car"><button>Register Car</button></a>
-        <button>Book Daily Spot</button>
+        <a href="/#/TemporaryParking"><button>Book Temporary Spot</button></a>
         <a href="/#/MonthlyPark"><button>Book a Monthly Spot</button></a>
         <a href="/#/BookCarService"><button>Book Car Service</button></a>
         <button>Log Out</button>
