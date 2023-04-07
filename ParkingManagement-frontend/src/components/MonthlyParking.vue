@@ -103,4 +103,19 @@
     margin-top: 20px;
     font-weight: 500;
   }
+
+  button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    button:hover {
+    background-color: #0069d9;
+    }
 </style>
