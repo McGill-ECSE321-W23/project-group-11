@@ -20,12 +20,25 @@ function ManagerDto(id, email){
     this.account = email;
 }
 
+function EmployeeDto(id, email){
+    this.id = id;
+    this.account = email;
+}
+
+function CustomerDto(id, email){
+    this.id = id;
+    this.account = email;
+}
+
 
 export default{
+    name: 'Account',
     data() {
         return {
           accounts: [],
-          manager:[],
+          managers:[],
+          employees:[],
+          customers:[],
           email: '',
           password: '',
           confirmPassword: '',
@@ -44,13 +57,27 @@ export default{
           this.accounts.push(a);
           this.errorMessage = '';
 
-          if(this.type = 'Manager'){
+          if(this.type = 'Manager'&& managers.length==0){
             this.id = 1;
             var m = new ManagerDto(id, a.email);
-            this.manager.push(m);
+            this.managers.push(m);
           }
 
-          //TODO associations if the account type is employee or customer
+          if(this.type = 'Manager' && managers.length!=0){
+            this.errorMessage = 'Cannot have more than 1 manager.';
+          }
+
+          if(this.type = 'Employee'){
+            this.id = employees.length+1;
+            var e = new EmployeeDto(id, a.email);
+            this.employees.push(e);
+          }
+
+          if(this.type = 'Customer'){
+            this.id = customers.length+1;
+            var c = new CustomerDto(id, a.email);
+            this.customers.push(e);
+          }
           return;
         },
       },
