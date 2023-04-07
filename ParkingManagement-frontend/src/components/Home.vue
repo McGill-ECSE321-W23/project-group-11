@@ -4,7 +4,7 @@
         <a href="/#/car"><button>Register Car</button></a>
         <button>Book Daily Spot</button>
         <a href="/#/MonthlyPark"><button>Book a Monthly Spot</button></a>
-        <a href="/#/CarService"><button>Book Car Service</button></a>
+        <a href="/#/BookCarService"><button>Book Car Service</button></a>
         <button>Log Out</button>
     </div>
 </template>
