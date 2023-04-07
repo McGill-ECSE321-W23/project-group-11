@@ -4,7 +4,7 @@ import Hello from '@/components/Hello'
 import MonthlyParking from '@/components/MonthlyParking'
 import Home from '@/components/Home'
 import RegisterCar from '@/components/RegisterCar'
-
+import BookCarService from '@/components/BookCarService'
 
 Vue.use(Router)
 
@@ -29,6 +29,11 @@ export default new Router({
       path: '/Car',
       name: 'RegisterCar',
       component: RegisterCar
+    },
+    {
+      path: '/BookCarService',
+      name: 'BookCarService',
+      component: BookCarService
     }
   ]
 })
