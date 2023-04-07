@@ -2,19 +2,25 @@
   <div id="temporarySpots">
     <h2>Temporary Parking Spots</h2>
     <form @submit.prevent="submitTemporarySpot">
-      <label for="duration">Duration:</label>
-      <select id="duration" v-model="selectedDuration" required>
-        <option value="" disabled selected>Select duration in 15-minute increments</option>
-        <option v-for="duration in durations" :key="duration" :value="duration">
-          {{ duration }}
-        </option>
-      </select>
-      <br /><br />
       <label for="car">Select Car:</label>
       <select id="car" v-model="selectedCar" required>
         <option value="" disabled selected>Select car</option>
         <option v-for="car in availableCars" :key="car.id" :value="car.id">
           {{ car.licensePlate }}
+        </option>
+      </select>
+      <br /><br />
+      <label for="date">Select Date:</label>
+        <input type="date" id="date" v-model="selectedDate" />
+      <br /><br />
+        <label for="startTime">Start Time (HHmm):</label>
+        <input type="text" id="startTime" v-model="startTime" required />
+      <br /><br />
+      <label for="duration">Duration:</label>
+      <select id="duration" v-model="selectedDuration" required>
+        <option value="" disabled selected>Select duration in 15-minute increments</option>
+        <option v-for="duration in durations" :key="duration" :value="duration">
+          {{ duration }}
         </option>
       </select>
       <br /><br />
@@ -25,13 +31,15 @@
     </p>
   </div>
 </template>
+
+
 <script>
   export default {
     data() {
       return {
         selectedDuration: '',
         selectedCar: '',
-        durations: [15, 30, 45, 60, 75, 90], // durations in 15-minute increments
+        durations: [15, 30, 45, 60, 75, 90, ], // durations in 15-minute increments
         availableCars: [ // replace with actual available cars data
         ],
         errorMessage: '',
@@ -52,6 +60,8 @@
     },
   };
   </script>
+
+  
 <style>
   html, body {
     margin: 0;
