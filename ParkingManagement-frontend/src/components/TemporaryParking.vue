@@ -34,7 +34,9 @@
 </template>
 
 
-<script>
+<script src="./TempParkingPage.js">
+</script>
+<!-- <script>
   export default {
     data() {
       return {
@@ -61,7 +63,7 @@
       },
     },
   };
-  </script>
+  </script> -->
 
   
 <style>
