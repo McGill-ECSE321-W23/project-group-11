@@ -119,7 +119,6 @@
     background-color: #fff;
     color: #333;
     outline: none;
-    -webkit-appearance: none;
   }
 
   input:focus,
