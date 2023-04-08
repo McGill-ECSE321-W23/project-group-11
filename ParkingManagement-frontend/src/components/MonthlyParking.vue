@@ -1,6 +1,6 @@
 <template>
   <div id="parkingReservation">
-    <h2>Reserve Monthly Parking</h2>
+    <h2>Monthly Parking</h2>
       <label for="month">Select Date:</label>
       <input type="month" id="month" v-model="selectedMonth" @change="convertMonthYearToInt" required />
       <br /><br />
@@ -11,8 +11,9 @@
           {{ car.name }}
         </option>
       </select>
+      <h3>Total to Pay: ${{ total }}</h3>
       <br /><br />
-      <button v-bind:disabled="createMonthlyDisabled" @click="createReservation()">Create</button>
+      <button v-bind:disabled="createMonthlyDisabled" @click="createReservation()">Confirm</button>
     </form>
     <p>
       <span style="color:red">{{ errorMessage }}</span>
@@ -39,6 +40,7 @@
         year: 0,
         cardto: null,
         errorMsg: '',
+        total: 0
       };
     },
     methods: {
@@ -76,91 +78,67 @@
   }
 
   #parkingReservation {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: #333;
-    background: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    color: #2c3e50;
+    max-width: 500px;
+    margin: 0 auto;
     justify-content: center;
-    height: 100%;
-    padding: 40px;
-    box-sizing: border-box;
   }
 
   h2 {
     margin-bottom: 30px;
     font-weight: 500;
+    font-size: 50px;
   }
 
-  .reservation-form {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    grid-gap: 20px;
-    align-items: center;
+  h3 {
+    margin-top: 30px;
+    margin-bottom: 0px;
+    font-weight: 400;
+    font-size: 35px;
+  }
+
+  .total-to-pay {
+    margin-bottom: 1000px;
   }
 
   .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group-inline {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
   }
 
   label {
+    display: block;
     margin-bottom: 5px;
-    font-weight: 500;
   }
 
   input,
   select {
-    padding: 12px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-    color: #333;
-    outline: none;
-  }
-
-  input:focus,
-  select:focus {
-    box-shadow: 0 0 0 2px #007aff;
-  }
-
-  .confirm-btn {
-    grid-column: 1 / -1;
-    background-color: #007aff;
-    color: white;
-    padding: 12px 20px;
-    font-size: 16px;
-    font-weight: 500;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .confirm-btn:hover {
-    background-color: #0058d3;
-  }
-
-  .error-message {
-    color: #ff3b30;
-    margin-top: 20px;
-    font-weight: 500;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
   }
 
   button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        margin-right: 10px;
-    }
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 0px;
+    display: block;
+    width: 100%;
+  }
 
-    button:hover {
+  button:hover {
     background-color: #0069d9;
-    }
+  }
 </style>
