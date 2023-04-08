@@ -98,10 +98,6 @@
     font-size: 35px;
   }
 
-  .total-to-pay {
-    margin-bottom: 1000px;
-  }
-
   .form-group {
     margin-bottom: 20px;
   }

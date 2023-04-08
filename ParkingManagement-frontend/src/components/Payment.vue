@@ -55,11 +55,6 @@ export default {
     margin: 0 auto;
   }
 
-  .total-to-pay {
-    margin-bottom: 1000px; /* Added more margin-bottom */
-  }
-
-
   .form-group {
     margin-bottom: 20px;
   }
@@ -102,7 +97,7 @@ export default {
     color: white;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 40px;
     display: block;
     width: 100%;
   }
