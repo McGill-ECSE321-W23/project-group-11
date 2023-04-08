@@ -8,6 +8,7 @@ import BookCarService from '@/components/BookCarService'
 import Login from '@/components/Login'
 import TemporaryParking from '@/components/TemporaryParking'
 import CreateAccount from '@/components/CreateAccount'
+import Payment from '@/components/Payment'
 
 Vue.use(Router)
 
@@ -47,6 +48,11 @@ export default new Router({
       path: '/CreateAccount',
       name: 'CreateAccount',
       component: CreateAccount
+    },
+    {
+      path: '/Payment',
+      name: 'Payment',
+      component: Payment
     }
   ]
 })
