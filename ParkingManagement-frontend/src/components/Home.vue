@@ -15,20 +15,20 @@
             <table>
               <thead>
                 <tr>
-                  <th>Car</th>
+                  <th>Car License Plate</th>
                   <th>Year</th>
                   <th>Month</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="reservation in monthlyreservations" :key="reservation.id">
-                  <td>{{ reservation.car }}</td>
+                <tr v-for="reservation in monthlyreservations" :key="index">
+                  <td>{{ reservation.carDto.licensePlate}}</td>
                   <td>{{ reservation.year }}</td>
                   <td>{{ reservation.month }}</td>
                 </tr>
               </tbody>
             </table>
-        </div>
+      </div> 
   
         <div class="table-container">
           <h3>Upcoming Temporary Reservations</h3>
@@ -48,29 +48,31 @@
 </template>
   
 <script>
-    import axios from 'axios';
+  import axios from 'axios';
+  import config from '../../config';
 
-    export default {
-      name: 'tablesdata',
-      data() {
-        return {
-          monthlyreservations: [],
-        };
-      },
-      methods: {
-        async fetchMonthlyReservations() {
-          try {
-            const response = await axios.get('/reservedspots');
-            this.monthlyreservations = response.data;
-          } catch (error) {
-            console.error('Error fetching reservations:', error);
-          }
-        },
-      },
-      mounted() {
-        this.fetchMonthlyReservations();
-      },
-    };
+  const axiosClient = axios.create({
+    baseURL: config.dev.backendBaseUrl
+  });
+
+  export default {
+    name: 'Home',
+    data() {
+      return {
+        monthlyreservations: [],
+      };
+    },  
+    created() {
+      axiosClient.get('/reservedspots/')
+        .then((response) => {
+          console.log('Fetched reservations:', response.data);
+          this.monthlyreservations = response.data;
+        })
+        .catch((err) => {
+          console.error('Error fetching reservations:', err);
+        })
+    },
+  };
 </script>
   
     <style>
