@@ -11,10 +11,23 @@
   
       <div class="tables-container">
         <div class="table-container">
-          <h3>Upcoming Monthly Reservations</h3>
-          <table>
-            <!-- The rest of the table content remains the same -->
-          </table>
+            <h3>Upcoming Monthly Reservations</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Car</th>
+                  <th>Year</th>
+                  <th>Month</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="reservation in monthlyreservations" :key="reservation.id">
+                  <td>{{ reservation.car }}</td>
+                  <td>{{ reservation.year }}</td>
+                  <td>{{ reservation.month }}</td>
+                </tr>
+              </tbody>
+            </table>
         </div>
   
         <div class="table-container">
@@ -35,7 +48,29 @@
 </template>
   
 <script>
-    // No script needed for now
+    import axios from 'axios';
+
+    export default {
+      name: 'tablesdata',
+      data() {
+        return {
+          monthlyreservations: [],
+        };
+      },
+      methods: {
+        async fetchMonthlyReservations() {
+          try {
+            const response = await axios.get('/reservedspots');
+            this.monthlyreservations = response.data;
+          } catch (error) {
+            console.error('Error fetching reservations:', error);
+          }
+        },
+      },
+      mounted() {
+        this.fetchMonthlyReservations();
+      },
+    };
 </script>
   
     <style>

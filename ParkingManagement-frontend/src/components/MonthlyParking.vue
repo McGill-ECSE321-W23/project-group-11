@@ -8,7 +8,7 @@
       <select id="car" v-model="cardto" required>
         <option value="" disabled selected>Select your car</option>
         <option v-for="car in cars" :key="car.id" :value="car.id">
-          {{ car.name }}
+          {{ car.licenseplate }}
         </option>
       </select>
       <h3>Total to Pay: ${{ total }}</h3>
@@ -45,7 +45,7 @@
     methods: {
       async fetchCars() {
         try {
-          const response = await axiosClient.get('path/to/getcarsbyaccount');
+          const response = await axiosClient.get('/car/m@gmail.com');
           this.cars = response.data;
         } catch (error) {
           console.error('Failed to fetch cars:', error);
