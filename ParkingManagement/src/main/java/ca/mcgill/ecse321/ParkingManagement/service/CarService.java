@@ -76,10 +76,8 @@ public class CarService {
     public Iterable<CarDto> getAllCarsByCustomer(String email){
         List<CarDto> carList = new ArrayList<>();
         for(Car car:carDao.findAll()){
-            for(Customer customer: customerRepository.findAll()){
-                if(car.getCustomer().getAccount().getEmail().equals(email)){
-                    carList.add(DtoConverters.convertToCarDto(car));
-                }
+            if(car.getCustomer().getAccount().getEmail().equals(email)){
+                carList.add(DtoConverters.convertToCarDto(car));
             }
         }
         return carList;
