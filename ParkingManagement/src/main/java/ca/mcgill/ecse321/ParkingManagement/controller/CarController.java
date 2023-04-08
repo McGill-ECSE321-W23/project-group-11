@@ -1,17 +1,18 @@
 package ca.mcgill.ecse321.ParkingManagement.controller;
 
-// import java.util.List;
-// import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-// import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ca.mcgill.ecse321.ParkingManagement.dto.CarDto;
+import ca.mcgill.ecse321.ParkingManagement.dto.*;
 import ca.mcgill.ecse321.ParkingManagement.service.CarService;
 
 @CrossOrigin(origins = "*")
@@ -35,6 +36,7 @@ public class CarController {
             return new ResponseEntity<>(e.getMessage() + "Not Created", HttpStatus.BAD_REQUEST);
         }
     }
+    
 
     // /**
     //  * deletes a car
@@ -50,5 +52,17 @@ public class CarController {
     //         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     //     }
     // }
+
+    @GetMapping(value = { "/cars/", "/cars" }) 
+    public ResponseEntity<?> getAllCars() {
+        Iterable<CarDto> cars = carService.getAllCars();
+        return new ResponseEntity<>(cars, HttpStatus.OK);
+    }
+
+    @GetMapping(value = { "/car/{email}", "/car/{email}/" }) 
+    public ResponseEntity<?> getAllCarsByCustomer(@PathVariable String email) {
+        Iterable<CarDto> cars = carService.getAllCarsByCustomer(email);
+        return new ResponseEntity<>(cars, HttpStatus.OK);
+    }
 
 }

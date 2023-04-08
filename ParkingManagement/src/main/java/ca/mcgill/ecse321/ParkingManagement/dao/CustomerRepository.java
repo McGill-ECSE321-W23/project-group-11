@@ -7,7 +7,7 @@ import ca.mcgill.ecse321.ParkingManagement.model.Customer;
 
 public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 	Customer findCustomerByid(Integer id);
-	boolean existsByid(Integer id);
 	Customer findCustomerByAccount(Account account);
-	Customer deleteCustomerByAccount(Account account);
+	boolean existsByid(Integer id);
+	void deleteCustomerByAccount(Account account);
 }
