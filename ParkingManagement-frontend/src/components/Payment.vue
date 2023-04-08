@@ -76,7 +76,14 @@ export default {
 
   h2 {
     margin-bottom: 30px;
-    font-weight: 550;
+    font-weight: 500;
+    font-size: 50px; /* Increased font size */
+  }
+
+  h3 {
+    margin-bottom: 30px;
+    margin-top: 60px;
+
   }
 
   input {
