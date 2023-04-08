@@ -45,7 +45,7 @@ public class TemporaryParkingController {
      * @param accountDto with email of account to get spots of
      * @return list of all temporary spots as DTOs
      */
-    @GetMapping(value = { "/tempspots/account", "/tempspots/account/" })
+    @GetMapping(value = { "/tempspotsaccount", "/tempspotsaccount/" })
     public ResponseEntity<?> getAllTempSpotsForAccount(@RequestBody AccountDto accountDto) {
         List<TempSpotDto> spotList =  tempSpotService.getAllTempSpotsForAccount(accountDto).stream().collect(Collectors.toList());
         return new ResponseEntity<>(spotList, HttpStatus.OK);
