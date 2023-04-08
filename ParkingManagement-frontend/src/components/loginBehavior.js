@@ -20,9 +20,9 @@ export default {
   name: "Login",
   data() {
     return {
-      username: "",
-      password: "",
-      error: "",
+      //username: "",
+      //password: "",
+      //error: "",
     };
   },
   methods: {
@@ -31,18 +31,16 @@ export default {
      */
     login: function (email, password) {
         var account = new AccountDto(email, password, false);
-        AXIOS.post('/login', {account})
-            .then(response => {
-                alert(response);
-                this.error = "";
-                this.username = "";
-                this.password = "";
-                window.location.href = "/HomePage"
+        AXIOS.post('/login', {account}).then(response => {
+                //alert(response);
+                //this.error = "";
+                //this.username = "";
+                //this.password = "";
                 alert("success");
-            })
-            .catch((e) => {
-                alert(e);
-                //alert(e.response.data);
+                window.location.href = "/HomePage"
+            }).catch((e) => {
+                //alert(e);
+                alert(e.response);
             });
     },
 
