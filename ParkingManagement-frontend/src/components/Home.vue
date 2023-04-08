@@ -1,11 +1,13 @@
 <template>
     <div id="homePage">
-      <h2>ParkingPlus Home Page</h2>
-      <a href="/#/car"><button>Register Car</button></a>
-      <a href="/#/TemporaryParking"><button>Book Temporary Spot</button></a>
-      <a href="/#/MonthlyPark"><button>Book a Monthly Spot</button></a>
-      <a href="/#/BookCarService"><button>Book Car Service</button></a>
-      <button>Log Out</button>
+      <h1>ParkingPlus Home Page</h1>
+      <div class="button-container">
+        <a href="/#/car"><button>Register Car</button></a>
+        <a href="/#/TemporaryParking"><button>Book Temporary Spot</button></a>
+        <a href="/#/MonthlyPark"><button>Book a Monthly Spot</button></a>
+        <a href="/#/BookCarService"><button>Book Car Service</button></a>
+        <button>Log Out</button>
+      </div>
   
       <div class="tables-container">
         <div class="table-container">
@@ -30,16 +32,31 @@
         </div>
       </div>
     </div>
-  </template>
-
-  <script>
-    // No script needed for now
-  </script>
+</template>
   
-  <style>
+<script>
+    // No script needed for now
+</script>
+  
+    <style>
     #homePage {
       font-family: 'Avenir', Helvetica, Arial, sans-serif;
       color: #2c3e50;
+      text-align: center;
+      padding: 0 20px;
+    }
+  
+    h1 {
+      font-size: 48px;
+      margin-bottom: 30px;
+    }
+  
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 40px;
     }
   
     button {
@@ -59,56 +76,55 @@
   
     /* Table styles */
     table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        background-color: #ffffff;
-      }
-
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      background-color: #ffffff;
+      font-size: 14px;
+    }
+  
     th,
     td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-        }
-
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+  
     th {
-        background-color: #007bff;
-        font-weight: bold;
-        color: white;
+      background-color: #007bff;
+      font-weight: bold;
+      color: white;
     }
-
+  
     tr:nth-child(even) {
-        background-color: #f2f2f2;
+      background-color: #f2f2f2;
     }
-
+  
     tr:hover {
-        background-color: #ddd;
+      background-color: #ddd;
     }
-   
+  
     .tables-container {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 20px;
-        margin-top: 140px; /* Adjust the margin-top to lower the tables */
-        margin-left: 10px;
-        margin-right: 10px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 40px;
     }
-
+  
     .table-container {
-        flex: 1;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Added box-shadow for distinction */
-        border-radius: 8px; /* Added border-radius for a more professional look */
-        padding: 20px; /* Added padding for better spacing */
-        background-color: #fff; /* Set background color to white */
+      flex: 1;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      padding: 20px;
+      background-color: #fff;
     }
-
+  
     h3 {
         margin-bottom: 16px; /* Added margin-bottom to separate the title from the table */
     }
 
 
-  </style>
+</style>
   
