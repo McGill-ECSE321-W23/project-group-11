@@ -67,7 +67,7 @@ public class CustomerService {
         customerRepository.deleteCustomerByAccount(customer.getAccount());
         customer_dummy = customerRepository.findCustomerByAccount(customer.getAccount());
         if (customer_dummy != null) {
-            Exception e = new Exception("Customer not deleted");
+            Exception e = new Exception("Manager not deleted");
             throw e;
         }
         return customer_dummy;

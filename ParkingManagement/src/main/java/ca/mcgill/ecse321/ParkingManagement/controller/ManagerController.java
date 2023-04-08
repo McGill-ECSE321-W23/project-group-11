@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.ParkingManagement.service.*;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
@@ -63,12 +64,12 @@ public class ManagerController {
         return dto;
     }
 
-    @DeleteMapping(value = {"/manager", "/manager/"})
-    public ResponseEntity<?> deleteManager(@RequestBody ManagerDto managerDto) {
+    @DeleteMapping(value = {"/manager/{email}", "/manager/{email}/"})
+    public ResponseEntity<?> deleteManager(@PathVariable String email) {
         try{
-           Manager manager = managerService.getManagerByEmail(managerDto.getAccount());
+           Manager manager = managerService.getManagerByEmail(email);
             managerService.deleteManager(manager);
-            return new ResponseEntity<>("Account deleted", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Manager deleted", HttpStatus.NO_CONTENT);
         }
         catch(Exception e) {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);

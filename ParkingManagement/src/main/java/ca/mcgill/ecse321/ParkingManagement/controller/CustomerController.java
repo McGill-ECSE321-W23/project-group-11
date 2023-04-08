@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.ParkingManagement.service.*;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
@@ -19,22 +20,22 @@ import ca.mcgill.ecse321.ParkingManagement.dto.*;
 
 @CrossOrigin(origins = "*")
 @RestController
-public class ManagerController {
+public class CustomerController {
 
     @Autowired
-    private ManagerService managerService;
+    private CustomerService customerService;
 
     /**
      * 
-     * get Manager
+     * get customer
      * 
      * 
      */
-    @GetMapping(value = {"/manager","/manager/"})
-    public ResponseEntity<?>  getAllManagers() {
-        List<ManagerDto> accountList = new ArrayList<>();
-        for (Manager manager : managerService.getAllManagers()) {
-            accountList.add(convertToDto(manager));
+    @GetMapping(value = {"/customers","/customers/"})
+    public ResponseEntity<?>  getAllcustomers() {
+        List<CustomerDto> accountList = new ArrayList<>();
+        for (Customer customer : customerService.getAllCustomers()) {
+            accountList.add(convertToDto(customer));
         }
         return new ResponseEntity<>(accountList, HttpStatus.OK);   
         }
@@ -45,30 +46,30 @@ public class ManagerController {
      * @return
      */
 
-    @PostMapping(value = {"/manager", "/manager/"})
-    public ResponseEntity<?> createManager(@RequestBody AccountDto accountDto) {
+    @PostMapping(value = {"/customer", "/customer/"})
+    public ResponseEntity<?> createCustomer(@RequestBody AccountDto accountDto) {
         try{
             //convert to an Account
             Account account = accountDto.toModel();
-            Manager manager = managerService.createManager(account);
-            return new ResponseEntity<>(convertToDto(manager), HttpStatus.CREATED);
+            Customer customer = customerService.createCustomer(account);
+            return new ResponseEntity<>(convertToDto(customer), HttpStatus.CREATED);
         }
         catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    private ManagerDto convertToDto(Manager manager) {
-        ManagerDto dto = new ManagerDto(manager.getId(), manager.getAccount().toString());
+    private CustomerDto convertToDto(Customer customer) {
+        CustomerDto dto = new CustomerDto(customer.getId(), customer.getAccount().toString());
         return dto;
     }
 
-    @DeleteMapping(value = {"/manager", "/manager/"})
-    public ResponseEntity<?> deleteManager(@RequestBody ManagerDto managerDto) {
+    @DeleteMapping(value = {"/customer/{email}", "/customer/{email}"})
+    public ResponseEntity<?> deleteCustomer(@PathVariable String email) {
         try{
-           Manager manager = managerService.getManagerByEmail(managerDto.getAccount());
-            managerService.deleteManager(manager);
-            return new ResponseEntity<>("Account deleted", HttpStatus.NO_CONTENT);
+           Customer customer = customerService.getCustomerByEmail(email);
+            customerService.deleteCustomer(customer);
+            return new ResponseEntity<>("Customer deleted", HttpStatus.NO_CONTENT);
         }
         catch(Exception e) {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);

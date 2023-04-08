@@ -73,11 +73,11 @@ public class CarService {
     }
 
     @Transactional
-    public Iterable<CarDto> getAllCarsByCustomer(CustomerDto customerDto){
+    public Iterable<CarDto> getAllCarsByCustomer(String email){
         List<CarDto> carList = new ArrayList<>();
         for(Car car:carDao.findAll()){
             for(Customer customer: customerRepository.findAll()){
-                if(car.getCustomer().getAccount().getEmail().equals(customerDto.account)){
+                if(car.getCustomer().getAccount().getEmail().equals(email)){
                     carList.add(DtoConverters.convertToCarDto(car));
                 }
             }

@@ -21,10 +21,6 @@ public class CustomerDto {
         this.account = account;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getAccount() {
         return this.account;
     }
