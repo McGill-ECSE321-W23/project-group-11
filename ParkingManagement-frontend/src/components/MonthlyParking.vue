@@ -1,8 +1,7 @@
 <template>
   <div id="parkingReservation">
     <h2>Reserve Monthly Parking</h2>
-    <form @submit.prevent="submitReservation">
-      <label for="month">Select Month:</label>
+      <label for="month">Select Date:</label>
       <input type="month" id="month" v-model="selectedMonth" @change="convertMonthYearToInt" required />
       <br /><br />
       <label for="car">Select Car:</label>
@@ -13,7 +12,7 @@
         </option>
       </select>
       <br /><br />
-      <button type="submit">Confirm</button>
+      <button v-bind:disabled="createMonthlyDisabled" @click="createReservation()">Create</button>
     </form>
     <p>
       <span style="color:red">{{ errorMessage }}</span>
@@ -21,6 +20,53 @@
   </div>
 </template>
 <script>
+  import axios from 'axios';
+  import config from '../../config';
+
+  const axiosClient = axios.create({
+    // Note the baseURL, not baseUrl
+    baseURL: config.dev.backendBaseUrl
+  });
+
+  export default {
+    name: 'MonthlyParking',
+    data() {
+      return {
+        cars: [],
+        selectedCar: '',
+        selectedMonth: '',
+        month: 0,
+        year: 0,
+        cardto: null,
+        errorMsg: '',
+      };
+    },
+    methods: {
+      convertMonthYearToInt() {
+        const dateParts = this.selectedMonth.split('-');
+        this.year = parseInt(dateParts[0], 10);
+        this.month = parseInt(dateParts[1], 10);
+      },
+      createReservation() {
+        const request = {month: this.month, year: this.year, cardto: this.cardto};
+        axiosClient.post('reservedspot/book', request).then((response) => {
+            const book = response.data;
+            this.month = '';
+            this.year = '';
+            this.cardto = null;
+            this.errorMsg = '';
+          })
+          .catch((err) => {
+            this.errorMsg = `Failed to create: ${err.response.data}`;
+          })
+      }
+    },
+    computed: {
+      createMonthlyDisabled() {
+        return this.year <= 0 || this.month <= 0;
+      }
+    }
+  }
 </script>
 <style>
   html, body {
