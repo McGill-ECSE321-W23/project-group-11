@@ -314,7 +314,6 @@ public class ReservedParkingServiceTest {
 
         String error = "";
 
-        ReservedSpotDto spot = null;
 
         List<ReservedSpotDto> spotretrieved = null;
 
@@ -434,8 +433,6 @@ public class ReservedParkingServiceTest {
 
         String error = "";
 
-        int month = 12;
-        int year = 2023;
         Size carSize = Size.Regular;
         CarDto carDto = new CarDto(CAR_KEY, carSize);
 

@@ -321,9 +321,7 @@ public class TemporaryParkingService {
     }
 
 /**
-     * TODO This is an anti-pattern that needs to be fixed, code exists in CarService.java
      * Creates a car with a plate number and size
-     *
      * @param plateNumber license plate of car
      * @param size Size of car (regular or large)
      * @return DTO of car created

@@ -148,7 +148,6 @@ public void testGetAccount() {
 
 @Test
 public void testGetNullEmail() {
-    Account account = null;
     String email = null;
     Account a = null;
     String error = null;
@@ -165,7 +164,6 @@ public void testGetNullEmail() {
 
 @Test
 public void testGetEmptyEmail() {
-    Account account = null;
     String email = "";
     Account a = null;
     String error = null;

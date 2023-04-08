@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
 import Account from '@/components/Account'
 import MonthlyParking from '@/components/MonthlyParking'
 import Home from '@/components/Home'
@@ -9,6 +8,7 @@ import BookCarService from '@/components/BookCarService'
 import Login from '@/components/Login'
 import TemporaryParking from '@/components/TemporaryParking'
 import CreateAccount from '@/components/CreateAccount'
+import Payment from '@/components/Payment'
 
 Vue.use(Router)
 
@@ -48,6 +48,11 @@ export default new Router({
       path: '/CreateAccount',
       name: 'CreateAccount',
       component: CreateAccount
+    },
+    {
+      path: '/Payment',
+      name: 'Payment',
+      component: Payment
     }
   ]
 })

@@ -4,24 +4,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.anyInt;import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.lenient;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
+
 // import java.time.format.DateTimeFormatter;
 // import java.util.Calendar;
 // import java.util.ArrayList;
 // import java.util.List;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 // import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +26,6 @@ import ca.mcgill.ecse321.ParkingManagement.dao.CarRepository;
 import ca.mcgill.ecse321.ParkingManagement.dto.CarDto;
 import ca.mcgill.ecse321.ParkingManagement.model.Car;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
-import ca.mcgill.ecse321.ParkingManagement.utility.DtoConverters;
 
 @ExtendWith(MockitoExtension.class)
 public class CarServiceTest {

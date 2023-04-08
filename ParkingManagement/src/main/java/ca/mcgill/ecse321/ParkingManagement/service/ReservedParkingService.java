@@ -256,7 +256,6 @@ public class ReservedParkingService {
     }
 
     /**
-     * TODO This is an anti-pattern that needs to be fixed, code exists in CarService.java
      * Creates a car with a plate number and size
      *
      * @param plateNumber license plate of car
