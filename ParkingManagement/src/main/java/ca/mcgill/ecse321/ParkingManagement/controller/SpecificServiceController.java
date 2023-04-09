@@ -90,12 +90,10 @@ public class SpecificServiceController {
     @PostMapping(value = {"/booking","/booking/"})
     public ResponseEntity<?> createServiceBooking(@RequestBody SpecificServiceDto specificServiceDto) throws Exception{
         try{
-            //convert to a specificService type
-            SpecificService specificService = specificServiceDto.toModel();
-            //cal service
-            specificService = specificServiceBookingService.createBooking(specificService.getDate(), specificService.getStartTime(), specificService.getEmployee(), specificService.getCar(), specificService.getServiceType());
+            SpecificService specificService = specificServiceBookingService.createBooking(specificServiceDto);
             //return dto
-            return new ResponseEntity<>(convertToDto(specificService),HttpStatus.CREATED);
+            //SpecificServiceDto returnBody = new SpecificServiceDto(specificService.getId(),specificService.getDate(),specificService.getStartTime(),specificService.getEmployee(),specificService.getServiceType(),specificService.getCar());
+            return new ResponseEntity<>(specificService,HttpStatus.CREATED);
         }
         catch(Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);

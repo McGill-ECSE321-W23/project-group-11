@@ -8,7 +8,7 @@ import java.time.LocalTime;
 public class SpecificServiceDto{
 
     //Contructor
-    public SpecificServiceDto(int id, Date date, LocalTime startTime, String employee, ServiceType serviceType, Car car) {
+    public SpecificServiceDto(int id,Date date, LocalTime startTime, String employee, ServiceType serviceType, Car car) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;
@@ -24,10 +24,6 @@ public class SpecificServiceDto{
    private ServiceType serviceType;
    private Car car;
 
-
-   public int getId() {
-      return this.id;
-   }
   
    public void setDate(Date value) {
       this.date = value;
