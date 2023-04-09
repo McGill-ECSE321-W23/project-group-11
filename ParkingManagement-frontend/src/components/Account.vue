@@ -19,8 +19,108 @@ button {
   border: 2px solid #51706D;
 }
 </style>
-<script src="./Account.js">
+
+<script>
+import axios from 'axios';
+import config from '../../config';
+
+const axiosClient = axios.create({
+  baseURL: config.dev.backendBaseUrl
+});
+
+export default{
+    name: 'Account',
+    data() {
+        return {
+          email: '',
+          password: '',
+          confirmPassword: '',
+          errorMessage: '',
+          type:'',
+        };
+      },
+    methods: {
+      createAccount(){
+        if(this.password !== this.confirmPassword){
+          this.errorMessage = 'Passwords do not match. Please try again.';
+          return; 
+        }
+
+        if(this.type == 'Manager'){
+          const request = {email: this.email, password: this.password, loginStatus: true};
+          axiosClient.post('/accounts', request)
+          .then((response) => {
+           this.email = '';
+           this.password = '';
+           this.confirmPassword = '';
+           this.errorMessage = '';
+         })
+          .catch((err) => {
+           this.errorMessage = 'Failed to create account: ${err.response.data}';
+         })
+
+         axiosClient.post('/manager', request)
+         .then((response) => {
+           this.errorMessage = '';
+         })
+          .catch((err) => {
+           this.errorMessage = 'Failed to create account: ${err.response.data}';
+         })
+        }
+
+        if(this.type == 'Customer'){
+          const request = {email: this.email, password: this.password, loginStatus: true};
+          axiosClient.post('/accounts', request)
+          .then((response) => {
+           this.email = '';
+           this.password = '';
+           this.confirmPassword = '';
+           this.errorMessage = '';
+         })
+          .catch((err) => {
+           this.errorMessage = 'Failed to create account: ${err.response.data}';
+         })
+
+         axiosClient.post('/customer', request)
+         .then((response) => {
+           this.errorMessage = '';
+         })
+          .catch((err) => {
+           this.errorMessage = 'Failed to create account: ${err.response.data}';
+         })
+        }
+
+        if(this.type == 'Employee'){
+          const request = {email: this.email, password: this.password, loginStatus: true};
+          axiosClient.post('/accounts', request)
+          .then((response) => {
+           this.email = '';
+           this.password = '';
+           this.confirmPassword = '';
+           this.errorMessage = '';
+         })
+          .catch((err) => {
+           this.errorMessage = 'Failed to create account: ${err.response.data}';
+         })
+
+         axiosClient.post('/employee', request)
+         .then((response) => {
+           this.errorMessage = '';
+         })
+          .catch((err) => {
+           this.errorMessage = 'Failed to create account: ${err.response.data}';
+         })
+        }
+      },
+      computed: {
+        createAccountButtonDisabled(){
+          return !this.email.trim() || !this.password.trim() || !this.confirmPassword.trim();
+        }
+      }
+    }
+    };
 </script>
+
 <template>
   <div>
     <center>
