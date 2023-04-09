@@ -29,4 +29,29 @@ public class SystemInfoController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping(value = {"/systeminfo/{id}", "/systeminfo/{id}/"})
+    public ResponseEntity<?> getSystemInfoById(@PathVariable int id){
+        SystemInfo systemInfo  = systemInfoService.getSystemInfoById(id);
+        return new ResponseEntity<>(systemInfo, HttpStatus.OK);
+    }
+    // @DeleteMapping(value = {"/systeminfo/", "/systeminfo"})
+    // public ResponseEntity<?> deleteSystemInfo(@RequestBody SystemInfo systemInfo){
+    //     try{
+    //         systemInfoService.deleteSystemInfo(systemInfo);
+    //         return new ResponseEntity<>("System Info Deleted",HttpStatus.NO_CONTENT);
+    //     }
+    //     catch(Exception e){
+    //         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    //     }
+    // }
+    @PutMapping(value = {"/systeminfo/", "/systeminfo"})
+    public ResponseEntity<?> editSystemInfo(@RequestBody SystemInfoDto systemInfoDto){
+        try{
+            SystemInfo systemInfo = systemInfoService.editSystemInfo(systemInfoDto);
+            return new ResponseEntity<>(systemInfo, HttpStatus.ACCEPTED);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

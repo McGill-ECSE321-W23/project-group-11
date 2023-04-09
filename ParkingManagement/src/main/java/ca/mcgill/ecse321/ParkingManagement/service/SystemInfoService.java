@@ -40,4 +40,43 @@ public class SystemInfoService {
         SystemInfo systemInfo = new SystemInfo(openTime,closeTime,largeTempSpotPrice,regTempSpotPrice,reservedSpotPrice,manager);
         return systemInfoRepository.save(systemInfo);
     }
+    // @Transactional
+    // public boolean deleteSystemInfo(SystemInfo systemInfo)throws Exception{
+    //     if(managerRepository.findManagerByid(systemInfo.getManager().getId())==null){
+    //         Exception e = new Exception("Manager does not exist");
+    //         throw e;
+    //     }
+    //     if(systemInfoRepository.findSystemInfoById(systemInfo.getId())==null){
+    //         Exception e = new Exception("System Info does not exist");
+    //         throw e;
+    //     }
+    //     else{
+    //         systemInfoRepository.deleteById(systemInfo.getId());
+    //         return true;
+    //     }
+    // }
+    @Transactional
+    public SystemInfo getSystemInfoById(int id){
+        return systemInfoRepository.findSystemInfoById(id);
+    }
+    @Transactional
+    public SystemInfo editSystemInfo(SystemInfoDto systemInfoDto) throws Exception{
+        if(managerRepository.findManagerByid(systemInfoDto.getManager().getId())==null){
+            Exception e = new Exception("Manager does not exist");
+            throw e;
+        }
+        if(systemInfoRepository.findSystemInfoById(systemInfoDto.getId())==null){
+            Exception e = new Exception("System Info does not exist");
+            throw e;
+        }
+        else{
+            SystemInfo systemInfo = systemInfoRepository.findSystemInfoById(systemInfoDto.getId());
+            systemInfo.setOpenTime(systemInfoDto.getOpenTime());
+            systemInfo.setCloseTime(systemInfoDto.getCloseTime());
+            systemInfo.setLargeTempSpotPrice(systemInfoDto.getLargeTempSpotPrice());
+            systemInfo.setRegTempSpotPrice(systemInfoDto.getRegTempSpotPrice());
+            systemInfo.setReservedSpotPrice(systemInfoDto.getReservedSpotPrice());
+            return systemInfoRepository.save(systemInfo);
+        }
+    }
 }
