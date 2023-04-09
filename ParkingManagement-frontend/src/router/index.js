@@ -7,7 +7,6 @@ import RegisterCar from '@/components/RegisterCar'
 import BookCarService from '@/components/BookCarService'
 import Login from '@/components/Login'
 import TemporaryParking from '@/components/TemporaryParking'
-import CreateAccount from '@/components/CreateAccount'
 import PaymentTempSpot from '@/components/PaymentTempSpot'
 import PaymentMonthlySpot from '@/components/PaymentMonthlySpot'
 import PaymentService from '@/components/PaymentService'
@@ -53,9 +52,9 @@ export default new Router({
       component: TemporaryParking
     },
     {
-      path: '/CreateAccount',
+      path: '/Account',
       name: 'CreateAccount',
-      component: CreateAccount
+      component: Account
     },
     {
       path: '/PaymentTempSpot',
