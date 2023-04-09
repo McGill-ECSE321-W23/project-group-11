@@ -3,22 +3,15 @@
   <center>
     <h1>ParkingPlus&nbsp<img src="https://static.wixstatic.com/media/cef2a4_5488e99ac9bd419e9f05722ba154e95a~mv2.png/v1/fill/w_560,h_554,al_c,lg_1,q_85,enc_auto/ParkPlus%20Icon%20CMYK%20highres.png" alt="ParkingPlus Logo" style="width: 80px; height: 80px; margin-right: 20px;"><br><br></h1>
     
+    <h2>Manager Sign-in</h2>
+
     <label for="email">Enter your email:</label>
     <input type="email" id="email" name="email"><br><br>
 
     <label for="password">Enter your password:</label>
     <input type="password" id="password" name="password"><br><br>
 
-    <button type="submit">Login</button>
-
-    <label><br><br>Don't have an account yet?</label>
-    <a href="/#/CreateAccount"><button>Create Account</button></a>
-
-    <div class="manager-signin-container">
-      <a href="/#/ManagerLogin">
-        <button class="manager-signin-btn">Manager Sign In</button>
-      </a>
-    </div>
+    <a href="/#/ManagerHome"><button>Login</button></a>
 
   </center>
 </div>
@@ -39,7 +32,7 @@
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
+    background-color: #28a745;
     color: white;
     font-weight: bold;
     cursor: pointer;
@@ -47,16 +40,11 @@
     display: block;
     width: 10%;
   }
-  .manager-signin-container{
-    margin-top: 40px;
-  }
 
-  .manager-signin-btn {
-    background-color: #28a745;
-  }
-
-  .manager-signin-btn:hover {
+  button:hover{
     background-color: #218838;
+
   }
-  
+
+
 </style>

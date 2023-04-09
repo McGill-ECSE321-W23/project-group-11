@@ -5,13 +5,14 @@
       <input type="month" id="month" v-model="selectedMonth" @change="convertMonthYearToInt" required />
       <br /><br />
       <label for="car">Select Car:</label>
-      <select id="car" v-model="selectedCar" required>
+      <select id="car" v-model="cardto" required>
         <option value="" disabled selected>Select your car</option>
-        <option v-for="car in cars" :key="car.id" :value="car.id">
-          {{ car.name }}
+        <option v-for="car in cars" :key="car.id" >
+          {{ car.licensePlate }}
         </option>
       </select>
       <h3>Total to Pay: ${{ total }}</h3>
+      <button @click="estimateTotalAmount()">Estimate</button> <!-- Add this button -->
       <br /><br />
       <button v-bind:disabled="createMonthlyDisabled" @click="createReservation()">Confirm</button>
     </form>
@@ -25,7 +26,6 @@
   import config from '../../config';
 
   const axiosClient = axios.create({
-    // Note the baseURL, not baseUrl
     baseURL: config.dev.backendBaseUrl
   });
 
@@ -34,7 +34,6 @@
     data() {
       return {
         cars: [],
-        selectedCar: '',
         selectedMonth: '',
         month: 0,
         year: 0,
@@ -44,6 +43,22 @@
       };
     },
     methods: {
+      async fetchCars() {
+        try {
+          const response = await axiosClient.get('/car/');
+          this.cars = response.data;
+        } catch (error) {
+          console.error('Failed to fetch cars:', error);
+        }
+      },
+      async getTotalAmount() {
+        try {
+          const response = await axiosClient.get('/price/month');
+          this.total = response.data.total;
+        } catch (error) {
+          console.error('Failed to fetch total amount:', error);
+        }
+      },
       convertMonthYearToInt() {
         const dateParts = this.selectedMonth.split('-');
         this.year = parseInt(dateParts[0], 10);
@@ -57,17 +72,26 @@
             this.year = '';
             this.cardto = null;
             this.errorMsg = '';
+            this.getTotalAmount();
           })
           .catch((err) => {
             this.errorMsg = `Failed to create: ${err.response.data}`;
           })
-      }
+      },
+      estimateTotalAmount() {
+        if (this.cardto && this.selectedMonth) {
+          this.getTotalAmount();
+        }
+      },
     },
     computed: {
       createMonthlyDisabled() {
         return this.year <= 0 || this.month <= 0;
-      }
-    }
+      },
+    },
+    mounted() {
+      this.fetchCars();
+    },
   }
 </script>
 <style>
