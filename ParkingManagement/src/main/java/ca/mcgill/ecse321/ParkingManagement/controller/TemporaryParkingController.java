@@ -47,8 +47,12 @@ public class TemporaryParkingController {
      */
     @GetMapping(value = { "/tempspotsaccount", "/tempspotsaccount/" })
     public ResponseEntity<?> getAllTempSpotsForAccount(@RequestBody AccountDto accountDto) {
-        List<TempSpotDto> spotList =  tempSpotService.getAllTempSpotsForAccount(accountDto).stream().collect(Collectors.toList());
-        return new ResponseEntity<>(spotList, HttpStatus.OK);
+        try {
+            List<TempSpotDto> spotList =  tempSpotService.getAllTempSpotsForAccount(accountDto).stream().collect(Collectors.toList());
+            return new ResponseEntity<>(spotList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
