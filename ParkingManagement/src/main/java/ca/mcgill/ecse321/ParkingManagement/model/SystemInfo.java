@@ -7,6 +7,19 @@ import java.sql.Time;
 
 @Entity
 public class SystemInfo {
+    //defualt contructor
+    public SystemInfo(){
+
+    }
+    //contructor
+    public SystemInfo(Time openTime,Time closeTime,int largeTempSpotPrice,int regTempSpotPrice, int reservedSpotPrice,Manager manager){
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+        this.largeTempSpotPrice = largeTempSpotPrice;
+        this.regTempSpotPrice = regTempSpotPrice;
+        this.reservedSpotPrice = reservedSpotPrice;
+        this.manager = manager;
+    }
     // attributes
     @Id
     private int id;
