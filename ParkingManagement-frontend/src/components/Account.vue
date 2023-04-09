@@ -130,6 +130,8 @@ export default{
       <h2>Create Account</h2>
       <h4>Welcome to the account creation page</h4><br><br>
 
+      <span v-if="errorMessage" style="color:red">Error: {{errorMessage}} </span>
+
       <label for="email">Enter your email:</label>
       <input type="email" id="email" name="email" v-model="email"><br><br>
 
@@ -140,15 +142,16 @@ export default{
       <input type="password" id="reenter-password" name="reenter-password" v-model="confirmPassword"><br><br>
 
       <label for="logintype">Registering as a:</label>
-      <select name="Type" id="logintype">
-        <option value="customer">Customer</option>
-        <option value="employee">Employee</option>
-        <option value="manager">Manager</option>
+      <select name="Type" id="logintype" v-model="type">
+        <option value="Customer">Customer</option>
+        <option value="Employee">Employee</option>
+        <option value="Manager">Manager</option>
       </select><br><br>
 
-      <button type="submit">Create Account</button><br><br>
+      <button type="submit" v-bind:disabled="createAccountButtonDisabled" @click="createAccount()">Create Account</button><br><br>
 
-      <p>Already have an account? <a href="#">Login Instead</a></p>
+      <label for="logininstead">Already have an account? </label>
+      <a href="/#/"><button id="logininstead">Login Instead</button></a>
 
     </center>
 </div></template>
