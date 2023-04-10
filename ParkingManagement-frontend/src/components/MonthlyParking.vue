@@ -1,6 +1,7 @@
 <template>
   <div id="parkingReservation">
     <h2>Monthly Parking</h2>
+    <form>
       <label for="month">Select Date:</label>
       <input type="month" id="month" v-model="selectedMonth" @change="convertMonthYearToInt" required />
       <br /><br />
@@ -64,18 +65,16 @@
         this.month = parseInt(dateParts[1], 10);
       },
       createReservation() {
-        const request = {month: this.month, year: this.year, cardto: this.cardto};
-        axiosClient.post('reservedspot/book', request).then((response) => {
-            const book = response.data;
-            this.month = '';
-            this.year = '';
-            this.cardto = null;
-            this.errorMsg = '';
-            this.getTotalAmount();
-          })
-          .catch((err) => {
-            this.errorMsg = `Failed to create: ${err.response.data}`;
-          })
+        request = {month: this.month, year: this.year, cardto: this.cardto};
+        amount = this.getTotalAmount();
+        const book = response.data;
+        this.month = 0;
+        this.year = 0;
+        this.cardto = null;
+        this.errorMsg = '';
+        localStorage.setItem('monthlySpotDto', request);
+        localStorage.setItem('paymentAmount', amount);
+        this.$router.push({name: 'PaymentMonthlySpot', params:{monthlySpotDto: request, paymentAmount: amount}});
       },
     },
     computed: {
