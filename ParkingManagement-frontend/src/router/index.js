@@ -8,10 +8,13 @@ import BookCarService from '@/components/BookCarService'
 import Login from '@/components/Login'
 import TemporaryParking from '@/components/TemporaryParking'
 import CreateAccount from '@/components/CreateAccount'
-import Payment from '@/components/Payment'
+import PaymentTempSpot from '@/components/PaymentTempSpot'
+import PaymentMonthlySpot from '@/components/PaymentMonthlySpot'
+import PaymentService from '@/components/PaymentService'
 import ManagerLogin from '@/components/ManagerLogin'
 import ManagerHome from '@/components/ManagerHome'
 import ManagerTools from '@/components/ManagerTools'
+import PaymentSuccess from '@/components/PaymentSuccess'
 
 Vue.use(Router)
 
@@ -26,7 +29,8 @@ export default new Router({
     {
       path: '/MonthlyPark',
       name: 'MonthlyParking',
-      component: MonthlyParking
+      component: MonthlyParking,
+      props: true
     },
     {
       path: '/Car',
@@ -54,9 +58,19 @@ export default new Router({
       component: CreateAccount
     },
     {
-      path: '/Payment',
-      name: 'Payment',
-      component: Payment
+      path: '/PaymentTempSpot',
+      name: 'PaymentTempSpot',
+      component: PaymentTempSpot
+    },
+    {
+      path: '/PaymentMonthlySpot',
+      name: 'PaymentMonthlySpot',
+      component: PaymentMonthlySpot
+    },
+    {
+      path: '/PaymentService',
+      name: 'PaymentService',
+      component: PaymentService
     },
     {
       path: '/ManagerLogin',
@@ -72,6 +86,11 @@ export default new Router({
       path: '/ManagerTools',
       name: 'ManagerTools',
       component: ManagerTools
+    },
+    {
+      path: '/PaymentSuccess',
+      name: 'PaymentSuccess',
+      component: PaymentSuccess
     }
   ]
 })

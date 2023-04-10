@@ -2,46 +2,72 @@
   <div id="paymentPage">
     <h2>Payment</h2>
     <h3>Total to Pay: ${{ total }}</h3>
-    
+    <form @submit.prevent="submitPayment">
       <div class="form-group">
         <label for="cardName">Name on Card:</label>
-        <input type="text" id="cardName" v-model="cardName" required />
+        <input type="text" v-model="cardName" required />
       </div>
 
       <div class="form-group">
         <label for="cardNumber">Card Number:</label>
-        <input type="text" id="cardNumber" v-model="cardNumber" required />
+        <input type="text" v-model="cardNumber" required />
       </div>
 
       <div class="form-group">
         <label for="expiryDate">Expiry Date (MM/YY):</label>
-        <input type="text" id="expiryDate" v-model="expiryDate" required />
+        <input type="text" v-model="expiryDate" required />
       </div>
 
       <div class="form-group">
         <label for="cvv">CVV:</label>
-        <input type="text" id="cvv" v-model="cvv" required />
+        <input type="text" v-model="cvv" required />
       </div>
 
-      <button type="submit">Submit Payment</button>
+      <button type="submit" @click="submitPayment(cardNumber,expiryDate,cvv)">Submit Payment</button>
+      <p style="color:red"><br><br>{{ errorMessage }}</p>
     </form>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+import config from '../../config';
+const axiosClient = axios.create({baseURL: config.dev.backendBaseUrl});
+
 export default {
+  name: "payment",
   data() {
     return {
+      requestBody: localStorage.getItem('tempSpotDto'),
       total: 0, // Retrieve this value from the previous page
       cardName: "",
       cardNumber: "",
       expiryDate: "",
       cvv: "",
+      errorMessage: ""
     };
   },
   methods: {
-    submitPayment() {
-      // Handle the payment submission here
+    submitPayment: function (cardNumber,expiryDate,cvv) {
+      if(expiryDate.length !== 4){
+        this.errorMessage = "Expiry Date must be 4 digits";
+        return;
+      }
+      if(cvv.length !== 3){
+        this.errorMessage = "cvv must be 3 digits";
+        return;
+      }
+      axiosClient.get('/payment/'+ cardNumber + '').then(() => {
+        axiosClient.post('/tempspot/book',requestBody)
+        .catch((error) => {
+          this.errorMessage = "Please try again: " + error.response.data;
+        })
+        localStorage.removeItem('tempSpotDto'); //remove the item after you used it
+        this.$router.push({name: 'PaymentSuccess'});
+      })
+      .catch((error) => {
+        this.errorMessage = "Please try again: " + error.response.data;
+      })
     },
   },
 };
