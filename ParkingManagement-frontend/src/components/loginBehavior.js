@@ -22,16 +22,11 @@ export default {
      */
     login: function (accountEmail, accountPassword) {
       AXIOS.post('/login', {email: accountEmail, password: accountPassword}).then(() => {
-         window.location.href = "/HomePage6"
+         window.location.href = "/ManagerHome"
         })
         .catch((error) => {
           this.errorMessage = "Please try again: " + error.response.data;
         })
     },
-    
-
-    createAccount: function () {
-        //window.location.href = "/AccountPage"
-      }
   }
 };
