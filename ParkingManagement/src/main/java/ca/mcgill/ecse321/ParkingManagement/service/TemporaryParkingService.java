@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.ParkingManagement.service;
 
 import ca.mcgill.ecse321.ParkingManagement.dao.*;
+import ca.mcgill.ecse321.ParkingManagement.dto.AccountDto;
 import ca.mcgill.ecse321.ParkingManagement.dto.CarDto;
 import ca.mcgill.ecse321.ParkingManagement.dto.TempSpotDto;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
@@ -20,6 +21,8 @@ public class TemporaryParkingService {
     RegularTempSpotRepository regularTempSpotRepository;
     @Autowired
     LargeTempSpotRepository largeTempSpotRepository;
+    @Autowired
+    AccountRepository accountRepository;
     @Autowired
     CustomerRepository customerRepository;
     @Autowired
@@ -278,7 +281,77 @@ public class TemporaryParkingService {
         return DtoConverters.convertToTempSpotDto(carSpot);
     }
 
+    /**
+     * Returns a list of all temp spots for an account
+     * Managers and employees see all accounts
+     * @return list of TempSpots
+     */
+    @Transactional
+    public List<TempSpotDto> getAllTempSpotsForAccount(AccountDto accountDto) throws Exception{
+        checkTempSpots(); // Refresh to remove expired temp spots
 
+        // set up variables for checking accounts
+        String email = accountDto.getEmail();
+        boolean isEmployee = false;
+        boolean customerExists = false;
+        Account account = accountRepository.findAccountByEmail(email);
+        Manager manager = null;
+        Employee employee = null;
+        Customer customer = null;
+        // check if the account is one of a manager or employee
+        try {
+            manager = managerRepository.findManagerByAccount(account);
+        } catch (Exception e) {}
+        try {
+            employee = employeeRepository.findEmployeeByAccount(account);
+        } catch (Exception e) {}
+        if (manager != null || employee != null) {
+            isEmployee = true;
+        }
+        try {
+            customer = customerRepository.findCustomerByAccount(account);
+        } catch (Exception e) {}
+        if (customer != null) {
+            customerExists = true;
+        }
+        // set up list to return
+        TempSpotDto spotDto;
+        List<TempSpotDto> allTempSpots = new ArrayList<TempSpotDto>();
+
+        
+        if (isEmployee) { // get spots if isEmployee
+            for (RegularTempSpot regSpot : regularTempSpotRepository.findAll()) {
+                spotDto = DtoConverters.convertToTempSpotDto(regSpot);
+                allTempSpots.add(spotDto);
+            }
+            for (LargeTempSpot largeSpot : largeTempSpotRepository.findAll()) {
+                spotDto = DtoConverters.convertToTempSpotDto(largeSpot);
+                allTempSpots.add(spotDto);
+            }
+        } else if (customerExists) { // if not employee but customer exists
+            for (RegularTempSpot regSpot : regularTempSpotRepository.findAll()) {
+                if (regSpot.getCar().getCustomer() != null) {
+                    if (regSpot.getCar().getCustomer().getAccount().getEmail() == email) {
+                        spotDto = DtoConverters.convertToTempSpotDto(regSpot);
+                        allTempSpots.add(spotDto);
+                    }
+            }
+            }
+            for (LargeTempSpot largeSpot : largeTempSpotRepository.findAll()) {
+                if (largeSpot.getCar().getCustomer() != null) {
+                    if (largeSpot.getCar().getCustomer().getAccount().getEmail() == email) {
+                        spotDto = DtoConverters.convertToTempSpotDto(largeSpot);
+                        allTempSpots.add(spotDto);
+                    }
+                }
+            }
+        } else {
+            throw new Exception("Inputted Account has no role");
+        }
+        // get spots and return (employees/managers see all, customers see some)
+        
+        return allTempSpots;
+    }
 
     /**
      * Returns a list of all temp spots

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ca.mcgill.ecse321.ParkingManagement.dto.AccountDto;
 import ca.mcgill.ecse321.ParkingManagement.dto.TempSpotDto;
 import ca.mcgill.ecse321.ParkingManagement.service.TemporaryParkingService;
 
@@ -36,6 +37,22 @@ public class TemporaryParkingController {
     public ResponseEntity<?> getAllTempSpots() {
         List<TempSpotDto> spotList =  tempSpotService.getAllTempSpots().stream().collect(Collectors.toList());
         return new ResponseEntity<>(spotList, HttpStatus.OK);
+    }
+
+
+    /**
+     * Returns all temporary spots for the account
+     * @param accountDto with email of account to get spots of
+     * @return list of all temporary spots as DTOs
+     */
+    @GetMapping(value = { "/tempspotsaccount", "/tempspotsaccount/" })
+    public ResponseEntity<?> getAllTempSpotsForAccount(@RequestBody AccountDto accountDto) {
+        try {
+            List<TempSpotDto> spotList =  tempSpotService.getAllTempSpotsForAccount(accountDto).stream().collect(Collectors.toList());
+            return new ResponseEntity<>(spotList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**

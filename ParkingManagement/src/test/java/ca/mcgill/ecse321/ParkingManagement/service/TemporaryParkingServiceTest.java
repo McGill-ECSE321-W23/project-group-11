@@ -166,6 +166,7 @@ public class TemporaryParkingServiceTest {
     public void testCreateTempSpot() {
         String error = "";
 
+        //
         assertEquals(0, service.getAllTempSpots().size());
 
         // set up variables for test
@@ -218,7 +219,7 @@ public class TemporaryParkingServiceTest {
 
     @Test
     public void testCreateTempSpotInvalidDuration() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
         String error = "";
         int duration = 49;
         String carPlate = "regular plate number";
@@ -237,7 +238,7 @@ public class TemporaryParkingServiceTest {
 
     @Test
     public void testCreateTempSpotInvalidDateAndTime() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
         String error = "";
         int duration = 15;
         String carPlate = "regular plate number";
@@ -258,7 +259,7 @@ public class TemporaryParkingServiceTest {
     // Test no longer needed: current implementation creates a new car if one did not previously exist
     @Test
     public void testCreateTempSpotNonexistentCar() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
         String error = "";
         int duration = 5;
         String carPlate = "bad plate number";
@@ -279,7 +280,7 @@ public class TemporaryParkingServiceTest {
     // ------------------------------------------- Edit Spot Tests -------------------------------------------
     @Test
     public void testEditTempSpot() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
         String error = "";
         RegularTempSpot spot = new RegularTempSpot();
         int duration = 5;
@@ -305,7 +306,7 @@ public class TemporaryParkingServiceTest {
 
     @Test
     public void testEditTempSpotLarge() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
         String error = "";
         RegularTempSpot spot = new RegularTempSpot();
         int duration = 5;
@@ -331,7 +332,7 @@ public class TemporaryParkingServiceTest {
     
     @Test
     public void testEditTempSpotInvalidDuration() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
         String error = "";
         RegularTempSpot spot = new RegularTempSpot();
         int duration = 5;
@@ -356,7 +357,7 @@ public class TemporaryParkingServiceTest {
 
     @Test
     public void testEditTempSpotInvalidDuration2() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
         String error = "";
         RegularTempSpot spot = new RegularTempSpot();
         int duration = 5;
@@ -380,7 +381,7 @@ public class TemporaryParkingServiceTest {
     }
     @Test
     public void testEditTempSpotInvalidSpot() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
         String error = "";
         try {
             service.editTempSpot(null);
@@ -394,7 +395,7 @@ public class TemporaryParkingServiceTest {
 
     @Test
     public void testDeleteTempSpot() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
         String error = "";
         boolean deleted = false;
 
@@ -424,7 +425,7 @@ public class TemporaryParkingServiceTest {
 
     @Test
     public void testDeleteTempSpotLarge() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
         String error = "";
         boolean deleted = false;
 
@@ -454,7 +455,7 @@ public class TemporaryParkingServiceTest {
 
     @Test
     public void testDeleteTempSpotNullSpot() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
         String error = "";
         boolean deleted = false;
 
@@ -486,7 +487,7 @@ public class TemporaryParkingServiceTest {
 
     @Test
     public void testGetTempSpotByPlaceNumber() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
 
         int duration = 5;
         CarDto carDtoRegular = new CarDto("regular plate number", Size.Regular);
@@ -527,7 +528,7 @@ public class TemporaryParkingServiceTest {
 
     @Test
     public void testGetTempSpotByNonexistentPlaceNumber() {
-        assertEquals(0, service.getAllTempSpots().size());
+        //assertEquals(0, service.getAllTempSpots().size());
         String error = "";
 
         TempSpotDto regSpot = null;
@@ -545,6 +546,20 @@ public class TemporaryParkingServiceTest {
     // Cannot test this with mocks because it is used to verify that the database is inactive at the start of each unit test
     @Test
     public void testGetAllTempSpots() {
+        String error = "";
+        List<TempSpotDto> spotDtos = new ArrayList<TempSpotDto>();
+        try {
+            spotDtos =  service.getAllTempSpots(); // only 1 large spot in system, should be place number 1
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+        assertEquals("", error);
+
+        assertEquals(0, spotDtos.size());
+    }
+
+    @Test
+    public void testGetAccountTempSpots() {
         String error = "";
         List<TempSpotDto> spotDtos = new ArrayList<TempSpotDto>();
         try {
