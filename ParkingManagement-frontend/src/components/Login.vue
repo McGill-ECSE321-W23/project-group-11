@@ -26,13 +26,17 @@
   </div>
 </template>
 
+
+
+
+
 <script>
+
 import axios from 'axios';
 import config from '../../config';
-const axiosClient = axios.create({
-  // Note the baseURL, not baseUrl
-  baseURL: config.dev.backendBaseUrl
-});
+const axiosClient = axios.create({baseURL: config.dev.backendBaseUrl});
+
+
 export default {
   name: "Login",
   data() {
@@ -40,6 +44,7 @@ export default {
   },
 
   methods: {
+
     /**
      * login an account
      */
@@ -51,9 +56,16 @@ export default {
           this.errorMessage = "Please try again: " + error.response.data;
         })
     },
+
+
   }
 }
+
 </script>
+
+
+
+
 
 <style>
   div {
