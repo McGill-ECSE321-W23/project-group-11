@@ -11,8 +11,7 @@
           {{ car.licensePlate }}
         </option>
       </select>
-      <h3>Total to Pay: ${{ total }}</h3>
-      <button @click="estimateTotalAmount()">Estimate</button> <!-- Add this button -->
+      <h3>Total to Pay: {{ total }}</h3>
       <br /><br />
       <button v-bind:disabled="createMonthlyDisabled" @click="createReservation()">Confirm</button>
     </form>
@@ -39,13 +38,13 @@
         year: 0,
         cardto: null,
         errorMsg: '',
-        total: 0
+        total: '-'
       };
     },
     methods: {
       async fetchCars() {
         try {
-          const response = await axiosClient.get('/car/');
+          const response = await axiosClient.get('/cars');
           this.cars = response.data;
         } catch (error) {
           console.error('Failed to fetch cars:', error);
@@ -53,8 +52,8 @@
       },
       async getTotalAmount() {
         try {
-          const response = await axiosClient.get('/price/month');
-          this.total = response.data.total;
+          const response = await axiosClient.get('/price/month/0');
+          this.total = response.data;
         } catch (error) {
           console.error('Failed to fetch total amount:', error);
         }
@@ -78,11 +77,6 @@
             this.errorMsg = `Failed to create: ${err.response.data}`;
           })
       },
-      estimateTotalAmount() {
-        if (this.cardto && this.selectedMonth) {
-          this.getTotalAmount();
-        }
-      },
     },
     computed: {
       createMonthlyDisabled() {
@@ -91,6 +85,18 @@
     },
     mounted() {
       this.fetchCars();
+    },
+    watch: {
+      selectedMonth() {
+        if (this.selectedMonth && this.cardto) {
+          this.getTotalAmount();
+        }
+      },
+      cardto() {
+        if (this.selectedMonth && this.cardto) {
+          this.getTotalAmount();
+        }
+      },
     },
   }
 </script>

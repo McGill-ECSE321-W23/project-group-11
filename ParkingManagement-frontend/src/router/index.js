@@ -19,8 +19,9 @@ export default new Router({
   routes: [
     {
       path: '/home',
-      name: 'home',
-      component: Home
+      name: 'Home',
+      component: Home,
+      props: true
     },
     {
       path: '/MonthlyPark',
