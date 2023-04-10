@@ -1,11 +1,12 @@
 <template>
   <div id="parkingReservation">
     <h2>Monthly Parking</h2>
+    <form>
       <label for="month">Select Date:</label>
       <input type="month" id="month" v-model="selectedMonth" @change="convertMonthYearToInt" required />
       <br /><br />
       <label for="car">Select Car:</label>
-      <select id="car" v-model="cardto" required>
+      <select id="car" v-model="selectedCar" required>
         <option value="" disabled selected>Select your car</option>
         <option v-for="car in cars" :key="car.id" >
           {{ car.licensePlate }}
@@ -13,7 +14,7 @@
       </select>
       <h3>Total to Pay: {{ total }}</h3>
       <br /><br />
-      <button v-bind:disabled="createMonthlyDisabled" @click="createReservation()">Confirm</button>
+      <button v-bind:disabled="createMonthlyDisabled" @click.prevent="createReservation()">Confirm</button>
     </form>
     <p>
       <span style="color:red">{{ errorMessage }}</span>
@@ -36,7 +37,7 @@
         selectedMonth: '',
         month: 0,
         year: 0,
-        cardto: null,
+        selectedCar: null,
         errorMsg: '',
         total: '-'
       };
@@ -63,19 +64,20 @@
         this.year = parseInt(dateParts[0], 10);
         this.month = parseInt(dateParts[1], 10);
       },
-      createReservation() {
-        const request = {month: this.month, year: this.year, cardto: this.cardto};
-        axiosClient.post('reservedspot/book', request).then((response) => {
-            const book = response.data;
-            this.month = '';
-            this.year = '';
-            this.cardto = null;
-            this.errorMsg = '';
-            this.getTotalAmount();
-          })
-          .catch((err) => {
-            this.errorMsg = `Failed to create: ${err.response.data}`;
-          })
+      async createReservation() {
+        try {
+          const request = {
+            month: this.month,
+            year: this.year,
+            carto: this.selectedCar.licensePlate
+          };
+          
+          localStorage.setItem('monthlySpotDto', JSON.stringify(request));
+          localStorage.setItem('paymentAmount', this.total);
+          this.$router.push({ name: 'PaymentMonthlySpot', params: { monthlySpotDto: request, paymentAmount: this.total } });
+        } catch (error) {
+          console.error('Failed to create reservation:', error);
+        }
       },
     },
     computed: {
@@ -88,12 +90,12 @@
     },
     watch: {
       selectedMonth() {
-        if (this.selectedMonth && this.cardto) {
+        if (this.selectedMonth && this.selectedCar) { 
           this.getTotalAmount();
         }
       },
-      cardto() {
-        if (this.selectedMonth && this.cardto) {
+      selectedCar() { 
+        if (this.selectedMonth && this.selectedCar) {
           this.getTotalAmount();
         }
       },

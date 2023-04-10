@@ -17,9 +17,9 @@
       <a href="/#/CreateAccount"><button>Create Account</button></a>
   
       <div class="manager-signin-container">
-        <a href="/#/ManagerLogin">
+        <router-link to="/ManagerLogin">
           <button class="manager-signin-btn">Manager Sign In</button>
-        </a>
+        </router-link>
       </div>
   
     </center>
