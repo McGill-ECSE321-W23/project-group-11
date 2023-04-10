@@ -3,86 +3,236 @@
     <h1>Manager Tools</h1>
     <div class="sections-container">
       <div class="section">
-        <h2>Floors Management</h2>
-        <p>Manage floors and their capacities.</p>
-        <button>Manage Floors</button>
+        <h2>System Info</h2>
+        <form @submit.prevent="updateSystemInfo">
+          <label for="openTime">Open Time:</label>
+          <input type="time" id="openTime" v-model="systemInfo.openTime" required />
+          <label for="closeTime">Close Time:</label>
+          <input type="time" id="closeTime" v-model="systemInfo.closeTime" required />
+          <label for="largeTempSpotPrice">Large Temp Spot Price:</label>
+          <input type="number" id="largeTempSpotPrice" v-model="systemInfo.largeTempSpotPrice" required />
+          <label for="regTempSpotPrice">Reg Temp Spot Price:</label>
+          <input type="number" id="regTempSpotPrice" v-model="systemInfo.regTempSpotPrice" required />
+          <label for="reservedSpotPrice">Reserved Spot Price:</label>
+          <input type="number" id="reservedSpotPrice" v-model="systemInfo.reservedSpotPrice" required />
+          <button type="submit">Update System Info</button>
+        </form>
       </div>
 
       <div class="section">
-        <h2>Spots Management</h2>
-        <p>Manage reserved and public spots for customers.</p>
-        <button>Manage Spots</button>
+        <h2>Add Service Types</h2>
+        <form @submit.prevent="addServiceType">
+          <label for="serviceName">Service Name:</label>
+          <input type="text" id="serviceName" v-model="newServiceType.name" required />
+          <label for="serviceCost">Service Cost:</label>
+          <input type="number" id="serviceCost" v-model="newServiceType.cost" required />
+          <label for="serviceDuration">Service Duration (min):</label>
+          <input type="number" id="serviceDuration" v-model="newServiceType.duration" required />
+          <button type="submit">Add Service Type</button>
+        </form>
       </div>
-
+      
       <div class="section">
-        <h2>Services Management</h2>
-        <p>Manage services like tire change, car cleaning, and oil change.</p>
-        <button>Manage Services</button>
-      </div>
-
-      <div class="section">
-        <h2>Employees Management</h2>
-        <p>Manage employee schedules, hiring, and firing.</p>
-        <button>Manage Employees</button>
+        <h2>Existing Service Types</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Cost</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="serviceType in serviceTypes" :key="serviceType.id">
+              <td>{{ serviceType.name }}</td>
+              <td>${{ serviceType.cost }}</td>
+              <td>{{ serviceType.duration }} min</td>
+              <td>
+                <button @click="deleteServiceType(serviceType.id)">X</button>
+              </td>
+              </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </template>
 
-<style>
-  #manager-tools-page {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    color: #2c3e50;
-    text-align: center;
-    padding: 0 20px;
-  }
+<script>
+  import axios from "axios";
+  import config from "../../config";
+  
+  const axiosClient = axios.create({
+    baseURL: config.dev.backendBaseUrl,
+  });
+  
+  export default {
+    name: "ManagerTools",
+    data() {
+      return {
+        systemInfo: {
+          id: 0,
+          openTime: 0,
+          closeTime: 0,
+          largeTempSpotPrice: 0,
+          regTempSpotPrice: 0,
+          reservedSpotPrice: 0,
+        },
+        serviceTypes: [],
+        newServiceType: {
+          name: "",
+          cost: 0,
+          duration: 0,
+        },
+      };
+    },
+    methods: {
+      async fetchSystemInfo() {
+        try {
+          const response = await axiosClient.get("/systeminfo/0");
+          this.systemInfo = response.data;
+        } catch (error) {
+          console.error("Failed to fetch system info:", error);
+        }
+      },
+      async updateSystemInfo() {
+        try {
+          await axiosClient.put("/systeminfo", this.systemInfo);
+          this.fetchSystemInfo();
+        } catch (error) {
+          console.error("Failed to update system info:", error);
+        }
+      },
+      async addServiceType() {
+        try {
+          const requestData = {
+            ...this.newServiceType,
+            manager: { id: 26 },
+          };
+          await axiosClient.post("/servicetype", requestData);
+          this.fetchServiceTypes();
+          this.newServiceType = { name: "", cost: 0, duration: 0 };
+        } catch (error) {
+          console.error("Failed to add service type:", error);
+        }
+      },
+      async deleteServiceType(serviceTypeId) {
+        try {
+          const serviceTypeToDelete = this.serviceTypes.find((st) => st.id === serviceTypeId);
+          const requestData = {
+            name: serviceTypeToDelete.name,
+            cost: serviceTypeToDelete.cost,
+            duration: serviceTypeToDelete.duration,
+            manager: { id: 26 },
+          };
+          await axiosClient.delete(`/servicetype`, { data: requestData });
+          this.fetchServiceTypes();
+        } catch (error) {
+          console.error("Failed to delete service type:", error);
+        }
+      },
+      async fetchServiceTypes() {
+        try {
+          const response = await axiosClient.get('/servicetypes/');
+          this.serviceTypes = response.data;
+        } catch (error) {
+          console.error('Error fetching serviceTypes:', error);
+        }
+      },
+    
+    },
+    created() {
+      this.fetchSystemInfo();
+      this.fetchServiceTypes()
+    },
+    mounted() {
+      this.fetchSystemInfo();
+      this.fetchServiceTypes();
+    },
+  };
+  </script>
 
-  h1 {
-    font-size: 48px;
-    margin-bottom: 30px;
-  }
-
-  .sections-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
-  }
-
-  .section {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    padding: 20px;
-    background-color: #fff;
-    width: 300px;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-
-  p {
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-
-  button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background-color: #0069d9;
-  }
-</style>
+  <style>
+    #manager-tools-page {
+      font-family: 'Avenir', Helvetica, Arial, sans-serif;
+      color: #2c3e50;
+      text-align: center;
+      padding: 0 20px;
+    }
+  
+    h1 {
+      font-size: 48px;
+      margin-bottom: 30px;
+    }
+  
+    .sections-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+  
+    .section {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      padding: 20px;
+      background-color: #fff;
+      width: 300px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    label {
+      font-size: 16px;
+      margin: 5px 0;
+    }
+  
+    input {
+      margin-bottom: 10px;
+    }
+  
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  
+    button:hover {
+      background-color: #0069d9;
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+  
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+  
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+  
