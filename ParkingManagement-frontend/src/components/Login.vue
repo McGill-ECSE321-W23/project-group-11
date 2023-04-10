@@ -22,12 +22,14 @@ button{
   <h1>ParkingPlus&nbsp<img src="https://static.wixstatic.com/media/cef2a4_5488e99ac9bd419e9f05722ba154e95a~mv2.png/v1/fill/w_560,h_554,al_c,lg_1,q_85,enc_auto/ParkPlus%20Icon%20CMYK%20highres.png" alt="ParkingPlus Logo" style="width: 80px; height: 80px; margin-right: 20px;"><br><br></h1>
   
   <label>Enter your email:</label>
-  <input type="text" v-model="email" placeholder="Email"><br><br>
+  <input type="text" v-model="accountEmail" placeholder="Email"><br><br>
 
   <label>Enter your password:</label>
-  <input type="text" v-model="password" placeholder="Password"><br><br>
+  <input type="text" v-model="accountPassword" placeholder="Password"><br><br>
 
-  <button @click="login(email, password)">Login</button>
+  <button @click="login(accountEmail, accountPassword)">Login</button>
+
+  <p style="color:red"><br><br>{{ errorMessage }}</p>
 
   <label><br><br>Don't have an account yet?</label>
   <button @click="createAccount()">Create Account</button>

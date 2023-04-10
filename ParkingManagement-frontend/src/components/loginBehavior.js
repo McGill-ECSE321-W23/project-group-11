@@ -10,39 +10,25 @@ var AXIOS = axios.create({
 })
 
 
-function AccountDto(email, password, loginStatus){
-    this.email = email;
-    this.password = password;
-    this.loginStatus = loginStatus;
-}
-
 export default {
   name: "Login",
   data() {
-    return {
-      //username: "",
-      //password: "",
-      //error: "",
-    };
+    return {errorMessage: ''};
   },
+
   methods: {
     /**
      * login an account
      */
-    login: function (email, password) {
-        var account = new AccountDto(email, password, false);
-        AXIOS.post('/login', {account}).then(response => {
-                //alert(response);
-                //this.error = "";
-                //this.username = "";
-                //this.password = "";
-                alert("success");
-                window.location.href = "/HomePage"
-            }).catch((e) => {
-                //alert(e);
-                alert(e.response);
-            });
+    login: function (accountEmail, accountPassword) {
+      AXIOS.post('/login', {email: accountEmail, password: accountPassword}).then(() => {
+         window.location.href = "/HomePage6"
+        })
+        .catch((error) => {
+          this.errorMessage = "Please try again: " + error.response.data;
+        })
     },
+    
 
     createAccount: function () {
         //window.location.href = "/AccountPage"
