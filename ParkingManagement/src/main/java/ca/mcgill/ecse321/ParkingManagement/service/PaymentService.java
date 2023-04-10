@@ -56,19 +56,19 @@ public class PaymentService {
      *         pay
      */
     @Transactional
-    public int getCalculatedPriceForSpot(TempSpotDto spot) {
+    public String getCalculatedPriceForSpot(TempSpotDto spot, int sysInfoId) {
         int price = 0;
         if (spot.getCarDto().getSize().equals(Size.Regular)) {
-            price += sysInfo.findSystemInfoById(1).getRegTempSpotPrice() * (spot.getDuration());
-            return price;
+            price += sysInfo.findSystemInfoById(sysInfoId).getRegTempSpotPrice() * (spot.getDuration());
+            return "$"+price;
 
         }
 
         if (spot.getCarDto().getSize().equals(Size.Large)) {
-            price += sysInfo.findSystemInfoById(1).getLargeTempSpotPrice() * (spot.getDuration());
-            return price;
+            price += sysInfo.findSystemInfoById(sysInfoId).getLargeTempSpotPrice() * (spot.getDuration());
+            return "$"+price;
         }
-        return price;
+        return "$"+price;
     }
 
     /**
@@ -77,9 +77,9 @@ public class PaymentService {
      * @return The price associated with the monthly spot
      */
     @Transactional
-    public int getPriceForMonthlySpot() {
-        int price = sysInfo.findSystemInfoById(1).getReservedSpotPrice();
-        return price;
+    public String getPriceForMonthlySpot(int sysInfoId) {
+        int price = sysInfo.findSystemInfoById(sysInfoId).getReservedSpotPrice();
+        return "$"+price;
     }
 
     /**
@@ -91,10 +91,10 @@ public class PaymentService {
      * @throws Exception if the service type is null
      */
     @Transactional
-    public int getPriceForService(String name) throws Exception {
+    public String getPriceForService(String name) throws Exception {
         if (serviceType.findServiceTypeByName(name) != null) {
             int price = serviceType.findServiceTypeByName(name).getCost();
-            return price;
+            return "$"+price;
         } else {
             Exception e = new Exception("Service Type is null");
             throw e;

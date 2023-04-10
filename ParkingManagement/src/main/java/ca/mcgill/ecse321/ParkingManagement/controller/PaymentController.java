@@ -15,14 +15,14 @@ public class PaymentController {
     PaymentService paymentService;
     
     
-    @GetMapping(value ={"/price/temp", "/price/temp/"})
-    public ResponseEntity<?> getTempSpotPrice(@RequestBody TempSpotDto spot){
-        return new ResponseEntity<>(paymentService.getCalculatedPriceForSpot(spot), HttpStatus.OK);
+    @GetMapping(value ={"/price/temp/{sysInfoId}", "/price/temp/{sysInfoId}/"})
+    public ResponseEntity<?> getTempSpotPrice(@RequestBody TempSpotDto spot, @PathVariable int sysInfoId){
+        return new ResponseEntity<>(paymentService.getCalculatedPriceForSpot(spot,sysInfoId), HttpStatus.OK);
     }
 
-    @GetMapping(value ={"/price/month", "/price/month/"})
-    public ResponseEntity<?> getMonthlySpotPrice(){
-            return new ResponseEntity<>(paymentService.getPriceForMonthlySpot(), HttpStatus.OK);
+    @GetMapping(value ={"/price/month/{sysInfoId}/", "/price/month/{sysInfoId}"})
+    public ResponseEntity<?> getMonthlySpotPrice(@PathVariable int sysInfoId){
+            return new ResponseEntity<>(paymentService.getPriceForMonthlySpot(sysInfoId), HttpStatus.OK);
     }
 
     @GetMapping(value ={"/price/service/{name}", "/price/service/{name}/"})
