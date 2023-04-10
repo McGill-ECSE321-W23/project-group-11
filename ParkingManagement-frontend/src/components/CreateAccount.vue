@@ -57,9 +57,16 @@ export default {
   input{
     width:300px
   }
-  button{
-    border-radius:4px;
-    background-color:#80A7A4;
-    border:2px solid #51706D;
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 0px;
+    display: block;
+    width: 10%;
   }
 </style>

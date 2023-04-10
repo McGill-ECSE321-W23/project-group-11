@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import ca.mcgill.ecse321.ParkingManagement.dao.*;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
+import ca.mcgill.ecse321.ParkingManagement.dto.*;
 
 @Service
 public class SpecificServiceBookingService {
@@ -22,46 +23,36 @@ public class SpecificServiceBookingService {
 
     /**
      * Creates a Booking
-     * @param date date of the booking
-     * @param startTime of the booking
-     * @param employee name doing the service 
-     * @param car associated with the booking
-     * @param serviceType associated with the booking
+     * @param specificServiceDto specific service dto 
      * @return a booking for a service
      * @throws Exception
      */
     @Transactional
-    public SpecificService createBooking(Date date, LocalTime startTime, String employee, Car car, ServiceType serviceType) throws Exception {
+    public SpecificService createBooking(SpecificServiceDto specificServiceDto) throws Exception {
         //check if any of the attributes are null
-        if(date == null || startTime == null || employee == null || car == null || serviceType == null){
+        if(specificServiceDto.getDate() == null || specificServiceDto.getStartTime() == null || specificServiceDto.getEmployee() == null || specificServiceDto.getCar() == null || specificServiceDto.getServiceType() == null){
             Exception e = new Exception("Missing information about the booking");
             throw e;
         }
         //check to see if the car exists
-        if(carRepository.findCarBylicensePlate(car.getLicensePlate())==null){
+        if(carRepository.findCarBylicensePlate(specificServiceDto.getCar().getLicensePlate())==null){
             Exception e = new Exception("Car is not registered");
             throw e;
         }
         //check if service type exists
-        if(serviceTypeRepository.findServiceTypeByName(serviceType.getName())==null){
+        if(serviceTypeRepository.findServiceTypeByName(specificServiceDto.getServiceType().getName())==null){
             Exception e = new Exception("Service Type does not exist");
             throw e;
         }
         //check to see if the Date and Time is already taken
-        for(SpecificService specificService:specificServiceRepository.findAll()){
-            if(specificService.getDate().equals(date) && specificService.getStartTime().equals(startTime) && specificService.getEmployee().equals(employee)){
-                Exception e = new Exception("Service Type at this time and date already exists");
+        for(SpecificService specificServiceAll:specificServiceRepository.findAll()){
+            if(specificServiceAll.getDate().equals(specificServiceDto.getDate()) && specificServiceAll.getStartTime().equals(specificServiceDto.getStartTime()) && specificServiceAll.getEmployee().equals(specificServiceDto.getEmployee())){
+                Exception e = new Exception("Booking at this time and date with this employee already exists");
                 throw e;
             }
         }
         //everything is good lets proceed to the creation of the booking
-        SpecificService booking = new SpecificService();
-        booking.setDate(date);
-        booking.setStartTime(startTime);
-        booking.setEmployee(employee);
-        booking.setCar(car);
-        booking.setServiceType(serviceType);
-
+        SpecificService booking = new SpecificService(specificServiceDto.getDate(),specificServiceDto.getStartTime(),specificServiceDto.getEmployee(),specificServiceDto.getServiceType(),specificServiceDto.getCar());
         return specificServiceRepository.save(booking);
     }
     /**

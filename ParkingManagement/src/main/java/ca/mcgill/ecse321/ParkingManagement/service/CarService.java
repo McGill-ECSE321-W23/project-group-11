@@ -3,17 +3,25 @@ package ca.mcgill.ecse321.ParkingManagement.service;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ca.mcgill.ecse321.ParkingManagement.dao.CarRepository;
-import ca.mcgill.ecse321.ParkingManagement.dto.CarDto;
-import ca.mcgill.ecse321.ParkingManagement.model.Car;
-import ca.mcgill.ecse321.ParkingManagement.model.Size;
+import ca.mcgill.ecse321.ParkingManagement.dao.*;
+import ca.mcgill.ecse321.ParkingManagement.dto.*;
+import ca.mcgill.ecse321.ParkingManagement.model.*;
 import ca.mcgill.ecse321.ParkingManagement.utility.DtoConverters;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CarService {
     
     @Autowired
     CarRepository carDao;
+    @Autowired
+    CustomerRepository customerRepository;
+    @Autowired
+    EmployeeRepository employeeRepository;
+    @Autowired
+    ManagerRepository managerRepository;
+
 
 
     /**
@@ -53,5 +61,25 @@ public class CarService {
         Car car = carDao.findCarBylicensePlate(plateNumber);
         carDao.delete(car);
         return true;
+    }
+
+    @Transactional
+    public Iterable<CarDto> getAllCars(){
+        List<CarDto> carList = new ArrayList<>();
+        for(Car car: carDao.findAll()){
+            carList.add(DtoConverters.convertToCarDto(car));
+        }
+        return carList;
+    }
+
+    @Transactional
+    public Iterable<CarDto> getAllCarsByCustomer(String email){
+        List<CarDto> carList = new ArrayList<>();
+        for(Car car:carDao.findAll()){
+            if(car.getCustomer().getAccount().getEmail().equals(email)){
+                carList.add(DtoConverters.convertToCarDto(car));
+            }
+        }
+        return carList;
     }
 }

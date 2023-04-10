@@ -6,6 +6,9 @@
         <a href="/#/TemporaryParking"><button>Book Temporary Spot</button></a>
         <a href="/#/MonthlyPark"><button>Book a Monthly Spot</button></a>
         <a href="/#/BookCarService"><button>Book Car Service</button></a>
+        <a href="/#/ManagerTools">
+          <button class="manager-tools-btn">Manager Tools</button>
+        </a>
         <button>Log Out</button>
       </div>
   
@@ -163,6 +166,13 @@
         margin-bottom: 16px; /* Added margin-bottom to separate the title from the table */
     }
 
+    .manager-tools-btn {
+      background-color: #28a745;
+    }
+  
+    .manager-tools-btn:hover {
+      background-color: #218838;
+    }
 
 </style>
   
