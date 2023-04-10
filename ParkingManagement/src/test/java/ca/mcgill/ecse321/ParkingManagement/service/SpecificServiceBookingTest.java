@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ca.mcgill.ecse321.ParkingManagement.dao.*;
+import ca.mcgill.ecse321.ParkingManagement.dto.SpecificServiceDto;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -60,7 +61,8 @@ public class SpecificServiceBookingTest {
         when(specificServiceRepository.save(any(SpecificService.class))).thenReturn(oilChangeAt3pm);
         SpecificService output = null;
         try{
-            output = specificServiceBookingService.createBooking(date, startTime, employeeName, car, oilChange);
+            
+            output = specificServiceBookingService.createBooking(new SpecificServiceDto(0, date, startTime, employeeName, oilChange, car));
         }
         catch(Exception e){
             fail();
@@ -73,7 +75,7 @@ public class SpecificServiceBookingTest {
     @Test
     public void testCreateBookingWithNullInput(){
         Exception e = assertThrows(Exception.class,
-				() -> specificServiceBookingService.createBooking(null, startTime, employeeName, car, oilChange));
+				() -> specificServiceBookingService.createBooking(new SpecificServiceDto(0, null, startTime, employeeName, oilChange, car)));
         assertEquals(e.getMessage(),"Missing information about the booking");
     }
     //could add tests for more null checks for better coverage, but its slightly redundant
@@ -82,7 +84,7 @@ public class SpecificServiceBookingTest {
         car.setLicensePlate(licensePlate);
         when(carRepository.findCarBylicensePlate(any(String.class))).thenReturn(null);
         Exception e = assertThrows(Exception.class,
-				() -> specificServiceBookingService.createBooking(date, startTime, employeeName, car, oilChange));
+				() -> specificServiceBookingService.createBooking(new SpecificServiceDto(0, date, startTime, employeeName, oilChange, car)));
         assertEquals(e.getMessage(),"Car is not registered");
     }
     @Test
@@ -92,7 +94,7 @@ public class SpecificServiceBookingTest {
         when(carRepository.findCarBylicensePlate(any(String.class))).thenReturn(car);
         when(serviceTypeRepository.findServiceTypeByName(any(String.class))).thenReturn(null);
         Exception e = assertThrows(Exception.class,
-				() -> specificServiceBookingService.createBooking(date, startTime, employeeName, car, oilChange));
+				() -> specificServiceBookingService.createBooking(new SpecificServiceDto(0, date, startTime, employeeName, oilChange, car)));
         assertEquals(e.getMessage(),"Service Type does not exist");
     }
     @Test
@@ -108,8 +110,8 @@ public class SpecificServiceBookingTest {
         when(serviceTypeRepository.findServiceTypeByName(any(String.class))).thenReturn(oilChange);
         when(specificServiceRepository.findAll()).thenReturn(listOfServices);
         Exception e = assertThrows(Exception.class,
-				() -> specificServiceBookingService.createBooking(date, startTime, employeeName, car, oilChange));
-        assertEquals(e.getMessage(),"Service Type at this time and date already exists");
+				() -> specificServiceBookingService.createBooking(new SpecificServiceDto(0, date, startTime, employeeName, oilChange, car)));
+        assertEquals(e.getMessage(),"Booking at this time and date with this employee already exists");
     }
     @Test 
     public void testGetBookingById(){
