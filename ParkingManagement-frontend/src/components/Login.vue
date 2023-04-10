@@ -1,7 +1,7 @@
 <template>
   <div>
     <center>
-      <h1>ParkingPlus&nbsp<img src="https://static.wixstatic.com/media/cef2a4_5488e99ac9bd419e9f05722ba154e95a~mv2.png/v1/fill/w_560,h_554,al_c,lg_1,q_85,enc_auto/ParkPlus%20Icon%20CMYK%20highres.png" alt="ParkingPlus Logo" style="width: 80px; height: 80px; margin-right: 20px;"><br><br></h1>
+      <h1>ParkSimple&nbsp<img src="https://static.wixstatic.com/media/cef2a4_5488e99ac9bd419e9f05722ba154e95a~mv2.png/v1/fill/w_560,h_554,al_c,lg_1,q_85,enc_auto/ParkPlus%20Icon%20CMYK%20highres.png" alt="ParkSimple Logo" style="width: 80px; height: 80px; margin-right: 20px;"><br><br></h1>
       
       <label>Enter your email:</label>
       <input type="text" v-model="accountEmail" placeholder="Email"><br><br>
@@ -26,10 +26,6 @@
   </div>
 </template>
 
-
-
-
-
 <script>
 
 import axios from 'axios';
@@ -48,13 +44,14 @@ export default {
     /**
      * login an account
      */
-    login: function (accountEmail, accountPassword) {
+     login: function (accountEmail, accountPassword) {
       axiosClient.post('/login', {email: accountEmail, password: accountPassword}).then(() => {
-         this.$router.push('/home');
-        })
-        .catch((error) => {
-          this.errorMessage = "Please try again: " + error.response.data;
-        })
+        localStorage.setItem('email', accountEmail);
+        this.$router.push({name: 'Home', params: {email: accountEmail}});
+      })
+      .catch((error) => {
+        this.errorMessage = "Please try again: " + error.response.data;
+      })
     },
 
 
@@ -62,10 +59,6 @@ export default {
 }
 
 </script>
-
-
-
-
 
 <style>
   div {

@@ -1,6 +1,6 @@
 <template>
     <div id="homePage">
-      <h1>ParkingPlus Home Page</h1>
+      <h1>ParkSimple Home Page</h1>
       <div class="button-container">
         <a href="/#/car"><button>Register Car</button></a>
         <a href="/#/TemporaryParking"><button>Book Temporary Spot</button></a>
