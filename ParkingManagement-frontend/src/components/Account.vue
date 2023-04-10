@@ -56,7 +56,7 @@ export default{
            this.errorMessage = '';
          })
           .catch((err) => {
-           this.errorMessage = 'Failed to create account: ${err.response.data}';
+            this.errorMessage = console.error('Failed to create account:', err);
          })
 
          axiosClient.post('/manager', request)
@@ -64,7 +64,7 @@ export default{
            this.errorMessage = '';
          })
           .catch((err) => {
-           this.errorMessage = 'Failed to create account: ${err.response.data}';
+            this.errorMessage = console.error('Failed to create account:', err);
          })
         }
 
@@ -78,7 +78,7 @@ export default{
            this.errorMessage = '';
          })
           .catch((err) => {
-           this.errorMessage = 'Failed to create account: ${err.response.data}';
+            this.errorMessage = console.error('Failed to create account:', err);
          })
 
          axiosClient.post('/customer', request)
@@ -86,7 +86,7 @@ export default{
            this.errorMessage = '';
          })
           .catch((err) => {
-           this.errorMessage = 'Failed to create account: ${err.response.data}';
+            this.errorMessage = console.error('Failed to create account:', err);
          })
         }
 
@@ -100,7 +100,7 @@ export default{
            this.errorMessage = '';
          })
           .catch((err) => {
-           this.errorMessage = 'Failed to create account: ${err.response.data}';
+           this.errorMessage = console.error('Failed to create account:', err);
          })
 
          axiosClient.post('/employee', request)
@@ -108,7 +108,7 @@ export default{
            this.errorMessage = '';
          })
           .catch((err) => {
-           this.errorMessage = 'Failed to create account: ${err.response.data}';
+            this.errorMessage = console.error('Failed to create account:', err);
          })
         }
       },
