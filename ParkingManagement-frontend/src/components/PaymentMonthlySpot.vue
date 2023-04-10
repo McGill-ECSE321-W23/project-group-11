@@ -1,7 +1,8 @@
 <template>
     <div id="paymentPage">
       <h2>Payment</h2>
-      <h3>Total to Pay: ${{ total }}</h3>
+      <h3><span>Total to Pay: {{ total }}</span></h3>
+
       <form @submit.prevent="submitPayment">
         <div class="form-group">
           <label for="cardName">Name on Card:</label>
@@ -23,7 +24,7 @@
           <input type="text" v-model="cvv" required />
         </div>
   
-        <button type="submit" @click="submitPayment(cardNumber,expiryDate,cvv)">Submit Payment</button>
+        <button type="submit">Submit Payment</button>
         <p style="color:red"><br><br>{{ errorMessage }}</p>
       </form>
     </div>
@@ -36,10 +37,11 @@
   
   export default {
     name: "payment",
+    props: ['monthlySpotDto','paymentAmount'],
     data() {
       return {
-        requestBody: localStorage.getItem('monthlySpotDto'),
-        total: localStorage.getItem('paymentAmount'),
+        requestBody: this.monthlySpotDto || JSON.parse(localStorage.getItem('monthlySpotDto')), // Use this.monthlySpotDto instead of directly accessing localStorage
+        total: this.paymentAmount || localStorage.getItem('paymentAmount'),
         cardName: "",
         cardNumber: "",
         expiryDate: "",
@@ -48,27 +50,27 @@
       };
     },
     methods: {
-      submitPayment: function (cardNumber,expiryDate,cvv) {
-        if(expiryDate.length !== 4){
+      submitPayment() {
+        if (this.expiryDate.length !== 4) {
           this.errorMessage = "Expiry Date must be 4 digits";
           return;
         }
-        if(cvv.length !== 3){
+        if (this.cvv.length !== 3) {
           this.errorMessage = "cvv must be 3 digits";
           return;
         }
-        axiosClient.get('/payment/'+ cardNumber + '').then(() => {
-            localStorage.getItem()
-            axiosClient.post('/reservedspot/book',requestBody)
-            .catch((error) => {
+        axiosClient.get('/payment/' + this.cardNumber + '').then(() => {
+            axiosClient.post('/reservedspot/book', this.requestBody).then(() => {
+                localStorage.removeItem('monthlySpotDto'); //remove the item after you used it
+                this.$router.push({ name: 'PaymentSuccess' });
+              })
+              .catch((error) => {
                 this.errorMessage = "Please try again: " + error.response.data;
-            })
-            localStorage.removeItem('tempSpotDto'); //remove the item after you used it
-            this.$router.push({name: 'PaymentSuccess'});
-        })
-        .catch((error) => {
-          this.errorMessage = "Please try again: " + error.response.data;
-        })
+              });
+          })
+          .catch((error) => {
+            this.errorMessage = "Please try again: " + error.response.data;
+          });
       },
     },
   };
