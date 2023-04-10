@@ -44,7 +44,7 @@ public class PaymentServiceTest {
 
     @Test
     public void testGetCalculatedPriceForRegSpot() {
-        int result = 0;
+        String result = "$0";
         TempSpotDto tempSpot = new TempSpotDto();
         CarDto car = new CarDto(licensePlate, Size.Regular);
 
@@ -55,13 +55,13 @@ public class PaymentServiceTest {
         sysInfo.setRegTempSpotPrice(15);
 
         when(systemInfoDao.findSystemInfoById(anyInt())).thenReturn(sysInfo);
-        result = service.getCalculatedPriceForSpot(tempSpot);
-        assertEquals(60, result);
+        result = service.getCalculatedPriceForSpot(tempSpot,0);
+        assertEquals("$60", result);
     }
 
     @Test
     public void testGetCalculatedPriceForLargeSpot() {
-        int result = 0;
+        String result = "$0";
         TempSpotDto tempSpot = new TempSpotDto();
         CarDto car = new CarDto(licensePlate, Size.Large);
 
@@ -72,8 +72,8 @@ public class PaymentServiceTest {
         sysInfo.setLargeTempSpotPrice(20);
 
         when(systemInfoDao.findSystemInfoById(anyInt())).thenReturn(sysInfo);
-        result = service.getCalculatedPriceForSpot(tempSpot);
-        assertEquals(80, result);
+        result = service.getCalculatedPriceForSpot(tempSpot,0);
+        assertEquals("$80", result);
     }
 
     @Test
@@ -117,8 +117,8 @@ public class PaymentServiceTest {
         SystemInfo sysInfo = new SystemInfo();
         sysInfo.setReservedSpotPrice(50);
         when(systemInfoDao.findSystemInfoById(anyInt())).thenReturn(sysInfo);
-        int price = service.getPriceForMonthlySpot();
-        assertEquals(50, price);
+        String price = service.getPriceForMonthlySpot(0);
+        assertEquals("$50", price);
     }
 
     @Test
@@ -128,8 +128,8 @@ public class PaymentServiceTest {
         serviceType.setName("OilChange");
         try {
             when(serviceTypeDao.findServiceTypeByName(anyString())).thenReturn(serviceType);
-            int price = service.getPriceForService(serviceType.getName());
-            assertEquals(150, price);
+            String price = service.getPriceForService(serviceType.getName());
+            assertEquals("$150", price);
         } catch (Exception e) {
 
         }
