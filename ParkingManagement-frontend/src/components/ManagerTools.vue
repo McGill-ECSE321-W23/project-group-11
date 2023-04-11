@@ -99,6 +99,8 @@
         try {
           await axiosClient.put("/systeminfo", this.systemInfo);
           this.fetchSystemInfo();
+          localStorage.setItem('smallprice', regTempSpotPrice);
+          localStorage.setItem('largeprice', largeTempSpotPrice);
         } catch (error) {
           console.error("Failed to update system info:", error);
         }

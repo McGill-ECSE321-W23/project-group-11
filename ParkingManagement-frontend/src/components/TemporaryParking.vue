@@ -33,38 +33,113 @@
   </div>
 </template>
 
-
-<script src="./TempParkingPage.js">
-</script>
-<!-- <script>
+<script>
+  import axios from 'axios';
+  import config from '../../config';
+  
+  const axiosClient = axios.create({
+    baseURL: config.dev.backendBaseUrl,
+  });
+  
   export default {
+    props: ['smallprice', 'largeprice'],
     data() {
       return {
-        selectedDuration: '',
-        selectedCar: '',
-        durations: [15, 30, 45, 60, 75, 90, ], // durations in 15-minute increments
-        availableCars: [ // replace with actual available cars data
-        ],
+        availableCars: [],
+        selectedCar: null,
+        selectedDate: null,
+        startTime: null,
+        selectedDuration: null,
+        durations: Array.from({ length: 24 * 4 }, (_, i) => (i + 1) * 15),
         errorMessage: '',
-        total:0
+        total: 0,
       };
     },
     methods: {
-      submitTemporarySpot() {
-        if (!this.selectedDuration || !this.selectedCar) {
-          this.errorMessage = 'Please select a duration and a car.';
-          return;
+      async fetchAvailableCars() {
+        try {
+          const response = await axiosClient.get('/cars');
+          this.availableCars = response.data;
+        } catch (error) {
+          console.error('Failed to fetch available cars:', error);
         }
-        
-        // TODO: Implement the logic to book a temporary spot using the selected duration and car.
-        
-        this.errorMessage = '';
-        // show success message or redirect to confirmation page
+      },
+      async getTotalAmount() {
+        if (!this.selectedDuration || !this.selectedCar || !this.selectedDate || !this.startTime) return;
+      
+        const selectedCarObject = this.availableCars.find(car => car.id === this.selectedCar);
+      
+        const priceRequestData = {
+          duration: this.selectedDuration,
+          date: this.selectedDate,
+          startTime: this.startTime + ':00', 
+          placeNumber: 21, 
+          carDto: {
+            size: selectedCarObject.size,
+            customer: {
+              account: {
+                email: "m@gmail.com", 
+                password: "password", 
+                loginStatus: false
+              },
+              id: 2 
+            },
+            licensePlate: selectedCarObject.licensePlate
+          },
+          size: selectedCarObject.size
+        };
+      
+        const price = await this.fetchPrice(priceRequestData);
+        this.total = price;
+      },
+      async fetchPrice(data) {
+        try {
+          const response = await axiosClient.post('/price/temp/0', data);
+          return response.data;
+        } catch (error) {
+          console.error('Failed to fetch price:', error);
+          return 0;
+        }
+      },
+      async fetchSystemInfo() {
+        try {
+          const response = await axiosClient.get('/systeminfo/0');
+          this.largeprice = response.data.largeTempSpotPrice;
+          this.smallprice = response.data.regTempSpotPrice;
+        } catch (error) {
+          console.error('Failed to fetch system info:', error);
+        }
+      },
+
+    },
+    mounted() {
+      this.fetchAvailableCars();
+      this.fetchSystemInfo();
+    },
+    watch: {
+      selectedDuration() {
+        if (this.selectedDuration && this.selectedCar) {
+          this.getTotalAmount();
+        }
+      },
+      selectedCar() {
+        if (this.selectedDuration && this.selectedCar) {
+          this.getTotalAmount();
+        }
+      },
+      smallprice() {
+        if (this.selectedDuration && this.selectedCar) {
+          this.getTotalAmount();
+        }
+      },
+      largeprice() {
+        if (this.selectedDuration && this.selectedCar) {
+          this.getTotalAmount();
+        }
       },
     },
   };
-  </script> -->
-
+  </script>
   
 <style>
   html, body {

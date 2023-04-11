@@ -135,10 +135,6 @@
         console.error('Error fetching bookings:', err);
       });
 
-        .catch((err) => {
-          console.error('Error fetching reservations:', err);
-        });
-
         axiosClient.get('/tempspots/')
         .then((response) => {
           console.log('Fetched Temp Spots:', response.data);
