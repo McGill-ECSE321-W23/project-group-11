@@ -14,6 +14,7 @@ import ManagerLogin from '@/components/ManagerLogin'
 import ManagerHome from '@/components/ManagerHome'
 import ManagerTools from '@/components/ManagerTools'
 import PaymentSuccess from '@/components/PaymentSuccess'
+import AccountSucess from '@/components/AccountSuccess'
 
 Vue.use(Router)
 
@@ -90,6 +91,11 @@ export default new Router({
       path: '/PaymentSuccess',
       name: 'PaymentSuccess',
       component: PaymentSuccess
+    },
+    {
+      path:'/AccountSuccess',
+      name:'AccountSuccess',
+      component: AccountSucess
     }
   ]
 })

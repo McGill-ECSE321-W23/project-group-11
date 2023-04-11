@@ -56,15 +56,16 @@ export default{
            this.errorMessage = '';
          })
           .catch((err) => {
-            this.errorMessage = console.error('Failed to create account:', err);
+            this.errorMessage = "Failed to create account: " + err.response.data;
          })
 
          axiosClient.post('/manager', request)
          .then((response) => {
            this.errorMessage = '';
+           this.$router.push('/AccountSuccess');
          })
           .catch((err) => {
-            this.errorMessage = console.error('Failed to create account:', err);
+            this.errorMessage = "Failed to create account: " + err.response.data;
          })
         }
 
@@ -78,15 +79,16 @@ export default{
            this.errorMessage = '';
          })
           .catch((err) => {
-            this.errorMessage = console.error('Failed to create account:', err);
+            this.errorMessage = "Failed to create account: " + err.response.data;
          })
 
          axiosClient.post('/customer', request)
          .then((response) => {
            this.errorMessage = '';
+           this.$router.push('/AccountSuccess');
          })
           .catch((err) => {
-            this.errorMessage = console.error('Failed to create account:', err);
+            this.errorMessage = "Failed to create account: " + err.response.data;
          })
         }
 
@@ -100,22 +102,24 @@ export default{
            this.errorMessage = '';
          })
           .catch((err) => {
-           this.errorMessage = console.error('Failed to create account:', err);
+            this.errorMessage = "Failed to create account: " + err.response.data;
          })
 
          axiosClient.post('/employee', request)
          .then((response) => {
            this.errorMessage = '';
+           this.$router.push('/AccountSuccess');
          })
           .catch((err) => {
-            this.errorMessage = console.error('Failed to create account:', err);
+            this.errorMessage = "Failed to create account: " + err.response.data;
          })
         }
+
       },
       computed: {
         createAccountButtonDisabled(){
           return !this.email.trim() || !this.password.trim() || !this.confirmPassword.trim();
-        }
+        },
       }
     }
     };
