@@ -7,7 +7,7 @@
       <input type="text" v-model="accountEmail" placeholder="Email"><br><br>
   
       <label>Enter your password:</label>
-      <input type="text" v-model="accountPassword" placeholder="Password"><br><br>
+      <input type="password" v-model="accountPassword" placeholder="Password"><br><br>
       
       <button @click="login(accountEmail, accountPassword)">Login</button>
   
