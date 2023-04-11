@@ -72,11 +72,9 @@
         axiosClient.post('/logout', {email: this.userEmail}).then(() => {
           localStorage.removeItem('email');
           this.$router.push({name: 'Login'});
-          alert("it worked?");
         })
         .catch((error) => {
           this.errorMessage = "Please try again: " + error.response.data;
-          alert("it didn't work");
         });
       }
     },  
