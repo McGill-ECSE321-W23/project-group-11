@@ -5,10 +5,13 @@
       <label for="month">Select Date:</label>
       <input type="month" id="month" v-model="selectedMonth" @change="convertMonthYearToInt" required />
       <br /><br />
+
+
+
       <label for="car">Select Car:</label>
       <select id="car" v-model="selectedCar" required>
         <option value="" disabled selected>Select your car</option>
-        <option v-for="car in cars" :key="car.id" >
+        <option v-for="car in cars" :key="car.id" :value="car">
           {{ car.licensePlate }}
         </option>
       </select>
@@ -69,16 +72,23 @@
           const request = {
             month: this.month,
             year: this.year,
-            carto: this.selectedCar.licensePlate
+            carDto: {
+              id: this.selectedCar.id,
+              licensePlate: this.selectedCar.licensePlate,
+              size: this.selectedCar.size,
+              customer: {
+                id: this.selectedCar.customer.id
+              }
+            }
           };
           
           localStorage.setItem('monthlySpotDto', JSON.stringify(request));
           localStorage.setItem('paymentAmount', this.total);
-          this.$router.push({ name: 'PaymentMonthlySpot', params: { monthlySpotDto: request, paymentAmount: this.total } });
+          await this.$router.push({ name: 'PaymentMonthlySpot', params: { monthlySpotDto: request, paymentAmount: this.total } });
         } catch (error) {
-          console.error('Failed to create reservation:', error);
+          console.error('Failed to create reservation and navigate:', error);
         }
-      },
+      }
     },
     computed: {
       createMonthlyDisabled() {
