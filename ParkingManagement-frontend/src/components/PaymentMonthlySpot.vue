@@ -1,7 +1,11 @@
 <template>
     <div id="paymentPage">
-      <h2>Payment</h2>
+      <h2>Monthly Spot Payment</h2>
       <h3><span>Total to Pay: {{ total }}</span></h3>
+
+      <div class="header">
+        <span class="user-email">{{ userEmail }}</span>
+      </div>
 
       <form @submit.prevent="submitPayment">
         <div class="form-group">
@@ -26,9 +30,9 @@
   
         <button type="submit">Submit Payment</button>
         <p style="color:red"><br><br>{{ errorMessage }}</p>
-      </form>
-    </div>
-  </template>
+    </form>
+  </div>
+</template>
   
   <script>
   import axios from 'axios';
@@ -37,9 +41,10 @@
   
   export default {
     name: "payment",
-    props: ['monthlySpotDto','paymentAmount'],
+    props: ['monthlySpotDto','paymentAmount','email'],
     data() {
       return {
+        userEmail: this.email || localStorage.getItem('email'),
         requestBody: this.monthlySpotDto || JSON.parse(localStorage.getItem('monthlySpotDto')), // Use this.monthlySpotDto instead of directly accessing localStorage
         total: this.paymentAmount || localStorage.getItem('paymentAmount'),
         cardName: "",

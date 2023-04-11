@@ -37,7 +37,7 @@
                 </tr>
               </tbody>
             </table>
-      </div> 
+        </div> 
   
         <div class="table-container">
           <h3>Upcoming Temporary Reservations</h3>
@@ -49,7 +49,22 @@
         <div class="table-container">
           <h3>Upcoming Service Bookings</h3>
           <table>
-            <!-- The rest of the table content remains the same -->
+            <thead>
+              <tr>
+                <th>Car</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="reservation in servicebookings" :key="index">
+                <td>{{ reservation.car.licensePlate }}</td>
+                <td>{{ reservation.serviceType.name }}</td>
+                <td>{{ reservation.date }}</td>
+                <td>{{ reservation.startTime }}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -71,6 +86,7 @@
       return {
         userEmail: this.email || localStorage.getItem('email'),
         monthlyreservations: [],
+        servicebookings: [],
       };
     },
     methods: {
@@ -85,15 +101,21 @@
       }
     },  
     created() {
-      axiosClient.get('/reservedspots/')
-        .then((response) => {
-          console.log('Fetched reservations:', response.data);
+      axiosClient.get('/reservedspots/').then((response) => { console.log('Fetched reservations:', response.data);
           this.monthlyreservations = response.data;
         })
-        .catch((err) => {
-          console.error('Error fetching reservations:', err);
-        })
-    },
+        .catch((err) => {console.error('Error fetching reservations:', err);
+        });
+
+      axiosClient.get('/bookings/').then((response) => {
+        console.log('Fetched bookings:', response.data);
+        this.servicebookings = response.data; 
+      })
+      .catch((err) => {
+        console.error('Error fetching bookings:', err);
+      });
+
+    }
   };
 </script>
   
