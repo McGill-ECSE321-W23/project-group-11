@@ -16,6 +16,7 @@ import static org.mockito.Mockito.lenient;
 // import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
 // import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,8 +24,12 @@ import org.mockito.invocation.InvocationOnMock;
 // import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import ca.mcgill.ecse321.ParkingManagement.dao.CarRepository;
+import ca.mcgill.ecse321.ParkingManagement.dao.CustomerRepository;
+import ca.mcgill.ecse321.ParkingManagement.dao.EmployeeRepository;
+import ca.mcgill.ecse321.ParkingManagement.dao.ManagerRepository;
 import ca.mcgill.ecse321.ParkingManagement.dto.CarDto;
 import ca.mcgill.ecse321.ParkingManagement.model.Car;
+import ca.mcgill.ecse321.ParkingManagement.model.Employee;
 import ca.mcgill.ecse321.ParkingManagement.model.Size;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,6 +37,13 @@ public class CarServiceTest {
 
     @Mock
     private CarRepository carRepository;
+    @Mock
+    private ManagerRepository managerRepository;
+    @Mock
+    private EmployeeRepository employeeRepository;
+    @Mock
+    private CustomerRepository customerRepository;
+
 
     @InjectMocks
     private CarService service;
@@ -57,6 +69,10 @@ public class CarServiceTest {
             } else {
                 return null;
             }
+        });
+
+        lenient().when(employeeRepository.findAll()).thenAnswer( (InvocationOnMock invocation) -> {
+            return new ArrayList<Employee>();
         });
     
         // Whenever anything is saved, just return the parameter object

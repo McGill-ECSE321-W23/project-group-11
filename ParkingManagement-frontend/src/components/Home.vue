@@ -42,7 +42,25 @@
         <div class="table-container">
           <h3>Upcoming Temporary Reservations</h3>
           <table>
-            <!-- The rest of the table content remains the same -->
+              <thead>
+                <tr>
+                  <th>Car License Plate</th>
+                  <th>Date</th>
+                  <th>Start Time</th>
+                  <th>Duration (mins)</th>
+                  <th>Place Number</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="tempspot in tempspots" :key="index">
+                  <td>{{ tempspot.carDto.licensePlate}}</td>
+                  <td>{{ tempspot.date }}</td>
+                  <td>{{ tempspot.startTime }}</td>
+                  <td>{{ tempspot.duration * 15}}</td>
+                  <td>{{ tempspot.placeNumber }}</td>
+                </tr>
+              </tbody>
           </table>
         </div>
   
@@ -87,6 +105,7 @@
         userEmail: this.email || localStorage.getItem('email'),
         monthlyreservations: [],
         servicebookings: [],
+        tempspots: [],
       };
     },
     methods: {
@@ -104,6 +123,7 @@
       axiosClient.get('/reservedspots/').then((response) => { console.log('Fetched reservations:', response.data);
           this.monthlyreservations = response.data;
         })
+
         .catch((err) => {console.error('Error fetching reservations:', err);
         });
 
@@ -114,6 +134,19 @@
       .catch((err) => {
         console.error('Error fetching bookings:', err);
       });
+
+        .catch((err) => {
+          console.error('Error fetching reservations:', err);
+        });
+
+        axiosClient.get('/tempspots/')
+        .then((response) => {
+          console.log('Fetched Temp Spots:', response.data);
+          this.tempspots = response.data;
+        })
+        .catch((err) => {
+          console.error('Error fetching temp spots:', err);
+        });
 
     }
   };

@@ -308,11 +308,13 @@ public class TemporaryParkingService {
         if (manager != null || employee != null) {
             isEmployee = true;
         }
-        try {
-            customer = customerRepository.findCustomerByAccount(account);
-        } catch (Exception e) {}
-        if (customer != null) {
-            customerExists = true;
+        if (!isEmployee) {
+            try {
+                customer = customerRepository.findCustomerByAccount(account);
+            } catch (Exception e) {}
+            if (customer != null) {
+                customerExists = true;
+            }
         }
         // set up list to return
         TempSpotDto spotDto;
@@ -335,7 +337,7 @@ public class TemporaryParkingService {
                         spotDto = DtoConverters.convertToTempSpotDto(regSpot);
                         allTempSpots.add(spotDto);
                     }
-            }
+                }
             }
             for (LargeTempSpot largeSpot : largeTempSpotRepository.findAll()) {
                 if (largeSpot.getCar().getCustomer() != null) {

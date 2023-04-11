@@ -7,14 +7,14 @@
       <input type="text" v-model="accountEmail" placeholder="Email"><br><br>
   
       <label>Enter your password:</label>
-      <input type="text" v-model="accountPassword" placeholder="Password"><br><br>
+      <input type="password" v-model="accountPassword" placeholder="Password"><br><br>
       
       <button @click="login(accountEmail, accountPassword)">Login</button>
   
       <p style="color:red"><br><br>{{ errorMessage }}</p>
   
       <label><br><br>Don't have an account yet?</label>
-      <a href="/#/CreateAccount"><button>Create Account</button></a>
+      <a href="/#/Account"><button>Create Account</button></a>
   
       <div class="manager-signin-container">
         <router-link to="/ManagerLogin">

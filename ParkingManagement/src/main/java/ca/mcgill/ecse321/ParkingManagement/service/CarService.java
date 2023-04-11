@@ -8,7 +8,9 @@ import ca.mcgill.ecse321.ParkingManagement.dto.*;
 import ca.mcgill.ecse321.ParkingManagement.model.*;
 import ca.mcgill.ecse321.ParkingManagement.utility.DtoConverters;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CarService {
@@ -21,6 +23,8 @@ public class CarService {
     EmployeeRepository employeeRepository;
     @Autowired
     ManagerRepository managerRepository;
+    @Autowired
+    AccountRepository accountRepository;
 
 
 
@@ -37,10 +41,24 @@ public class CarService {
         if (carDto.getLicensePlate() == "" || (carDto.getSize() != Size.Regular && carDto.getSize() != Size.Large)) {
             throw new Exception("Invalid car inputs");
         }
+        
         Car car = new Car();
-        car.setLicensePlate(carDto.getLicensePlate());
+        
+        car.setManager(null);
+        List<Employee> employees = new ArrayList<Employee>();
+        for (Employee employee : employeeRepository.findAll()) {
+            employees.add(employee);
+        }
+        car.setEmployees(new HashSet<>(employees));
         car.setSize(carDto.getSize());
-        car.setCustomer(carDto.getCustomer());
+        
+        Customer customer = null;
+        if (carDto.getCustomer() != null) {
+            customer = customerRepository.findCustomerByid(carDto.getCustomer().getId());
+        }
+        car.setCustomer(customer);
+
+        car.setLicensePlate(carDto.getLicensePlate());
         carDao.save(car);
         return DtoConverters.convertToCarDto(car);
     }

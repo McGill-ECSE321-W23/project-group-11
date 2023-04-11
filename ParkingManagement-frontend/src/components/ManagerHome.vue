@@ -9,7 +9,8 @@
         <a href="/#/ManagerTools">
           <button class="manager-tools-btn">Manager Tools</button>
         </a>
-        <button>Log Out</button>
+        <button @click="logout(user-email)">Log Out</button>
+        
       </div>
   
       <div class="tables-container">
@@ -63,8 +64,19 @@
     name: 'Home',
     data() {
       return {
-        monthlyreservations: [],
+        monthlyreservations: [],userEmail: this.email || localStorage.getItem('email'),
       };
+    },
+    methods: {
+      logout() {
+        axiosClient.post('/logout', {email: this.userEmail}).then(() => {
+          localStorage.removeItem('email');
+          this.$router.push({name: 'Login'});
+        })
+        .catch((error) => {
+          this.errorMessage = "Please try again: " + error.response.data;
+        });
+      }
     },  
     created() {
       axiosClient.get('/reservedspots/')

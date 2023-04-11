@@ -6,16 +6,53 @@
     <h2>Manager Sign-in</h2>
 
     <label for="email">Enter your email:</label>
-    <input type="email" id="email" name="email"><br><br>
+    <input type="text" v-model="accountEmail" placeholder="Email"><br><br>
 
     <label for="password">Enter your password:</label>
-    <input type="password" id="password" name="password"><br><br>
+    <input type="password" v-model="accountPassword" placeholder="Password"><br><br>
 
-    <a href="/#/ManagerHome"><button>Login</button></a>
+    <button @click="login(accountEmail, accountPassword)">Login</button>
+
+    <p style="color:red"><br><br>{{ errorMessage }}</p>
 
   </center>
 </div>
 </template>
+
+<script>
+
+import axios from 'axios';
+import config from '../../config';
+const axiosClient = axios.create({baseURL: config.dev.backendBaseUrl});
+
+
+export default {
+  name: "Login",
+  data() {
+    return {errorMessage: ''};
+  },
+
+  methods: {
+
+    /**
+     * login an account
+     */
+     login: function (accountEmail, accountPassword) {
+      axiosClient.post('/login', {email: accountEmail, password: accountPassword}).then(() => {
+        localStorage.setItem('email', accountEmail);
+        this.$router.push({name: 'ManagerHome', params: {email: accountEmail}});
+      })
+      .catch((error) => {
+        this.errorMessage = "Please try again: " + error.response.data;
+      })
+    },
+
+
+  }
+}
+
+</script>
+
 <style>
   div {
     margin-bottom: 10px;
