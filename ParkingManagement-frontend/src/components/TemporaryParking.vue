@@ -4,8 +4,8 @@
     <form @submit.prevent="submitTemporarySpot">
       <label for="car">Select Car:</label>
       <select id="car" v-model="selectedCar" required>
-        <option value="" disabled selected>Select car</option>
-        <option v-for="car in availableCars" :key="car.id" :value="car.id">
+        <option value="" disabled selected>Select your car</option>
+        <option v-for="car in cars" :key="car.id" >
           {{ car.licensePlate }}
         </option>
       </select>
@@ -16,13 +16,8 @@
         <label for="startTime">Start Time (HHmm):</label>
         <input type="text" id="startTime" v-model="startTime" required />
       <br /><br />
-      <label for="duration">Duration:</label>
-      <select id="duration" v-model="selectedDuration" required>
-        <option value="" disabled selected>Select duration in 15-minute increments</option>
-        <option v-for="duration in durations" :key="duration" :value="duration">
-          {{ duration }}
-        </option>
-      </select>
+        <label for="duration">Duration (multiple of 15):</label>
+        <input type="int" id="duration" v-model="selectedDuration" @change="convertToProperDuration" required />
       <br /><br />
       <h3>Total to Pay: ${{ total }}</h3>
       <button type="submit">Confirm</button>
@@ -34,36 +29,87 @@
 </template>
 
 
-<script src="./TempParkingPage.js">
-</script>
-<!-- <script>
+<script>
+  import axios from 'axios';
+  import config from '../../config';
+
+  const axiosClient = axios.create({
+    baseURL: config.dev.backendBaseUrl
+  });
+
   export default {
+    name: 'TemporaryParking',
     data() {
       return {
-        selectedDuration: '',
-        selectedCar: '',
-        durations: [15, 30, 45, 60, 75, 90, ], // durations in 15-minute increments
-        availableCars: [ // replace with actual available cars data
-        ],
+        selectedDuration: 0,
+        duration: 0,
+        selectedCar: null,
+        cars: [],
+        selectedDate: '',
+        date: '',
+        startTime: '',
         errorMessage: '',
-        total:0
+        total: '-'
       };
     },
     methods: {
-      submitTemporarySpot() {
-        if (!this.selectedDuration || !this.selectedCar) {
-          this.errorMessage = 'Please select a duration and a car.';
-          return;
+      async fetchCars() {
+        try {
+          const response = await axiosClient.get('/cars');
+          this.cars = response.data;
+        } catch (error) {
+          console.error('Failed to fetch cars:', error);
         }
-        
-        // TODO: Implement the logic to book a temporary spot using the selected duration and car.
-        
-        this.errorMessage = '';
-        // show success message or redirect to confirmation page
+      },
+      async getTotalAmount() {
+        try {
+          const response = await axiosClient.get('/price/temp/0', {size: this.selectedCar.size, duration: this.duration});
+          this.total = response.data;
+        } catch (error) {
+          console.error('Failed to fetch total amount:', error);
+        }
+      },
+      convertToProperDuration() {
+        if (selectedDuration % 15 != 0) {
+          this.duration = (selectedDuration/15) + 1;
+        } else {
+          this.duration = selectedDuration/15;
+        }
+      },
+      async createReservation() {
+        try {
+          const request = {
+            duration: this.duration,
+            date: this.date,
+            startTime: this.startTime,
+            carto: this.selectedCar
+          };
+          
+          localStorage.setItem('tempSpotDto', JSON.stringify(request));
+          localStorage.setItem('paymentAmount', this.total);
+          this.$router.push({ name: 'PaymentMonthlySpot', params: { tempSpotDto: request, paymentAmount: this.total } });
+        } catch (error) {
+          console.error('Failed to create reservation:', error);
+        }
+      },
+      mounted() {
+        this.fetchCars();
+      },
+      watch: {
+      selectedDate() {
+        if (this.selectedDate && this.selectedCar) {
+          this.getTotalAmount();
+        }
+      },
+      selectedCar() {
+        if (this.selectedDate && this.selectedCar) {
+          this.getTotalAmount();
+        }
       },
     },
+  }
   };
-  </script> -->
+  </script>
 
   
 <style>
