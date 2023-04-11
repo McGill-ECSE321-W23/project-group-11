@@ -7,7 +7,6 @@ import RegisterCar from '@/components/RegisterCar'
 import BookCarService from '@/components/BookCarService'
 import Login from '@/components/Login'
 import TemporaryParking from '@/components/TemporaryParking'
-import CreateAccount from '@/components/CreateAccount'
 import PaymentTempSpot from '@/components/PaymentTempSpot'
 import PaymentMonthlySpot from '@/components/PaymentMonthlySpot'
 import PaymentService from '@/components/PaymentService'
@@ -15,6 +14,7 @@ import ManagerLogin from '@/components/ManagerLogin'
 import ManagerHome from '@/components/ManagerHome'
 import ManagerTools from '@/components/ManagerTools'
 import PaymentSuccess from '@/components/PaymentSuccess'
+import AccountSucess from '@/components/AccountSuccess'
 
 Vue.use(Router)
 
@@ -53,9 +53,9 @@ export default new Router({
       component: TemporaryParking
     },
     {
-      path: '/CreateAccount',
+      path: '/Account',
       name: 'CreateAccount',
-      component: CreateAccount
+      component: Account
     },
     {
       path: '/PaymentTempSpot',
@@ -91,6 +91,11 @@ export default new Router({
       path: '/PaymentSuccess',
       name: 'PaymentSuccess',
       component: PaymentSuccess
+    },
+    {
+      path:'/AccountSuccess',
+      name:'AccountSuccess',
+      component: AccountSucess
     }
   ]
 })

@@ -14,7 +14,7 @@
       <p style="color:red"><br><br>{{ errorMessage }}</p>
   
       <label><br><br>Don't have an account yet?</label>
-      <a href="/#/CreateAccount"><button>Create Account</button></a>
+      <a href="/#/Account"><button>Create Account</button></a>
   
       <div class="manager-signin-container">
         <router-link to="/ManagerLogin">
