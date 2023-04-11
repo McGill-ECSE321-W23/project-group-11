@@ -50,20 +50,19 @@ export default{
           const request = {email: this.email, password: this.password, loginStatus: true};
           axiosClient.post('/accounts', request)
           .then((response) => {
-           this.email = '';
-           this.password = '';
-           this.confirmPassword = '';
-           this.errorMessage = '';
-         })
-          .catch((err) => {
-            this.errorMessage = "Failed to create account: " + err.response.data;
-         })
-
-         axiosClient.post('/manager', request)
-         .then((response) => {
-           this.errorMessage = '';
-           this.$router.push('/AccountSuccess');
-         })
+            axiosClient.post('/manager', request)
+            .then((response) => {
+              this.errorMessage = '';
+            })
+              .catch((err) => {
+                this.errorMessage = "Failed to create account: " + err.response.data;
+            })
+            this.email = '';
+            this.password = '';
+            this.confirmPassword = '';
+            this.errorMessage = '';
+            this.$router.push('/AccountSuccess');
+          })
           .catch((err) => {
             this.errorMessage = "Failed to create account: " + err.response.data;
          })
@@ -73,19 +72,18 @@ export default{
           const request = {email: this.email, password: this.password, loginStatus: true};
           axiosClient.post('/accounts', request)
           .then((response) => {
-           this.email = '';
-           this.password = '';
-           this.confirmPassword = '';
-           this.errorMessage = '';
-         })
-          .catch((err) => {
-            this.errorMessage = "Failed to create account: " + err.response.data;
-         })
-
-         axiosClient.post('/customer', request)
-         .then((response) => {
-           this.errorMessage = '';
-           this.$router.push('/AccountSuccess');
+            axiosClient.post('/customer', request)
+            .then((response) => {
+              this.errorMessage = '';
+            })
+            .catch((err) => {
+              this.errorMessage = "Failed to create customer: " + err.response.data;
+            }) 
+            this.email = '';
+            this.password = '';
+            this.confirmPassword = '';
+            this.errorMessage = '';
+            this.$router.push('/AccountSuccess');
          })
           .catch((err) => {
             this.errorMessage = "Failed to create account: " + err.response.data;
@@ -96,20 +94,19 @@ export default{
           const request = {email: this.email, password: this.password, loginStatus: true};
           axiosClient.post('/accounts', request)
           .then((response) => {
-           this.email = '';
-           this.password = '';
-           this.confirmPassword = '';
-           this.errorMessage = '';
-         })
-          .catch((err) => {
-            this.errorMessage = "Failed to create account: " + err.response.data;
-         })
-
-         axiosClient.post('/employee', request)
-         .then((response) => {
-           this.errorMessage = '';
-           this.$router.push('/AccountSuccess');
-         })
+            axiosClient.post('/employee', request)
+            .then((response) => {
+              this.errorMessage = '';
+            })
+              .catch((err) => {
+                this.errorMessage = "Failed to create account: " + err.response.data;
+            })
+            this.email = '';
+            this.password = '';
+            this.confirmPassword = '';
+            this.errorMessage = '';
+            this.$router.push('/AccountSuccess');
+          })
           .catch((err) => {
             this.errorMessage = "Failed to create account: " + err.response.data;
          })
