@@ -38,7 +38,23 @@ public class CustomerController {
             accountList.add(convertToDto(customer));
         }
         return new ResponseEntity<>(accountList, HttpStatus.OK);   
+    }
+
+    /**
+     * 
+     * @param email
+     * @return
+     */
+    @GetMapping(value = {"/customer/{email}","/customer/{email}/"})
+    public ResponseEntity<?> getCustomerByEmail(@PathVariable String email) {
+        try{
+            Customer customer = customerService.getCustomerByEmail(email);
+            return new ResponseEntity<>(convertToDto(customer), HttpStatus.OK);
         }
+        catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
     
     /**
      * 
