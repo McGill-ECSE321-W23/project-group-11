@@ -30,12 +30,12 @@ For additional information, please consult the [wiki](../../wiki/Home).
 ## Team Members
 | Name          | GitHub username | Team Role      | Deliverable 1 Hours | Deliverable 2 Hours | Deliverable 3 Hours |
 | ------------- | --------------- | -------------- | ------------------- | ------------------- | ------------------- |
-| Lukas Bebee   | LukeBebee       | Lead Programmer|        25           |          45         |                     |
-| Brian Morava  | Morava83       |Quality Assurance|        25           |          40         |                     |
-|Jacques Zaarour| jacqueszaarour  |Database Manager|        25           |          45         |                     |
-| James Willems | JamesWillems   |Project Architect|        25           |          30         |                     |
-| Massimo Rosati| Mrosati22       | Project Manager|        25           |          55         |                     |
-| Ralph Choucha |RalphChoucha|Programming Assistant|        25           |          25         |                     |
+| Lukas Bebee   | LukeBebee       | Lead Programmer|        25           |          45         |          50           |
+| Brian Morava  | Morava83       |Quality Assurance|        25           |          40         |          40           |
+|Jacques Zaarour| jacqueszaarour  |Database Manager|        25           |          45         |          50           |
+| James Willems | JamesWillems   |Project Architect|        25           |          30         |          5           |
+| Massimo Rosati| Mrosati22       | Project Manager|        25           |          55         |          50           |
+| Ralph Choucha |RalphChoucha|Programming Assistant|        25           |          25         |          30           |
 
 
 
