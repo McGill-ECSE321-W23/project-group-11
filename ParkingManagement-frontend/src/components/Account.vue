@@ -1,4 +1,39 @@
 <style>
+template {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  color: #2c3e50;
+  text-align: center;
+  padding: 0 20px;
+}
+
+h1 {
+  font-size: 48px;
+  margin-bottom: 30px;
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+button:hover {
+  background-color: #0069d9;
+}
+
 div {
   margin-bottom: 10px;
 }
@@ -13,11 +48,6 @@ input {
   width: 300px
 }
 
-button {
-  border-radius: 4px;
-  background-color: #80A7A4;
-  border: 2px solid #51706D;
-}
 </style>
 
 <script>
@@ -45,30 +75,6 @@ export default{
           this.errorMessage = 'Passwords do not match. Please try again.';
           return; 
         }
-
-        if(this.type == 'Manager'){
-          const request = {email: this.email, password: this.password, loginStatus: true};
-          axiosClient.post('/accounts', request)
-          .then((response) => {
-            axiosClient.post('/manager', request)
-            .then((response) => {
-              this.errorMessage = '';
-            })
-              .catch((err) => {
-                this.errorMessage = "Failed to create account: " + err.response.data;
-            })
-            this.email = '';
-            this.password = '';
-            this.confirmPassword = '';
-            this.errorMessage = '';
-            this.$router.push('/AccountSuccess');
-          })
-          .catch((err) => {
-            this.errorMessage = "Failed to create account: " + err.response.data;
-         })
-        }
-
-        if(this.type == 'Customer'){
           const request = {email: this.email, password: this.password, loginStatus: true};
           axiosClient.post('/accounts', request)
           .then((response) => {
@@ -88,30 +94,6 @@ export default{
           .catch((err) => {
             this.errorMessage = "Failed to create account: " + err.response.data;
          })
-        }
-
-        if(this.type == 'Employee'){
-          const request = {email: this.email, password: this.password, loginStatus: true};
-          axiosClient.post('/accounts', request)
-          .then((response) => {
-            axiosClient.post('/employee', request)
-            .then((response) => {
-              this.errorMessage = '';
-            })
-              .catch((err) => {
-                this.errorMessage = "Failed to create account: " + err.response.data;
-            })
-            this.email = '';
-            this.password = '';
-            this.confirmPassword = '';
-            this.errorMessage = '';
-            this.$router.push('/AccountSuccess');
-          })
-          .catch((err) => {
-            this.errorMessage = "Failed to create account: " + err.response.data;
-         })
-        }
-
       },
       computed: {
         createAccountButtonDisabled(){
@@ -141,13 +123,6 @@ export default{
 
       <label for="reenter-password">Re-enter your password:</label>
       <input type="password" id="reenter-password" name="reenter-password" v-model="confirmPassword"><br><br>
-
-      <label for="logintype">Registering as a:</label>
-      <select name="Type" id="logintype" v-model="type">
-        <option value="Customer">Customer</option>
-        <option value="Employee">Employee</option>
-        <option value="Manager">Manager</option>
-      </select><br><br>
 
       <button type="submit" v-bind:disabled="createAccountButtonDisabled" @click="createAccount()">Create Account</button><br><br>
 
