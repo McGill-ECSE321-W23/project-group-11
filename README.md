@@ -33,7 +33,7 @@ For additional information, please consult the [wiki](../../wiki/Home).
 | Lukas Bebee   | LukeBebee       | Lead Programmer|        25           |          45         |          50           |
 | Brian Morava  | Morava83       |Quality Assurance|        25           |          40         |          40           |
 |Jacques Zaarour| jacqueszaarour  |Database Manager|        25           |          45         |          55           |
-| James Willems | JamesWillems   |Project Architect|        25           |          30         |          5           |
+| James Willems | JamesWillems   |Project Architect|        25           |          30         |          15           |
 | Massimo Rosati| Mrosati22       | Project Manager|        25           |          55         |          50           |
 | Ralph Choucha |RalphChoucha|Programming Assistant|        25           |          25         |          30           |
 
