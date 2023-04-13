@@ -99,15 +99,13 @@ public class AccountService {
             Exception e = new Exception("Cant modify no accounts");
             throw e;
         }
-        String email = account.getEmail();
-        String password = account.getPassword();
+
 
         if((newEmail == null && newPassword == null) || (newEmail == "" && newPassword == "")) {
             Exception e = new Exception("Can't modify an account without changed values");
             throw e;
         }
 
-        accountRepository.deleteAccountByEmailAndPassword(email, password);
         if(newEmail != null) {
             account.setEmail(newEmail);
         }

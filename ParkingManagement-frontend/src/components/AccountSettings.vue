@@ -1,17 +1,20 @@
 <template>
   <div>
+    <div class="header">
+        <span class="user-email">{{ userEmail }}</span>
+      </div>
     <center>
       <h2> Profile modification </h2>
-      <label>Enter your new email (optional):</label>
-      <input type="text" v-model="newAccountEmail" placeholder="New Email"><br><br>
-  
+      <label>Enter your current email:</label>
+      <input type="text" v-model="accountEmail" placeholder="current Email"><br><br>
+
       <label>Enter your new password:</label>
       <input type="password" v-model="newAccountPassword" placeholder="New Password"><br><br>
 
       <label>Confirm your new password:</label>
       <input type="password" v-model="confirmation" placeholder="Confirm New Password"><br><br>
       
-      <button @click="modifyAccount(newAccountEmail, newAccountPassword,confirmation)">Change settings</button>
+      <button type="submit" @click="modifyAccount()">Change settings</button>
   
       <p style="color:red"><br><br>{{ errorMessage }}</p>
 
@@ -29,52 +32,33 @@ import axios from 'axios';
   });
 
   export default {
-    name: 'Home',
+    name: 'AccountSettings',
     props: ['email'],
     data() {
       return {
-        userEmail: this.email || localStorage.getItem('email'),
-        newAccountEmail: '',
+        accountEmail:'',
+        // newAccountEmail: '',
         newAccountPassword :'',
         confirmation:'',
-
+        errorMessage:''
       };
     },
     methods: {
       modifyAccount() {
-        if(this.confirmation != this.newAccountPassword) {
-          this.errorMessage = 'Passwords do not match. Please try again.';
-          return; 
+        if(this.newAccountPassword!=this.confirmation) {
+          this.errorMessage = "Not same Passwords";
+          return;
         }
-        if(this.newAccountEmail != null || this.newAccountEmail !=''){
-          const request = {email: this.newAccountEmail, password: this.newAccountPassword, loginStatus: true};
-          axiosClient.put('/accounts', request)
-          .then((response) => {            
-            this.email = '';
-            this.password = '';
-            this.confirmPassword = '';
-            this.errorMessage = '';
-          })
-          .catch((err) => {
-            this.errorMessage = "Failed to update Account" + err.response.data;
-          }) 
-        }
-        else {
-          const request = {email: this.userEmail, password: this.newAccountPassword, loginStatus: true};
-          axiosClient.put('/accounts', request)
-          .then((response) => {            
-            this.email = '';
-            this.password = '';
-            this.confirmPassword = '';
-            this.errorMessage = '';
-          })
-          .catch((err) => {
-            this.errorMessage = "Failed to update Account" + err.response.data;
-          }) 
-        }
-
-      }
+        const request = {email: this.accountEmail, password: this.newAccountPassword, loginStatus: true};
+        axiosClient.put("/accounts",request)
+        .then((response) => {
+          this.errorMessage = response.data;
+        })
+        .catch((err) => {
+          this.errorMessage = "Failed To Update" + err.response.data;
+        })
     }
+  }
   }
 </script>
 
