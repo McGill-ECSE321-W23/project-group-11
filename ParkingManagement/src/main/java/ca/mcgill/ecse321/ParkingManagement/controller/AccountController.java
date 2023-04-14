@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.ParkingManagement.service.*;
@@ -101,6 +102,18 @@ public class AccountController {
             return new ResponseEntity<>("Account deleted",HttpStatus.NO_CONTENT);
         }
         catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(value = {"/accounts","/accounts/"})
+    public ResponseEntity<?> editAccount(@RequestBody AccountDto accountDto) {
+        try{
+            Account account = accountRepository.findAccountByEmail(accountDto.getEmail());
+            acservice.editAccount(account, accountDto.getEmail(), accountDto.getPassword());
+            return new ResponseEntity<>("Account Modified", HttpStatus.OK);
+        }
+        catch(Exception e) {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }

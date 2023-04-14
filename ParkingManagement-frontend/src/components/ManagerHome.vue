@@ -6,6 +6,7 @@
         <a href="/#/TemporaryParking"><button>Book Temporary Spot</button></a>
         <a href="/#/MonthlyPark"><button>Book a Monthly Spot</button></a>
         <a href="/#/BookCarService"><button>Book Car Service</button></a>
+        <a href="/#/CreateEmployee"><button>Register Employee</button></a>
         <a href="/#/ManagerTools">
           <button class="manager-tools-btn">Manager Tools</button>
         </a>

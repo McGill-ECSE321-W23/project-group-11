@@ -15,6 +15,8 @@ import ManagerHome from '@/components/ManagerHome'
 import ManagerTools from '@/components/ManagerTools'
 import PaymentSuccess from '@/components/PaymentSuccess'
 import AccountSuccess from '@/components/AccountSuccess'
+import AccountSettings from '@/components/AccountSettings'
+import CreateEmployee from '@/components/CreateEmployee'
 
 Vue.use(Router)
 
@@ -96,6 +98,16 @@ export default new Router({
       path:'/AccountSuccess',
       name:'AccountSuccess',
       component: AccountSuccess
+    },
+    {
+      path: '/AccountSettings',
+      name: 'AccountSettings',
+      component: AccountSettings
+    },
+    {
+      path: '/CreateEmployee',
+      name: 'CreateEmployee',
+      component: CreateEmployee
     }
   ]
 })

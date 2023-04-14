@@ -11,6 +11,7 @@
         <a href="/#/TemporaryParking"><button>Book Temporary Spot</button></a>
         <a href="/#/MonthlyPark"><button>Book a Monthly Spot</button></a>
         <a href="/#/BookCarService"><button>Book Car Service</button></a>
+        <a href="/#/AccountSettings"><button>Profile</button></a>
         <button @click="logout(user-email)">Log Out</button>
 
       </div>
