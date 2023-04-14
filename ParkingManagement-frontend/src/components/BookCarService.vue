@@ -105,6 +105,11 @@
         }
       },
       async getTotalAmount() {
+        if (!this.selectedService || !this.selectedCar) {
+          this.total = 0;
+          return;
+        }
+        
         try {
           const response = await axiosClient.get(`/price/service/${this.selectedService.name}`);
           this.total = response.data;
@@ -150,17 +155,23 @@
       this.fetchServices(); 
     },
     watch: {
-      selectedService() {
-        if (this.selectedService && this.selectedCar) { 
-          this.getTotalAmount();
-        }
+      selectedService: {
+        handler() {
+          if (this.selectedService && this.selectedCar) { 
+            this.getTotalAmount();
+          }
+        },
+        immediate: true,
       },
-      selectedCar() { 
-        if (this.selectedService && this.selectedCar) {
-          this.getTotalAmount();
-        }
+      selectedCar: {
+        handler() { 
+          if (this.selectedService && this.selectedCar) {
+            this.getTotalAmount();
+          }
+        },
+        immediate: true,
       },
-    }
+    },
   };
 </script>
 <style>

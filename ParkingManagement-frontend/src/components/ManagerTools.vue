@@ -4,18 +4,20 @@
     <div class="sections-container">
       <div class="section">
         <h2>System Info</h2>
-        <form @submit.prevent="updateSystemInfo">
+        <form @submit.prevent="handleSystemInfo">
           <label for="openTime">Open Time:</label>
-          <input type="time" id="openTime" v-model="systemInfo.openTime" required />
+          <input type="time" id="openTime" v-model="systemInfo.openTime" requireds step = "1" />
           <label for="closeTime">Close Time:</label>
-          <input type="time" id="closeTime" v-model="systemInfo.closeTime" required />
+          <input type="time" id="closeTime" v-model="systemInfo.closeTime" required step = "1"/>
           <label for="largeTempSpotPrice">Large Temp Spot Price:</label>
           <input type="number" id="largeTempSpotPrice" v-model="systemInfo.largeTempSpotPrice" required />
           <label for="regTempSpotPrice">Reg Temp Spot Price:</label>
           <input type="number" id="regTempSpotPrice" v-model="systemInfo.regTempSpotPrice" required />
           <label for="reservedSpotPrice">Reserved Spot Price:</label>
           <input type="number" id="reservedSpotPrice" v-model="systemInfo.reservedSpotPrice" required />
-          <button type="submit">Update System Info</button>
+
+          <button type="submit"  @click.prevent="updateSystemInfo()">Update System Info</button>
+          
         </form>
       </div>
 
@@ -70,13 +72,19 @@
     name: "ManagerTools",
     data() {
       return {
+        systemInfoExists: false,
         systemInfo: {
-          id: 0,
-          openTime: 0,
-          closeTime: 0,
+          openTime: '00:00:00',
+          closeTime: '00:00:00',
           largeTempSpotPrice: 0,
           regTempSpotPrice: 0,
           reservedSpotPrice: 0,
+        },
+        manager: {
+          account: {
+            email: "",
+          },
+          id: 0,
         },
         serviceTypes: [],
         newServiceType: {
@@ -90,26 +98,60 @@
       async fetchSystemInfo() {
         try {
           const response = await axiosClient.get("/systeminfo/0");
+          const managerListResponse = await axiosClient.get("/manager");
           this.systemInfo = response.data;
+      
+      
+          if (managerListResponse.data.length > 0) {
+            this.id = managerListResponse.data[0].id;
+            this.manager = managerListResponse.data[0];
+          } else {
+            console.log("No managers found.");
+          }
+          if (response.data) {
+            this.systemInfoExists = true;
+          }
         } catch (error) {
-          console.error("Failed to fetch system info:", error);
+          console.error("Error fetching system info and manager data:", error);
+        }
+      },
+      async createSystemInfo() {
+        try {
+          const requestData = {
+            ...this.systemInfo,
+            manager: {
+              account: {
+                email: this.manager.account.email,
+              },
+              id: this.manager.id,
+            },
+          };
+          await axiosClient.post("/systeminfo", requestData);
+          this.fetchSystemInfo();
+          this.systemInfoExists = true;
+        } catch (error) {
+          console.error("Failed to create system info:", error);
         }
       },
       async updateSystemInfo() {
         try {
-          await axiosClient.put("/systeminfo", this.systemInfo);
-          this.fetchSystemInfo();
-          localStorage.setItem('smallprice', regTempSpotPrice);
-          localStorage.setItem('largeprice', largeTempSpotPrice);
+          if (!this.systemInfoExists) {
+            await this.createSystemInfo();
+          } else {
+            await axiosClient.put("/systeminfo", this.systemInfo);
+            this.fetchSystemInfo();
+            localStorage.setItem("smallprice", this.systemInfo.regTempSpotPrice);
+            localStorage.setItem("largeprice", this.systemInfo.largeTempSpotPrice);
+          }
         } catch (error) {
           console.error("Failed to update system info:", error);
         }
-      },
+      },        
       async addServiceType() {
         try {
           const requestData = {
             ...this.newServiceType,
-            manager: { id: 26 },
+            manager: { id: this.manager.id },
           };
           await axiosClient.post("/servicetype", requestData);
           this.fetchServiceTypes();
@@ -125,7 +167,7 @@
             name: serviceTypeToDelete.name,
             cost: serviceTypeToDelete.cost,
             duration: serviceTypeToDelete.duration,
-            manager: { id: 26 },
+            manager: { id: this.manager.id },
           };
           await axiosClient.delete(`/servicetype`, { data: requestData });
           this.fetchServiceTypes();
@@ -237,4 +279,3 @@
       background-color: #f2f2f2;
     }
   </style>
-  

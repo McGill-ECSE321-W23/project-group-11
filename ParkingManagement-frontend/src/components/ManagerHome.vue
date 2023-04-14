@@ -22,6 +22,8 @@
                   <th>Car License Plate</th>
                   <th>Year</th>
                   <th>Month</th>
+                  <th>Placenumber</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -29,26 +31,59 @@
                   <td>{{ reservation.carDto.licensePlate}}</td>
                   <td>{{ reservation.year }}</td>
                   <td>{{ reservation.month }}</td>
+                  <td>{{ reservation.placeNumber }}</td>
                 </tr>
               </tbody>
             </table>
-      </div> 
+        </div> 
   
         <div class="table-container">
           <h3>Upcoming Temporary Reservations</h3>
           <table>
-            <!-- The rest of the table content remains the same -->
+              <thead>
+                <tr>
+                  <th>Car License Plate</th>
+                  <th>Date</th>
+                  <th>Start Time</th>
+                  <th>Duration (mins)</th>
+                  <th>Place Number</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="tempspot in tempspots" :key="index">
+                  <td>{{ tempspot.carDto.licensePlate}}</td>
+                  <td>{{ tempspot.date }}</td>
+                  <td>{{ tempspot.startTime }}</td>
+                  <td>{{ tempspot.duration * 15}}</td>
+                  <td>{{ tempspot.placeNumber }}</td>
+                </tr>
+              </tbody>
           </table>
         </div>
   
         <div class="table-container">
           <h3>Upcoming Service Bookings</h3>
           <table>
-            <!-- The rest of the table content remains the same -->
+            <thead>
+              <tr>
+                <th>Car</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="reservation in servicebookings" :key="index">
+                <td>{{ reservation.car.licensePlate }}</td>
+                <td>{{ reservation.serviceType.name }}</td>
+                <td>{{ reservation.date }}</td>
+                <td>{{ reservation.startTime }}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
-
     </div>
 </template>
   
